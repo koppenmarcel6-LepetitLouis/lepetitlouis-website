@@ -522,8 +522,10 @@ footer{background:var(--brown-dark);padding:56px 0 0}
   .book-inner > div[style*="grid-template-columns:1fr 1.6fr"]{
     grid-template-columns:1fr !important;
     gap:24px !important;
+    display:flex !important;
+    flex-direction:column !important;
   }
-  /* Info section goes below form on mobile */
+  /* Form first, info below on mobile */
   .book-inner > div > div:first-child{
     order:2;
   }
@@ -1087,7 +1089,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         </div>
         <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:13px;color:var(--text-mid);line-height:1.6">
           <strong style="color:var(--brown-dark);display:block;margin-bottom:6px">🛡️ No-Show Schutz</strong>
-          Bei Neukunden sichern wir 50% als Anzahlung. Bei Absage bis 24h vorher vollständige Rückerstattung. Bei No-Show verfällt die Anzahlung als Ausfallentschädigung.
+          Bei Neukunden sichern wir 50% als Anzahlung. Bei Absage bis 72h vorher vollständige Rückerstattung. Bei No-Show oder kurzfristiger Absage verfällt die Anzahlung als Ausfallentschädigung.
         </div>
       </div>
 
@@ -1231,7 +1233,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 
           <!-- No-Show Hinweis -->
           <div class="no-show-hint">
-            🛡️ <strong>Absage bis 24h vorher:</strong> kostenlos. <strong>No-Show oder kurzfristige Absage:</strong> 50% Ausfallgebühr.
+            🛡️ <strong>Absage bis 72h vorher:</strong> kostenlos. <strong>No-Show oder kurzfristige Absage:</strong> 50% Ausfallgebühr.
           </div>
 
           <!-- Neukunde: Anzahlung NACH Terminfindung -->
@@ -1268,7 +1270,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <p class="sec-label">Häufige Fragen</p>
     <h2 class="sec-title">Schnelle <em>Antworten</em></h2>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 24h vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 72h vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Was ist die Spracheingabe beim Buchen?</span><span class="faq-icon">+</span></button><div class="faq-a">Statt Tippen einfach alles einsprechen — Name, Rasse, Leistung, Termin, Besonderheiten. Das System transkribiert die Aufnahme und füllt das Formular automatisch aus. Das Ergebnis ist <strong>identisch</strong> zur normalen Formulareingabe — inklusive Vorauszahlung bei Neukunden.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Formular ausfüllen oder Sprachnachricht aufnehmen, absenden. Anni bestätigt <strong>persönlich innerhalb von 24h via WhatsApp</strong>. Erst nach Bestätigung ist der Termin verbindlich.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Kann ich einen Termin absagen?</span><span class="faq-icon">+</span></button><div class="faq-a">Ja — bitte <strong>mindestens 24h vorher per WhatsApp</strong>. Neukunden erhalten die Anzahlung vollständig zurück. Bei kurzfristigeren Absagen behält Anni die 50% als Aufwandsentschädigung.</div></div>
