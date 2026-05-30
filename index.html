@@ -424,6 +424,146 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .kn-err{color:#c0392b}
 .kn-hint{font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.5}
 .kn-skip{color:var(--mocha);cursor:pointer;text-decoration:underline}
+
+.zeeg-wrap{background:#fff;border-radius:12px;padding:28px;box-shadow:0 4px 40px rgba(107,63,42,0.10);margin-top:32px}
+.zeeg-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--brown-dark);margin-bottom:6px}
+.zeeg-sub{font-size:13px;color:var(--text-light);margin-bottom:20px;font-weight:300}
+.zeeg-sizes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.zeeg-size-btn{padding:14px 12px;border:2px solid var(--border);border-radius:8px;background:var(--cream);cursor:pointer;text-align:center;transition:all 0.2s;font-family:var(--sans)}
+.zeeg-size-btn:hover{border-color:var(--brown-light);background:var(--beige-light)}
+.zeeg-size-btn.selected{border-color:var(--brown);background:var(--beige-light)}
+.zeeg-size-btn .zsb-letter{font-family:var(--serif);font-size:22px;color:var(--brown);display:block;margin-bottom:2px}
+.zeeg-size-btn .zsb-desc{font-size:11px;color:var(--text-light);display:block}
+.zeeg-size-btn .zsb-time{font-size:11px;color:var(--mocha);display:block;margin-top:2px}
+.zeeg-size-btn.selected .zsb-letter{color:var(--brown-dark)}
+.zeeg-cta-btn{width:100%;background:var(--brown);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:15px;border-radius:8px;border:none;cursor:pointer;transition:background 0.2s;display:none}
+.zeeg-cta-btn.show{display:block}
+.zeeg-cta-btn:hover{background:var(--brown-dark)}
+.zeeg-note{font-size:11px;color:var(--text-light);text-align:center;margin-top:10px;line-height:1.5;display:none}
+.zeeg-note.show{display:block}
+@media(max-width:768px){.zeeg-sizes{grid-template-columns:1fr 1fr}}
+
+/* ── 3-STEP BOOKING FLOW ── */
+.booking-flow{background:#fff;border-radius:12px;padding:32px;box-shadow:0 4px 40px rgba(107,63,42,0.10)}
+.flow-steps{display:flex;align-items:center;gap:0;margin-bottom:32px}
+.flow-step{display:flex;align-items:center;gap:8px;flex:1}
+.flow-step-num{width:28px;height:28px;border-radius:50%;background:var(--beige);color:var(--text-light);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s}
+.flow-step-num.active{background:var(--brown);color:#fff}
+.flow-step-num.done{background:#1a7a4a;color:#fff}
+.flow-step-label{font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;transition:color 0.3s}
+.flow-step-label.active{color:var(--brown);font-weight:500}
+.flow-step-label.done{color:#1a7a4a}
+.flow-divider{flex:1;height:1px;background:var(--beige);margin:0 8px;max-width:40px}
+
+/* Step panels */
+.flow-panel{display:none}
+.flow-panel.active{display:block;animation:fadeUp 0.3s ease}
+
+/* Step 1 – Neu/Bestandskunde */
+.type-cards-v2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.type-card-v2{border:2px solid var(--border);border-radius:10px;padding:18px 14px;cursor:pointer;transition:all 0.2s;text-align:center}
+.type-card-v2:hover{border-color:var(--brown-light);background:var(--beige-light)}
+.type-card-v2.selected{border-color:var(--brown);background:var(--beige-light)}
+.tcv2-icon{font-size:30px;display:block;margin-bottom:8px}
+.tcv2-label{font-size:14px;font-weight:500;color:var(--text);display:block;margin-bottom:3px}
+.tcv2-desc{font-size:11px;color:var(--text-light);line-height:1.4}
+.type-card-v2.selected .tcv2-label{color:var(--brown)}
+
+/* Kundennummer inline */
+.kn-inline{display:none;background:#FDF6EE;border:1px solid var(--beige);border-radius:8px;padding:14px 16px;margin-top:12px}
+.kn-inline.show{display:block}
+
+/* Step 2 – Hund */
+.dog-form{display:flex;flex-direction:column;gap:14px}
+.size-grid-v2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.size-btn-v2{border:2px solid var(--border);border-radius:8px;padding:12px 6px;cursor:pointer;text-align:center;background:var(--cream);transition:all 0.2s;font-family:var(--sans)}
+.size-btn-v2:hover{border-color:var(--brown-light);background:var(--beige-light)}
+.size-btn-v2.selected{border-color:var(--brown);background:var(--beige-light)}
+.sbv2-letter{font-family:var(--serif);font-size:20px;color:var(--brown);display:block}
+.sbv2-cm{font-size:10px;color:var(--text-light);display:block;margin-top:1px}
+.sbv2-price{font-size:10px;color:var(--mocha);display:block}
+
+/* Voice toggle */
+.input-mode-toggle{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.imt-btn{flex:1;padding:10px;background:transparent;border:none;font-family:var(--sans);font-size:12px;font-weight:400;color:var(--text-light);cursor:pointer;transition:all 0.2s;letter-spacing:0.04em}
+.imt-btn.active{background:var(--brown);color:#fff;font-weight:500}
+
+/* Step 3 – Termin & Zahlung */
+.step3-summary{background:var(--beige-light);border-radius:8px;padding:16px;margin-bottom:20px}
+.summary-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--beige)}
+.summary-row:last-child{border-bottom:none}
+.summary-row span:first-child{color:var(--text-light)}
+.summary-row span:last-child{color:var(--text);font-weight:500}
+.prepay-card{background:linear-gradient(135deg,#FDF6EE,#F5E9D8);border:1px solid var(--beige);border-radius:8px;padding:18px;margin-bottom:16px;display:none}
+.prepay-card.show{display:block}
+.prepay-amount-big{font-family:var(--serif);font-size:28px;color:var(--brown);margin:8px 0}
+.pay-methods-v2{display:flex;gap:10px;margin:12px 0}
+.pmv2{flex:1;padding:12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-mid);text-align:center;transition:all 0.2s}
+.pmv2:hover,.pmv2.selected{border-color:var(--brown);color:var(--brown)}
+.zeeg-open-btn{width:100%;background:var(--brown);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:15px;border-radius:8px;border:none;cursor:pointer;transition:background 0.2s;margin-top:4px}
+.zeeg-open-btn:hover{background:var(--brown-dark)}
+.zeeg-open-btn.green{background:#1a7a4a}
+.zeeg-open-btn.green:hover{background:#145e38}
+.flow-back{background:none;border:none;color:var(--text-light);font-family:var(--sans);font-size:12px;cursor:pointer;padding:0;margin-top:12px;display:flex;align-items:center;gap:4px}
+.flow-back:hover{color:var(--brown)}
+.flow-next-btn{width:100%;background:var(--brown);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:14px;border-radius:8px;border:none;cursor:pointer;transition:background 0.2s;margin-top:8px}
+.flow-next-btn:hover{background:var(--brown-dark)}
+.no-show-hint{font-size:11px;color:var(--text-light);line-height:1.6;padding:10px 12px;background:var(--cream);border-radius:6px;border-left:3px solid var(--beige);margin-bottom:16px}
+@media(max-width:768px){
+  .type-cards-v2{grid-template-columns:1fr 1fr}
+  .size-grid-v2{grid-template-columns:repeat(2,1fr)}
+  .pay-methods-v2{flex-direction:column}
+  .booking-flow{padding:20px 16px}
+  .flow-step-label{display:none}
+}
+
+@media(max-width:768px){
+  /* Booking grid: stack vertically on mobile */
+  .book-inner > div[style*="grid-template-columns:1fr 1.6fr"]{
+    grid-template-columns:1fr !important;
+    gap:24px !important;
+  }
+  /* Info section goes below form on mobile */
+  .book-inner > div > div:first-child{
+    order:2;
+  }
+  .book-inner > div > div:last-child{
+    order:1;
+  }
+  /* Bigger type cards on mobile */
+  .type-cards-v2{
+    grid-template-columns:1fr 1fr !important;
+    gap:10px !important;
+  }
+  .type-card-v2{
+    padding:16px 10px !important;
+  }
+  .tcv2-icon{font-size:26px !important}
+  .tcv2-label{font-size:13px !important}
+  /* Size buttons: 2x2 grid */
+  .size-grid-v2{
+    grid-template-columns:1fr 1fr !important;
+    gap:10px !important;
+  }
+  .size-btn-v2{padding:14px 8px !important}
+  .sbv2-letter{font-size:22px !important}
+  /* Step indicator: compact */
+  .flow-steps{margin-bottom:20px !important}
+  .flow-step-label{display:block !important;font-size:9px !important}
+  /* Form fields full width */
+  .dog-form > div[style*="grid-template-columns:1fr 1fr"]{
+    grid-template-columns:1fr !important;
+  }
+  /* Pay methods stack */
+  .pay-methods-v2{flex-direction:column !important;gap:8px !important}
+  .pmv2{padding:14px !important;font-size:14px !important}
+  /* Zeeg button bigger on mobile */
+  .zeeg-open-btn{padding:18px !important;font-size:14px !important}
+  .flow-next-btn{padding:16px !important;font-size:14px !important}
+  /* Summary readable */
+  .step3-summary{font-size:13px !important}
+  .summary-row{flex-direction:row !important}
+}
 </style>
 </head>
 <body>
@@ -924,161 +1064,204 @@ footer{background:var(--brown-dark);padding:56px 0 0}
   <div class="book-inner">
     <div class="section-new-badge">✨ Neu – Online Termin anfragen</div>
     <p class="sec-label">Termin anfragen</p>
-    <h2 class="sec-title">In 2 Klicks zum<br><em>Wunschtermin</em></h2>
-    <div class="book-grid">
-      <div class="book-info">
-        <h3>So einfach geht's</h3>
-        <div class="book-steps">
-          <div class="book-step"><div class="step-num">1</div><div class="step-text"><strong>Bestandskunde oder Neukunde?</strong> — kurz auswählen</div></div>
-          <div class="book-step"><div class="step-num">2</div><div class="step-text"><strong>Formular ausfüllen oder Sprachnachricht</strong> — Rasse, Leistung & Termin angeben</div></div>
-          <div class="book-step"><div class="step-num">3</div><div class="step-text"><strong>Neukunden</strong> zahlen 50% Anzahlung — sicher via PayPal oder Kreditkarte</div></div>
-          <div class="book-step"><div class="step-num">4</div><div class="step-text"><strong>Anni bestätigt</strong> persönlich via WhatsApp innerhalb von 24h</div></div>
+    <h2 class="sec-title">In 3 Schritten zum<br><em>Wunschtermin</em></h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:60px;align-items:start;margin-top:40px">
+
+      <!-- LEFT INFO -->
+      <div>
+        <h3 style="font-family:var(--serif);font-size:22px;font-weight:400;color:var(--brown-dark);margin-bottom:14px">So funktioniert's</h3>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px">
+          <div style="display:flex;align-items:flex-start;gap:14px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Bestandskunde oder Neukunde?</strong><br>Bestandskunden buchen sofort. Neukunden zahlen 50% Anzahlung nach der Terminfindung.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Hund & Leistung angeben</strong><br>Größe, Rasse und gewünschte Leistung — oder einfach per Sprachnachricht.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Freien Termin wählen</strong><br>Der Kalender zeigt nur wirklich freie Slots. Neukunden zahlen danach sicher online.</div>
+          </div>
         </div>
         <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:13px;color:var(--text-mid);line-height:1.6">
           <strong style="color:var(--brown-dark);display:block;margin-bottom:6px">🛡️ No-Show Schutz</strong>
-          Bei Neukunden sichern wir 50% des Behandlungspreises als Anzahlung. Bei rechtzeitiger Absage (24h) vollständige Rückerstattung.
+          Bei Neukunden sichern wir 50% als Anzahlung. Bei Absage bis 24h vorher vollständige Rückerstattung. Bei No-Show verfällt die Anzahlung als Ausfallentschädigung.
         </div>
       </div>
-      <div class="book-form">
-        <div class="customer-type">
-          <div class="customer-type-title">Bist du schon Kunde bei uns?</div>
-          <div class="type-cards">
-            <label class="type-card" id="card-existing" onclick="selectType('existing')">
-              <input type="radio" name="customerType" value="existing">
-              <span class="type-icon">🐾</span>
-              <span class="type-label">Ja, ich war schon da</span>
-              <span class="type-desc">Bestandskunde — keine Anzahlung</span>
-            </label>
-            <label class="type-card" id="card-new" onclick="selectType('new')">
-              <input type="radio" name="customerType" value="new">
-              <span class="type-icon">👋</span>
-              <span class="type-label">Ich bin Neukunde</span>
-              <span class="type-desc">50% Anzahlung bei Buchung</span>
-            </label>
+
+      <!-- RIGHT FORM -->
+      <div class="booking-flow">
+
+        <!-- STEP INDICATOR -->
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num active" id="stepNum1">1</div>
+            <div class="flow-step-label active" id="stepLbl1">Kundenstatus</div>
+          </div>
+          <div class="flow-divider"></div>
+          <div class="flow-step">
+            <div class="flow-step-num" id="stepNum2">2</div>
+            <div class="flow-step-label" id="stepLbl2">Dein Hund</div>
+          </div>
+          <div class="flow-divider"></div>
+          <div class="flow-step">
+            <div class="flow-step-num" id="stepNum3">3</div>
+            <div class="flow-step-label" id="stepLbl3">Termin & Zahlung</div>
           </div>
         </div>
 
-        <!-- Kundennummer Box (nur für Bestandskunden) -->
-        <div class="kundennummer-box" id="kundennummerBox">
-          <span class="kn-label">🔑 Deine Kundennummer eingeben</span>
-          <div class="kn-wrap">
-            <span class="kn-prefix">LPL –</span>
-            <input type="text" class="kn-input" id="knInput"
-              placeholder="z.B. 047" maxlength="6"
-              oninput="validateKundennummer(this)" autocomplete="off">
-          </div>
-          <div class="kn-status" id="knStatus"></div>
-          <div class="kn-hint">
-            Deine Kundennummer hast du nach deinem ersten Besuch per WhatsApp erhalten.<br>
-            <span class="kn-skip" onclick="skipKundennummer()">Keine Nummer? → als Neukunde buchen</span>
-          </div>
-        </div>
-
-        <div class="type-divider"></div>
-        <div class="book-tabs">
-          <button class="book-tab active" id="tabText" onclick="switchTab('text')">✏️ &nbsp;Formular</button>
-          <button class="book-tab" id="tabVoice" onclick="switchTab('voice')">🎙️ &nbsp;Sprechen statt Tippen</button>
-        </div>
-
-        <!-- TEXT FORM -->
-        <div class="text-panel" id="textPanel">
-          <div class="form-row">
-            <div class="ff"><label>Vorname</label><input type="text" placeholder="Maria" id="f-vorname"></div>
-            <div class="ff"><label>Nachname</label><input type="text" placeholder="Schmidt" id="f-nachname"></div>
-          </div>
-          <div class="form-row">
-            <div class="ff"><label>WhatsApp / Telefon</label><input type="tel" placeholder="+49 176 …" id="f-tel"></div>
-            <div class="ff"><label>E-Mail</label><input type="email" placeholder="mail@beispiel.de" id="f-email"></div>
-          </div>
-          <div class="form-row">
-            <div class="ff"><label>Rasse</label><input type="text" placeholder="z.B. Shih Tzu, Pudel…" id="f-rasse"></div>
-            <div class="ff"><label>Größenklasse</label>
-              <select id="f-groesse" onchange="updatePrepay()">
-                <option value="">Bitte wählen</option>
-                <option value="S45">S – bis 40 cm (ab 45 €)</option>
-                <option value="M90">M – bis 50 cm (ab 90 €)</option>
-                <option value="L120">L – bis 60 cm (ab 120 €)</option>
-                <option value="XL150">XL – bis 80 cm (ab 150 €)</option>
-              </select>
+        <!-- ── STEP 1: Neu/Bestandskunde ── -->
+        <div class="flow-panel active" id="flowStep1">
+          <p style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px">Bist du schon Kunde bei uns?</p>
+          <div class="type-cards-v2">
+            <div class="type-card-v2" id="cardExisting" onclick="flowSelectType('existing')">
+              <span class="tcv2-icon">🐾</span>
+              <span class="tcv2-label">Ja, ich war schon da</span>
+              <span class="tcv2-desc">Bestandskunde — keine Anzahlung</span>
+            </div>
+            <div class="type-card-v2" id="cardNew" onclick="flowSelectType('new')">
+              <span class="tcv2-icon">👋</span>
+              <span class="tcv2-label">Ich bin Neukunde</span>
+              <span class="tcv2-desc">50% Anzahlung nach Terminfindung</span>
             </div>
           </div>
-          <div class="form-row">
-            <div class="ff"><label>Gewünschte Leistung</label>
-              <select id="f-leistung" onchange="updatePrepay()">
-                <option value="">Bitte wählen</option>
-                <option>Baden & Pflegen</option>
-                <option>Baden, Pflege & Schnitt</option>
-                <option>Baden, Pflege, Carding & Formschnitt</option>
-                <option>+ Thalasso-Pflegebad (+20€)</option>
-                <option>Ultraschall-Zahnpflege (25€)</option>
-                <option>Welpeneingewöhnung</option>
-              </select>
+          <!-- Kundennummer -->
+          <div class="kn-inline" id="knInline">
+            <span class="kn-label">🔑 Deine Kundennummer</span>
+            <div class="kn-wrap">
+              <span class="kn-prefix">LPL –</span>
+              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. 047" maxlength="6"
+                oninput="flowValidateKN(this)" autocomplete="off">
             </div>
-            <div class="ff"><label>Wunschtermin</label><input type="date" id="f-datum"></div>
-          </div>
-          <div class="form-row">
-            <div class="ff ff-full"><label>Anmerkungen (optional)</label>
-              <textarea placeholder="Besonderheiten, Allergien, frühere Erfahrungen…" id="f-notiz"></textarea>
+            <div class="kn-status" id="knStatusFlow"></div>
+            <div class="kn-hint">Nummer nach erstem Besuch per WhatsApp erhalten.<br>
+              <span class="kn-skip" onclick="flowSkipKN()">Keine Nummer? → als Neukunde buchen</span>
             </div>
           </div>
-          <div class="prepay-box" id="prepayBox">
-            <div class="prepay-title">💳 Anzahlung für Neukunden</div>
-            <div class="prepay-amount" id="prepayAmount">-- € <small>Anzahlung (50%)</small></div>
-            <div class="prepay-methods">
-              <button class="pay-method" id="paypal-btn" onclick="selectPayment('paypal')">🅿️ PayPal</button>
-              <button class="pay-method" id="stripe-btn" onclick="selectPayment('stripe')">💳 Kreditkarte</button>
-            </div>
-            <div class="prepay-note">Zahlung wird erst nach Annis Bestätigung eingezogen. Bei Absage bis 24h vorher vollständige Rückerstattung.</div>
-          </div>
-          <div class="form-note" id="formNote">ℹ️ Anni bestätigt persönlich innerhalb von 24h via WhatsApp.</div>
-          <button class="btn-submit" id="formSubmit" onclick="submitForm()">
-            <span id="submitLabel">Anfrage absenden →</span>
+          <button class="flow-next-btn" id="step1Next" onclick="flowGoStep(2)" style="margin-top:16px">
+            Weiter →
           </button>
         </div>
 
-        <!-- VOICE PANEL – gleiche Felder, per Sprache ausgefüllt -->
-        <div class="voice-panel" id="voicePanel">
-          <div class="voice-hint">
-            Einfach auf den Mikrofon-Button tippen und alle Infos einsprechen — das Formular wird automatisch ausgefüllt. Ergebnis ist identisch zur Formular-Variante.
+        <!-- ── STEP 2: Hund & Leistung ── -->
+        <div class="flow-panel" id="flowStep2">
+          <!-- Input Mode Toggle -->
+          <div class="input-mode-toggle">
+            <button class="imt-btn active" id="imtForm" onclick="switchInputMode('form')">✏️ Formular</button>
+            <button class="imt-btn" id="imtVoice" onclick="switchInputMode('voice')">🎙️ Sprachnachricht</button>
           </div>
-          <div class="voice-status-bar">
-            <button class="voice-rec-btn" id="vRecBtn" onclick="toggleVoice()">🎙️</button>
-            <div class="voice-status-info">
-              <div class="voice-status-text" id="vStatus">Tippe zum Aufnehmen</div>
-              <div class="voice-waveform" id="vWave">
-                <div class="vbar" style="height:4px"></div><div class="vbar" style="height:8px"></div>
-                <div class="vbar" style="height:16px"></div><div class="vbar" style="height:20px"></div>
-                <div class="vbar" style="height:12px"></div>
+
+          <!-- FORM MODE -->
+          <div id="inputForm">
+            <div class="dog-form">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="ff"><label>Vorname & Nachname</label><input type="text" id="fv-name" placeholder="Maria Schmidt"></div>
+                <div class="ff"><label>WhatsApp / Telefon</label><input type="tel" id="fv-tel" placeholder="0176 61901199" style="border-radius:6px 6px 0 0"><div style="font-size:10px;color:var(--text-light);background:#f5f5f5;border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:4px 10px">Format: 0176 61901199 oder +49 176 61901199</div></div>
               </div>
-              <div class="voice-timer" id="vTimer">0:00</div>
+              <div class="ff"><label>E-Mail-Adresse</label><input type="email" id="fv-email" placeholder="maria@beispiel.de"></div>
+              <div class="ff"><label>Hundename</label><input type="text" id="fv-dogname" placeholder="z.B. Luna, Max…"></div>
+              <div class="ff"><label>Rasse</label><input type="text" id="fv-rasse" placeholder="z.B. Shih Tzu, Pudel…"></div>
+              <div class="ff">
+                <label>Gewünschte Leistung</label>
+                <select id="fv-leistung">
+                  <option value="">Bitte wählen</option>
+                  <option>Baden & Pflegen</option>
+                  <option>Baden & Schnitt</option>
+                  <option>Formschnitt</option>
+                  <option>Welpeneingewöhnung</option>
+                </select>
+              </div>
+              <div class="ff">
+                <label>Größenklasse deines Hundes</label>
+                <div class="size-grid-v2">
+                  <button class="size-btn-v2" onclick="flowSelectSize('s',this)">
+                    <span class="sbv2-letter">S</span>
+                    <span class="sbv2-cm">bis 40 cm</span>
+                    <span class="sbv2-price">ab 45 €</span>
+                  </button>
+                  <button class="size-btn-v2" onclick="flowSelectSize('m',this)">
+                    <span class="sbv2-letter">M</span>
+                    <span class="sbv2-cm">bis 50 cm</span>
+                    <span class="sbv2-price">ab 90 €</span>
+                  </button>
+                  <button class="size-btn-v2" onclick="flowSelectSize('l',this)">
+                    <span class="sbv2-letter">L</span>
+                    <span class="sbv2-cm">bis 60 cm</span>
+                    <span class="sbv2-price">ab 120 €</span>
+                  </button>
+                  <button class="size-btn-v2" onclick="flowSelectSize('xl',this)">
+                    <span class="sbv2-letter">XL</span>
+                    <span class="sbv2-cm">bis 80 cm</span>
+                    <span class="sbv2-price">ab 150 €</span>
+                  </button>
+                </div>
+              </div>
+              <div class="ff"><label>Anmerkungen (optional)</label>
+                <textarea id="fv-notes" placeholder="Besonderheiten, Allergien…" style="min-height:60px;resize:vertical"></textarea>
+              </div>
             </div>
           </div>
-          <!-- Ausgefülltes Formular Preview (erscheint nach Transkription) -->
-          <div class="voice-filled-form" id="vFilledForm">
-            <div class="vff-title" id="vffTitle">
-              <span class="vff-spinner" id="vffSpinner"></span> Wird ausgefüllt…
+
+          <!-- VOICE MODE -->
+          <div id="inputVoice" style="display:none">
+            <div style="background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.6">
+              <strong style="color:var(--brown)">Bitte nennen:</strong> Name, WhatsApp, Hundename, Rasse, Größe (S/M/L/XL), Leistung, Besonderheiten
             </div>
-            <div class="vff-fields" id="vffFields"></div>
-          </div>
-          <!-- Vorauszahlung auch hier -->
-          <div class="prepay-box" id="vPrepayBox">
-            <div class="prepay-title">💳 Anzahlung für Neukunden</div>
-            <div class="prepay-amount" id="vPrepayAmount">-- € <small>Anzahlung (50%)</small></div>
-            <div class="prepay-methods">
-              <button class="pay-method" id="vpaypal-btn" onclick="selectVPayment('paypal')">🅿️ PayPal</button>
-              <button class="pay-method" id="vstripe-btn" onclick="selectVPayment('stripe')">💳 Kreditkarte</button>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 0">
+              <button class="voice-rec-btn" id="vRecBtn2" onclick="toggleVoice2()" style="width:64px;height:64px;border-radius:50%;background:var(--brown);color:#fff;border:none;cursor:pointer;font-size:24px;box-shadow:0 3px 12px rgba(107,63,42,0.25)">🎙️</button>
+              <div id="vStatus2" style="font-size:13px;color:var(--text-mid)">Tippe zum Aufnehmen</div>
+              <div id="vTimer2" style="font-family:var(--serif);font-size:24px;color:var(--brown);display:none">0:00</div>
             </div>
-            <div class="prepay-note">Identisch zur Formular-Variante — Zahlung erst nach Bestätigung.</div>
+            <div id="vFilledForm2" style="display:none;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px">
+              <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px;font-weight:500" id="vffTitle2">Wird ausgefüllt…</div>
+              <div id="vffFields2" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"></div>
+            </div>
           </div>
-          <div class="form-note" id="vFormNote" style="display:none">ℹ️ Anni bestätigt persönlich innerhalb von 24h via WhatsApp.</div>
-          <button class="btn-submit" id="vSubmit" onclick="submitVoice()" style="display:none">
-            <span id="vSubmitLabel">Anfrage absenden →</span>
-          </button>
+
+          <button class="flow-next-btn" onclick="flowGoStep(3)" style="margin-top:16px">Weiter zum Termin →</button>
+          <button class="flow-back" onclick="flowGoStep(1)">← Zurück</button>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+        <!-- ── STEP 3: Termin & Zahlung ── -->
+        <div class="flow-panel" id="flowStep3">
+          <!-- Summary -->
+          <div class="step3-summary" id="step3Summary"></div>
+
+          <!-- No-Show Hinweis -->
+          <div class="no-show-hint">
+            🛡️ <strong>Absage bis 24h vorher:</strong> kostenlos. <strong>No-Show oder kurzfristige Absage:</strong> 50% Ausfallgebühr.
+          </div>
+
+          <!-- Neukunde: Anzahlung NACH Terminfindung -->
+          <div class="prepay-card" id="prepayCard">
+            <div style="font-size:13px;font-weight:500;color:var(--brown-dark);margin-bottom:4px">💳 Anzahlung nach Terminfindung</div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:8px">Zuerst freien Termin wählen → dann sicher bezahlen</div>
+            <div class="prepay-amount-big" id="prepayAmountFlow">-- €</div>
+            <div class="pay-methods-v2">
+              <button class="pmv2" id="pmPaypal" onclick="selectPayV2('paypal')">🅿️ PayPal</button>
+              <button class="pmv2" id="pmStripe" onclick="selectPayV2('stripe')">💳 Kreditkarte</button>
+            </div>
+            <div style="font-size:11px;color:var(--text-light);border-left:3px solid var(--beige);padding-left:10px">
+              Zahlung wird erst nach Annis Bestätigung ausgeführt.
+            </div>
+          </div>
+
+          <!-- Zeeg öffnen -->
+          <button class="zeeg-open-btn" id="zeegFinalBtn" onclick="openZeegFinal()">
+            📅 Freien Termin wählen – Kalender öffnet sich hier →
+          </button>
+          <div style="font-size:11px;color:var(--text-light);text-align:center;margin-top:8px;line-height:1.5">
+            Du wirst zum Buchungskalender weitergeleitet.<br>Anni bestätigt persönlich via WhatsApp.
+          </div>
+          <button class="flow-back" onclick="flowGoStep(2)">← Zurück</button>
+        </div>
+
+      </div><!-- /booking-flow -->
+    </div><!-- /grid -->
+  </div><!-- /book-inner -->
+</div><!-- /book-wrap -->
 
 <div class="faq-wrap" id="faq">
   <div class="faq-inner">
@@ -1469,6 +1652,349 @@ function skipKundennummer() {
   var btn = document.getElementById('formSubmit');
   if(btn) { btn.classList.add('pay-now'); btn.innerHTML='<span id="submitLabel">Weiter zur Anzahlung</span>'; }
   updatePrepay();
+}
+
+
+// Zeeg Buchungslinks je Größe
+var zeegLinks = {
+  's':  'https://zeeg.me/annemausolf/Termin',
+  'm':  'https://zeeg.me/annemausolf/Termin-copy-1',
+  'l':  'https://zeeg.me/annemausolf/Termin-copy-1-copy-1',
+  'xl': 'https://zeeg.me/annemausolf/Termin-copy-1-copy-1-copy-1'
+};
+var selectedZeegSize = null;
+
+function selectZeegSize(size, btn) {
+  selectedZeegSize = size;
+  document.querySelectorAll('.zeeg-size-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('zeegCtaBtn').classList.add('show');
+  document.getElementById('zeegNote').classList.add('show');
+}
+
+function openZeeg() {
+  if (selectedZeegSize && zeegLinks[selectedZeegSize]) {
+    window.open(zeegLinks[selectedZeegSize], '_blank');
+  }
+}
+
+
+// ── 3-STEP FLOW ─────────────────────────────────────────────────
+var flowCustomerType = null;
+var flowSize = null;
+var flowPayMethod = null;
+var flowKnValid = false;
+
+var zeegLinks = {
+  's':  'https://zeeg.me/annemausolf/Termin',
+  'm':  'https://zeeg.me/annemausolf/Termin-copy-1',
+  'l':  'https://zeeg.me/annemausolf/Termin-copy-1-copy-1',
+  'xl': 'https://zeeg.me/annemausolf/Termin-copy-1-copy-1-copy-1'
+};
+
+var basePrices = {'s':45,'m':90,'l':120,'xl':150};
+
+function flowGoStep(n) {
+  // Validate before going forward
+  if (n === 2) {
+    if (!flowCustomerType) { alert('Bitte wähle ob du Bestands- oder Neukunde bist.'); return; }
+    if (flowCustomerType === 'existing' && !flowKnValid) { alert('Bitte gib deine Kundennummer ein.'); return; }
+  }
+  if (n === 3) {
+    var name = document.getElementById('fv-name');
+    var tel = document.getElementById('fv-tel');
+    if (name && !name.value.trim()) { name.style.borderColor='#c0392b'; alert('Bitte Vorname eingeben.'); return; }
+    if (tel && !tel.value.trim()) { tel.style.borderColor='#c0392b'; alert('Bitte WhatsApp-Nummer eingeben.'); return; }
+    if (!flowSize) { alert('Bitte Größenklasse wählen.'); return; }
+    buildSummary();
+  }
+  [1,2,3].forEach(function(i) {
+    document.getElementById('flowStep'+i).classList.remove('active');
+    document.getElementById('stepNum'+i).classList.remove('active','done');
+    document.getElementById('stepLbl'+i).classList.remove('active','done');
+  });
+  document.getElementById('flowStep'+n).classList.add('active');
+  document.getElementById('stepNum'+n).classList.add('active');
+  document.getElementById('stepLbl'+n).classList.add('active');
+  for (var i = 1; i < n; i++) {
+    document.getElementById('stepNum'+i).classList.add('done');
+    document.getElementById('stepNum'+i).textContent = '✓';
+    document.getElementById('stepLbl'+i).classList.add('done');
+  }
+}
+
+function flowSelectType(type) {
+  flowCustomerType = type;
+  document.getElementById('cardExisting').classList.toggle('selected', type==='existing');
+  document.getElementById('cardNew').classList.toggle('selected', type==='new');
+  var kn = document.getElementById('knInline');
+  if (type === 'existing') {
+    kn.classList.add('show');
+  } else {
+    kn.classList.remove('show');
+    flowKnValid = false;
+  }
+}
+
+var validNumbers = ['001','002','003','047','012','023','099'];
+
+function flowValidateKN(input) {
+  var val = input.value.replace(/[^0-9]/g,'');
+  input.value = val;
+  var status = document.getElementById('knStatusFlow');
+  if (val.length < 3) { input.classList.remove('valid','invalid'); status.className='kn-status'; return; }
+  status.className = 'kn-status show';
+  if (validNumbers.indexOf(val) !== -1) {
+    input.classList.add('valid'); input.classList.remove('invalid');
+    status.innerHTML = '<span class="kn-ok">✓ Kundennummer erkannt – willkommen zurück!</span>';
+    flowKnValid = true;
+  } else {
+    input.classList.add('invalid'); input.classList.remove('valid');
+    status.innerHTML = '<span class="kn-err">✗ Nummer nicht gefunden.</span>';
+    flowKnValid = false;
+  }
+}
+
+function flowSkipKN() {
+  flowCustomerType = 'new';
+  document.getElementById('cardExisting').classList.remove('selected');
+  document.getElementById('cardNew').classList.add('selected');
+  document.getElementById('knInline').classList.remove('show');
+}
+
+function flowSelectSize(size, btn) {
+  flowSize = size;
+  document.querySelectorAll('.size-btn-v2').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+}
+
+function switchInputMode(mode) {
+  document.getElementById('inputForm').style.display = mode==='form' ? 'block' : 'none';
+  document.getElementById('inputVoice').style.display = mode==='voice' ? 'block' : 'none';
+  document.getElementById('imtForm').classList.toggle('active', mode==='form');
+  document.getElementById('imtVoice').classList.toggle('active', mode==='voice');
+}
+
+function buildSummary() {
+  var name = document.getElementById('fv-name') ? document.getElementById('fv-name').value : '';
+  var rasse = document.getElementById('fv-rasse') ? document.getElementById('fv-rasse').value : '';
+  var dogname = document.getElementById('fv-dogname') ? document.getElementById('fv-dogname').value : '';
+  var leistung = document.getElementById('fv-leistung') ? document.getElementById('fv-leistung').value : '';
+  var sizeLabel = {'s':'S – bis 40 cm','m':'M – bis 50 cm','l':'L – bis 60 cm','xl':'XL – bis 80 cm'};
+  var html = '';
+  if (name) html += '<div class="summary-row"><span>Name</span><span>'+name+'</span></div>';
+  if (dogname) html += '<div class="summary-row"><span>Hund</span><span>'+dogname+'</span></div>';
+  if (rasse) html += '<div class="summary-row"><span>Rasse</span><span>'+rasse+'</span></div>';
+  if (flowSize) html += '<div class="summary-row"><span>Größe</span><span>'+(sizeLabel[flowSize]||flowSize)+'</span></div>';
+  if (leistung) html += '<div class="summary-row"><span>Leistung</span><span>'+leistung+'</span></div>';
+  html += '<div class="summary-row"><span>Kundenstatus</span><span>'+(flowCustomerType==='existing' ? 'Bestandskunde' : 'Neukunde')+'</span></div>';
+  document.getElementById('step3Summary').innerHTML = html;
+
+  // Show prepay for new customers
+  var pc = document.getElementById('prepayCard');
+  if (flowCustomerType === 'new' && flowSize) {
+    pc.classList.add('show');
+    var prepay = Math.round(basePrices[flowSize] * 0.5);
+    document.getElementById('prepayAmountFlow').innerHTML = prepay + ' € <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
+  } else {
+    pc.classList.remove('show');
+  }
+}
+
+function selectPayV2(method) {
+  flowPayMethod = method;
+  document.getElementById('pmPaypal').classList.toggle('selected', method==='paypal');
+  document.getElementById('pmStripe').classList.toggle('selected', method==='stripe');
+}
+
+function openZeegFinal() {
+  if (!flowSize) { alert('Bitte zuerst Größe wählen.'); return; }
+  if (flowCustomerType === 'new' && !flowPayMethod) { alert('Bitte Zahlungsmethode wählen.'); return; }
+
+  var link = zeegLinks[flowSize];
+  if (!link) return;
+
+  // Collect all customer data
+  var name    = (document.getElementById('fv-name')    || {}).value || '';
+  var email   = (document.getElementById('fv-email')   || {}).value || '';
+  var tel     = (document.getElementById('fv-tel')     || {}).value || '';
+  var dog     = (document.getElementById('fv-dogname') || {}).value || '';
+  var rasse   = (document.getElementById('fv-rasse')   || {}).value || '';
+  var leistung= (document.getElementById('fv-leistung')|| {}).value || '';
+  var notes   = (document.getElementById('fv-notes')   || {}).value || '';
+
+  // Build combined notes for a2 (Zeeg custom field 2)
+  var allNotes = [];
+  if (dog)      allNotes.push('Hund: ' + dog);
+  if (rasse)    allNotes.push('Rasse: ' + rasse);
+  if (leistung) allNotes.push('Leistung: ' + leistung);
+  if (flowCustomerType === 'existing') allNotes.push('Bestandskunde');
+  else allNotes.push('Neukunde');
+  if (notes)    allNotes.push(notes);
+
+  // Exact mapping to Zeeg field order:
+  // a1 = Weitere Informationen, a2 = Hundename, a3 = Rasse, a4 = Größe, a5 = Gewünschte Leistung
+  var sizeOptions = {'s':'S (bis40cm)','m':'M (bis 50cm)','l':'L (bis 60cm)','xl':'XL (bis 80cm'};
+  var statusNote = flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde';
+  var infoText = statusNote;
+  if (notes) infoText += ' | ' + notes;
+
+  // Format phone for Zeeg: needs +49 XXX XXXXXXXX format
+  var telFormatted = tel.trim();
+  // Remove all spaces first
+  telFormatted = telFormatted.replace(/\s+/g, '');
+  // Convert 0176... to +49 176...
+  if (telFormatted.startsWith('0')) {
+    telFormatted = '+49 ' + telFormatted.substring(1, 4) + ' ' + telFormatted.substring(4);
+  } else if (telFormatted.startsWith('+49')) {
+    // Already has +49, just add spaces: +49XXXXXXXXX -> +49 XXX XXXXXXX
+    var digits = telFormatted.substring(3);
+    telFormatted = '+49 ' + digits.substring(0, 3) + ' ' + digits.substring(3);
+  }
+
+  showZeegModal(link, {
+    name: name,
+    email: email,
+    phone: telFormatted,
+    phoneNumber: telFormatted,
+    answers: {
+      a1: infoText,
+      a2: dog,
+      a3: rasse,
+      a4: sizeOptions[flowSize] || '',
+      a5: leistung
+    }
+  });
+}
+
+function showZeegModal(url, prefill) {
+  var existing = document.getElementById('zeegModal');
+  if (existing) existing.remove();
+
+  var modal = document.createElement('div');
+  modal.id = 'zeegModal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;padding:20px';
+
+  var box = document.createElement('div');
+  box.style.cssText = 'background:#fff;border-radius:12px;width:100%;max-width:780px;height:85vh;display:flex;flex-direction:column;overflow:hidden;position:relative';
+
+  var header = document.createElement('div');
+  header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #E8D5C0;background:#FAF6F0;flex-shrink:0';
+
+  var title = document.createElement('span');
+  title.style.cssText = 'font-family:Georgia,serif;font-size:16px;color:#3D1F0F';
+  title.textContent = 'Freien Termin wählen';
+
+  var closeBtn = document.createElement('button');
+  closeBtn.style.cssText = 'background:none;border:none;font-size:26px;cursor:pointer;color:#9A8070;line-height:1;padding:0 4px';
+  closeBtn.textContent = '×';
+  closeBtn.onclick = function() { modal.remove(); };
+
+  header.appendChild(title);
+  header.appendChild(closeBtn);
+
+  var embedDiv = document.createElement('div');
+  embedDiv.id = 'zeeg-embed-container';
+  embedDiv.style.cssText = 'flex:1;overflow:auto;min-width:320px';
+
+  box.appendChild(header);
+  box.appendChild(embedDiv);
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) modal.remove();
+  });
+
+  if (!document.getElementById('zeeg-embed-script')) {
+    var script = document.createElement('script');
+    script.id = 'zeeg-embed-script';
+    script.src = 'https://assets.zeeg.me/embed.min.js';
+    script.onload = function() { initZeegEmbed(url, prefill); };
+    document.head.appendChild(script);
+  } else {
+    setTimeout(function() { initZeegEmbed(url, prefill); }, 100);
+  }
+}
+
+function initZeegEmbed(url, prefill) {
+  try {
+    if (window.Zeeg && window.Zeeg.initInlineWidget) {
+      // Zeeg prefill: name, email come from prefill object
+      // phone needs to be passed as part of the prefill
+      var zeegPrefill = {
+        name: prefill.name || '',
+        email: prefill.email || '',
+        phone: prefill.phone || prefill.phoneNumber || '',
+        answers: prefill.answers || {}
+      };
+      window.Zeeg.initInlineWidget({
+        url: url,
+        parentElement: document.getElementById('zeeg-embed-container'),
+        prefill: zeegPrefill,
+        utm: {}
+      });
+    } else {
+      var p = new URLSearchParams();
+      if (prefill.name)  p.set('name', prefill.name);
+      if (prefill.email) p.set('email', prefill.email);
+      window.open(url + '?' + p.toString(), '_blank');
+      document.getElementById('zeegModal').remove();
+    }
+  } catch(e) {
+    window.open(url, '_blank');
+  }
+}
+
+// Voice for Step 2
+var vState2='idle', vInterval2, vSecs2=0, vRec2=null;
+async function toggleVoice2() {
+  var btn=document.getElementById('vRecBtn2'), status=document.getElementById('vStatus2'), timer=document.getElementById('vTimer2');
+  if (vState2==='idle') {
+    try {
+      var stream = await navigator.mediaDevices.getUserMedia({audio:true});
+      vRec2 = new MediaRecorder(stream);
+      vRec2.onstop = function() { stream.getTracks().forEach(function(t){t.stop();}); transcribeStep2(); };
+      vRec2.start(); vState2='recording'; vSecs2=0;
+      btn.style.background='#c0392b'; btn.textContent='⏹';
+      status.textContent='Aufnahme läuft…';
+      timer.style.display='block';
+      vInterval2 = setInterval(function() { vSecs2++; timer.textContent=Math.floor(vSecs2/60)+':'+String(vSecs2%60).padStart(2,'0'); if(vSecs2>=120) toggleVoice2(); }, 1000);
+    } catch(e) {
+      status.textContent='Kein Mikrofon – Demo-Modus';
+      simulateVoice2(btn, status, timer);
+    }
+  } else if (vState2==='recording') {
+    clearInterval(vInterval2); if(vRec2) vRec2.stop(); vState2='done';
+    btn.style.background='#1a7a4a'; btn.textContent='✓';
+    status.textContent='Verarbeite Aufnahme…';
+    timer.style.display='none';
+  }
+}
+
+function simulateVoice2(btn, status, timer) {
+  vState2='recording'; vSecs2=0;
+  btn.style.background='#c0392b'; btn.textContent='⏹';
+  status.textContent='Demo-Aufnahme läuft…';
+  timer.style.display='block';
+  vInterval2 = setInterval(function() { vSecs2++; timer.textContent=Math.floor(vSecs2/60)+':'+String(vSecs2%60).padStart(2,'0'); }, 1000);
+}
+
+function transcribeStep2() {
+  setTimeout(function() {
+    var box = document.getElementById('vFilledForm2');
+    var title = document.getElementById('vffTitle2');
+    var fields = document.getElementById('vffFields2');
+    box.style.display='block';
+    title.textContent='✓ Formular ausgefüllt – bitte prüfen';
+    var data = [['Name','Maria Schmidt'],['WhatsApp','0176 12345678'],['Hund','Luna'],['Rasse','Shih Tzu'],['Größe','S – bis 40 cm'],['Leistung','Vollpflege']];
+    fields.innerHTML = data.map(function(d) {
+      return '<div style="background:#fff;border:1px solid var(--border);border-radius:4px;padding:7px 10px"><div style="font-size:9px;text-transform:uppercase;color:var(--text-light);margin-bottom:2px">'+d[0]+'</div><div style="font-size:13px;color:var(--text)">'+d[1]+'</div></div>';
+    }).join('');
+    // Auto-select S size
+    flowSize = 's';
+    document.querySelectorAll('.size-btn-v2').forEach(function(b) { b.classList.remove('selected'); });
+  }, 2000);
 }
 
 </script>
