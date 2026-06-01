@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -1169,22 +1169,22 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <div class="ff">
                 <label>Größenklasse deines Hundes</label>
                 <div class="size-grid-v2">
-                  <button class="size-btn-v2" onclick="flowSelectSize('s',this)">
+                  <button class="size-btn-v2" data-size="s" onclick="flowSelectSize('s',this)">
                     <span class="sbv2-letter">S</span>
                     <span class="sbv2-cm">bis 40 cm</span>
                     <span class="sbv2-price">ab 45 €</span>
                   </button>
-                  <button class="size-btn-v2" onclick="flowSelectSize('m',this)">
+                  <button class="size-btn-v2" data-size="m" onclick="flowSelectSize('m',this)">
                     <span class="sbv2-letter">M</span>
                     <span class="sbv2-cm">bis 50 cm</span>
                     <span class="sbv2-price">ab 90 €</span>
                   </button>
-                  <button class="size-btn-v2" onclick="flowSelectSize('l',this)">
+                  <button class="size-btn-v2" data-size="l" onclick="flowSelectSize('l',this)">
                     <span class="sbv2-letter">L</span>
                     <span class="sbv2-cm">bis 60 cm</span>
                     <span class="sbv2-price">ab 120 €</span>
                   </button>
-                  <button class="size-btn-v2" onclick="flowSelectSize('xl',this)">
+                  <button class="size-btn-v2" data-size="xl" onclick="flowSelectSize('xl',this)">
                     <span class="sbv2-letter">XL</span>
                     <span class="sbv2-cm">bis 80 cm</span>
                     <span class="sbv2-price">ab 150 €</span>
@@ -1690,7 +1690,34 @@ var zeegLinks = {
   'xl': 'https://zeeg.me/annemausolf/Termin-copy-1-copy-1-copy-1'
 };
 
-var basePrices = {'s':45,'m':90,'l':120,'xl':150};
+var servicePrices = {
+  'Baden & Pflegen': {'s':45,'m':90,'l':120,'xl':150},
+  'Baden & Schnitt': {'s':85,'m':120,'l':150,'xl':180},
+  'Formschnitt': {'s':45,'m':85,'l':120,'xl':150},
+  'Welpeneingewöhnung': {'s':25,'m':25,'l':25,'xl':25}
+};
+var basePrices = servicePrices['Baden & Pflegen'];
+
+function getFlowPrices() {
+  var leistung = document.getElementById('fv-leistung') ? document.getElementById('fv-leistung').value : '';
+  return servicePrices[leistung] || basePrices;
+}
+
+function updateFlowSizePrices() {
+  var prices = getFlowPrices();
+  document.querySelectorAll('.size-btn-v2').forEach(function(btn) {
+    var size = btn.getAttribute('data-size');
+    var price = prices[size];
+    var priceEl = btn.querySelector('.sbv2-price');
+    if (priceEl && price) priceEl.textContent = 'ab ' + price + ' €';
+  });
+}
+
+var flowLeistungSelect = document.getElementById('fv-leistung');
+if (flowLeistungSelect) {
+  flowLeistungSelect.addEventListener('change', updateFlowSizePrices);
+  updateFlowSizePrices();
+}
 
 function flowGoStep(n) {
   // Validate before going forward
@@ -1732,6 +1759,7 @@ function resetBookingFlow() {
     var el=document.getElementById(id); if(el) el.classList.remove('selected');
   });
   document.querySelectorAll('.size-btn-v2').forEach(function(btn){ btn.classList.remove('selected'); });
+  updateFlowSizePrices();
   var kn=document.getElementById('knInline'); if(kn) kn.classList.remove('show');
   var pc=document.getElementById('prepayCard'); if(pc) pc.classList.remove('show');
   var summary=document.getElementById('step3Summary'); if(summary) summary.innerHTML='';
@@ -1832,7 +1860,7 @@ function buildSummary() {
   var pc = document.getElementById('prepayCard');
   if (flowCustomerType === 'new' && flowSize) {
     pc.classList.add('show');
-    var prepay = Math.round(basePrices[flowSize] * 0.5);
+    var prepay = Math.round(getFlowPrices()[flowSize] * 0.5);
     document.getElementById('prepayAmountFlow').innerHTML = prepay + ' € <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
   } else {
     pc.classList.remove('show');
