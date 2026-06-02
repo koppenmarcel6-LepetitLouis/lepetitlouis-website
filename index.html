@@ -508,6 +508,8 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .pay-methods-v2{display:flex;gap:10px;margin:12px 0}
 .pmv2{flex:1;padding:12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-mid);text-align:center;transition:all 0.2s}
 .pmv2:hover,.pmv2.selected{border-color:var(--brown);color:var(--brown)}
+.pay-info-v2{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 14px;border:1px solid #9FC7EA;border-radius:8px;background:#E3F2FD;color:#0E5F9E;font-size:13px;font-weight:700;text-align:center;line-height:1.25}
+.pay-info-v2 small{display:block;font-size:10px;font-weight:500;color:#477895;margin-top:2px}
 .zeeg-open-btn{width:100%;background:var(--brown);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:15px;border-radius:8px;border:none;cursor:pointer;transition:background 0.2s;margin-top:4px}
 .zeeg-open-btn:hover{background:var(--brown-dark)}
 .zeeg-open-btn.green{background:#1a7a4a}
@@ -1100,17 +1102,17 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="tcv2-desc">50% Anzahlung nach Terminfindung</span>
             </div>
           </div>
-          <!-- Kundennummer -->
+          <!-- Kundencode -->
           <div class="kn-inline" id="knInline">
-            <span class="kn-label">🔑 Deine Kundennummer</span>
+            <span class="kn-label">🔑 Dein Kundencode</span>
             <div class="kn-wrap">
-              <span class="kn-prefix">KN-</span>
-              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. 5" maxlength="6"
+              <span class="kn-prefix">LPL-</span>
+              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. MK5L" maxlength="12"
                 oninput="flowValidateKN(this)" autocomplete="off">
             </div>
             <div class="kn-status" id="knStatusFlow"></div>
-            <div class="kn-hint">Nummer nach erstem Besuch per WhatsApp erhalten.<br>
-              <span class="kn-skip" onclick="flowSkipKN()">Keine Nummer? → als Neukunde buchen</span>
+            <div class="kn-hint">Code nach erstem Besuch per WhatsApp erhalten.<br>
+              <span class="kn-skip" onclick="flowSkipKN()">Kein Code? → als Neukunde buchen</span>
             </div>
           </div>
           <button class="flow-next-btn" id="step1Next" onclick="flowGoStep(2)" style="margin-top:16px">
@@ -1192,11 +1194,13 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             <div style="font-size:12px;color:var(--text-light);margin-bottom:8px">Zuerst freien Termin wählen → dann sicher bezahlen</div>
             <div class="prepay-amount-big" id="prepayAmountFlow">-- €</div>
             <div class="pay-methods-v2">
-              <button class="pmv2" id="pmPaypal" onclick="selectPayV2('paypal')">🅿️ PayPal</button>
-              <button class="pmv2" id="pmStripe" onclick="selectPayV2('stripe')">💳 Kreditkarte</button>
+              <div class="pay-info-v2">
+                <span>💳</span>
+                <span>PayPal / Karte<small>Zahlungslink nach Annis Bestätigung</small></span>
+              </div>
             </div>
             <div style="font-size:11px;color:var(--text-light);border-left:3px solid var(--beige);padding-left:10px">
-              Zahlung wird erst nach Annis Bestätigung ausgeführt.
+              Du kannst später sicher per PayPal oder Karte zahlen.
             </div>
           </div>
 
@@ -1546,7 +1550,6 @@ function transcribeAndFill() {
 
 function submitVoice() {
   if (!customerType) { alert('Bitte wähle ob du Bestands- oder Neukunde bist.'); return; }
-  if (customerType==='new' && !vSelectedPayment) { alert('Bitte Zahlungsmethode wählen.'); return; }
   const btn = document.getElementById('vSubmit');
   btn.innerHTML='<span>✓ Gesendet! Anni meldet sich innerhalb von 24 Stunden.</span>';
   btn.style.background='#1a7a4a'; btn.disabled=true;
@@ -1570,21 +1573,22 @@ function toggleFaq(btn) {
 var knCheckTimer = null;
 
 function validateKundennummer(input) {
-  var val = input.value.replace(/[^0-9]/g,'');
-  input.value = val;
+  var raw = input.value.replace(/[^a-zA-Z0-9]/g,'').toUpperCase();
+  input.value = raw;
   var status = document.getElementById('knStatus');
   if (!status) return;
-  if (val.length < 1) {
+  if (raw.length < 2) {
     status.className = 'kn-status';
     input.classList.remove('valid','invalid');
     return;
   }
+  var kundencode = raw.indexOf('LPL') === 0 ? raw.replace(/^LPL-?/, 'LPL-') : 'LPL-' + raw;
   // Debounce: warte 600ms nach letzter Eingabe
   clearTimeout(knCheckTimer);
   status.className = 'kn-status show';
-  status.innerHTML = '<span style="color:var(--mocha)">⏳ Wird geprüft…</span>';
+  status.innerHTML = '<span style="color:var(--mocha)">⏳ Kundencode wird geprüft…</span>';
   knCheckTimer = setTimeout(function() {
-    checkKundennummerMake(val, input, status);
+    checkKundennummerMake(kundencode, input, status);
   }, 600);
 }
 
@@ -1592,7 +1596,7 @@ function checkKundennummerMake(val, input, status) {
   fetch('https://hook.eu1.make.com/9fapeyv3p3sege5bgg4ainbshn7fpdmq', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ kundennummer: val })
+    body: JSON.stringify({ kundencode: val })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
@@ -1609,7 +1613,7 @@ function checkKundennummerMake(val, input, status) {
       if(fn) fn.textContent = 'Anni bestätigt persönlich innerhalb von 24 Stunden via WhatsApp.';
     } else {
       input.classList.add('invalid'); input.classList.remove('valid');
-      status.innerHTML = '<span class="kn-err">✗ Kundennummer nicht gefunden. Bitte prüfen oder als Neukunde buchen.</span>';
+      status.innerHTML = '<span class="kn-err">✗ Kundencode nicht gefunden. Bitte prüfen oder als Neukunde buchen.</span>';
     }
   })
   .catch(function(err) {
@@ -1764,7 +1768,7 @@ function flowGoStep(n) {
   // Validate before going forward
   if (n === 2) {
     if (!flowCustomerType) { alert('Bitte wähle ob du Bestands- oder Neukunde bist.'); return; }
-    if (flowCustomerType === 'existing' && !flowKnValid) { alert('Bitte gib deine Kundennummer ein.'); return; }
+    if (flowCustomerType === 'existing' && !flowKnValid) { alert('Bitte gib deinen Kundencode ein.'); return; }
   }
   if (n === 3) {
     var name = document.getElementById('fv-name');
@@ -1899,18 +1903,21 @@ function flowPrefillCustomer(data) {
 }
 
 function flowValidateKN(input) {
-  var val = input.value.replace(/[^0-9]/g,'');
-  input.value = val;
+  var raw = input.value.replace(/[^a-zA-Z0-9]/g,'').toUpperCase();
+  input.value = raw;
   var status = document.getElementById('knStatusFlow');
-  if (val.length < 1) { input.classList.remove('valid','invalid'); status.className='kn-status'; return; }
+  if (raw.length < 2) { input.classList.remove('valid','invalid'); status.className='kn-status'; flowKnValid = false; return; }
+
+  var kundencode = raw.indexOf('LPL') === 0 ? raw.replace(/^LPL-?/, 'LPL-') : 'LPL-' + raw;
+
   clearTimeout(flowKnCheckTimer);
   status.className = 'kn-status show';
-  status.innerHTML = '<span style="color:var(--mocha)">⏳ Wird geprüft…</span>';
+  status.innerHTML = '<span style="color:var(--mocha)">⏳ Kundencode wird geprüft…</span>';
   flowKnCheckTimer = setTimeout(function() {
     fetch('https://hook.eu1.make.com/9fapeyv3p3sege5bgg4ainbshn7fpdmq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kundennummer: val })
+      body: JSON.stringify({ kundencode: kundencode })
     })
     .then(function(r) { return r.text(); })
     .then(function(text) {
@@ -1928,7 +1935,7 @@ function flowValidateKN(input) {
         flowKnValid = true;
       } else {
         input.classList.add('invalid'); input.classList.remove('valid');
-        status.innerHTML = '<span class="kn-err">✗ Kundennummer nicht gefunden. Bitte als Neukunde buchen.</span>';
+        status.innerHTML = '<span class="kn-err">✗ Kundencode nicht gefunden. Bitte prüfen oder als Neukunde buchen.</span>';
         flowKnValid = false;
       }
     })
@@ -1990,13 +1997,10 @@ function buildSummary() {
 
 function selectPayV2(method) {
   flowPayMethod = method;
-  document.getElementById('pmPaypal').classList.toggle('selected', method==='paypal');
-  document.getElementById('pmStripe').classList.toggle('selected', method==='stripe');
 }
 
 function openZeegFinal() {
   if (!flowSize) { alert('Bitte zuerst Größe wählen.'); return; }
-  if (flowCustomerType === 'new' && !flowPayMethod) { alert('Bitte Zahlungsmethode wählen.'); return; }
 
   var link = zeegLinks[flowSize];
   if (!link) return;
@@ -2187,5 +2191,10 @@ function transcribeStep2() {
 </script>
 </body>
 </html>
+
+
+
+
+
 
 
