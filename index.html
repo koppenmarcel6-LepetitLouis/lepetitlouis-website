@@ -87,6 +87,11 @@ nav.scrolled .nav-logo img{height:42px}
 .svc-card-big{background:#fff;border:1px solid var(--border);border-radius:8px;padding:32px;margin-bottom:16px}
 .svc-card-big h3{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--brown-dark);margin-bottom:8px}
 .svc-desc{font-size:14px;color:var(--text-mid);line-height:1.7;margin-bottom:20px;font-weight:300}
+.svc-advice{background:var(--beige-light);border:1px solid var(--beige);border-radius:8px;padding:16px 18px;margin:0 0 20px}
+.svc-advice-title{font-size:13px;font-weight:500;color:var(--brown-dark);margin-bottom:6px}
+.svc-advice p{font-size:13px;color:var(--text-mid);line-height:1.6;margin:0 0 8px}
+.svc-advice p:last-child{margin-bottom:0}
+.svc-advice strong{font-weight:500;color:var(--brown-dark)}
 .svc-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px}
 .svc-features li{font-size:13px;color:var(--text-mid);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .svc-features li::before{content:'✓';color:var(--brown);font-weight:500;flex-shrink:0}
@@ -482,6 +487,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .sbv2-letter{font-family:var(--serif);font-size:20px;color:var(--brown);display:block}
 .sbv2-cm{font-size:10px;color:var(--text-light);display:block;margin-top:1px}
 .sbv2-price{font-size:10px;color:var(--mocha);display:block}
+.breed-size-warning{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;border:1px solid #E8D5C0;background:#FFF8E8;color:#7A4A20;font-size:12px;line-height:1.45}
+.breed-size-warning.show{display:block}
+.breed-size-warning strong{color:var(--brown-dark)}
 
 /* Voice toggle */
 .input-mode-toggle{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
@@ -640,7 +648,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <div class="svc-tabs">
       <button class="svc-tab active" onclick="switchSvc(this,'panel-pflege')">Baden & Pflegen</button>
       <button class="svc-tab" onclick="switchSvc(this,'panel-schnitt')">Baden & Schnitt</button>
-      <button class="svc-tab" onclick="switchSvc(this,'panel-formschnitt')">Formschnitt</button>
+      <button class="svc-tab" onclick="switchSvc(this,'panel-formschnitt')">Baden & Formschnitt</button>
       <button class="svc-tab" onclick="switchSvc(this,'panel-extras')">Extras</button>
     </div>
     <div class="svc-panel active" id="panel-pflege">
@@ -655,7 +663,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         </ul>
         <div class="breed-accordion">
           <div class="breed-row" id="brow-s">
-            <div class="breed-header" onclick="toggleBreed('s')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-s">S</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe S — bis 40 cm Schulterhöhe</div>
@@ -677,7 +685,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
           </div>
           <div class="breed-row" id="brow-m">
-            <div class="breed-header" onclick="toggleBreed('m')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-m">M</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe M — bis 50 cm Schulterhöhe</div>
@@ -696,7 +704,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
           </div>
           <div class="breed-row" id="brow-l">
-            <div class="breed-header" onclick="toggleBreed('l')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-l">L</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe L — bis 60 cm Schulterhöhe</div>
@@ -715,7 +723,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
           </div>
           <div class="breed-row" id="brow-xl">
-            <div class="breed-header" onclick="toggleBreed('xl')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-xl">XL</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe XL — bis 80 cm Schulterhöhe</div>
@@ -732,7 +740,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               </div>
             </div>
           </div>
-          <div class="breed-hint">Nicht sicher? Einfach die Rasse ins Buchungsformular schreiben — Anni ordnet sie dann richtig zu.</div>
+          <div class="breed-hint">Nicht sicher? Schick uns einfach ein Foto deines Hundes per WhatsApp - wir helfen dir gerne bei der Auswahl des passenden Pakets.</div>
         </div>
         <div class="verfilz-box">
           <div class="verfilz-header">
@@ -752,8 +760,13 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     </div>
     <div class="svc-panel" id="panel-schnitt">
       <div class="svc-card-big">
-        <h3>Baden, Pflege & Schnitt</h3>
-        <p class="svc-desc">Das Komplettpaket — inkl. fachgerechtem Schnitt mit Schere & Maschine.</p>
+        <h3>Baden & Schnitt</h3>
+        <p class="svc-desc">Für Hunde, bei denen ein größerer Pflegeaufwand nötig ist und mehr Zeit eingeplant werden muss.</p>
+        <div class="svc-advice">
+          <div class="svc-advice-title">Nach Aufwand und Terminzeit</div>
+          <p>Dieses Paket passt besonders, wenn ein vollständiger Schnitt und ein längerer Pflegetermin nötig sind.</p>
+          <p><strong>Zum Beispiel:</strong> Pudel, Malteser, Shih Tzu, Havaneser, Doodle, Pomeranian (Zwergspitz) und ähnliche Rassen.</p>
+        </div>
         <ul class="svc-features">
           <li>Baden mit Massagebrause</li><li>Shampoo & Conditioner gem. Felltyp</li>
           <li>Fachgerechtes Föhnen</li><li>Sanftes Bürsten, leichte Verfilzungen</li>
@@ -763,7 +776,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         <p class="svc-note" style="margin-bottom:0">→ Gesichts-Refresh innerhalb 2 Monaten inklusive.</p>
         <div class="breed-accordion">
           <div class="breed-row" id="brow-s">
-            <div class="breed-header" onclick="toggleBreed('s')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-s">S</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe S — bis 40 cm Schulterhöhe</div>
@@ -773,19 +786,11 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Shih Tzu</span><span class="breed-tag">Yorkshire Terrier</span>
-                <span class="breed-tag">Malteser</span><span class="breed-tag">Zwergpudel</span>
-                <span class="breed-tag">Pomeranian</span><span class="breed-tag">Chihuahua</span>
-                <span class="breed-tag">Mops</span><span class="breed-tag">Havaneser</span>
-                <span class="breed-tag">Bolonka</span><span class="breed-tag">Zwergspitz</span>
-                <span class="breed-tag">Rauhaardackel</span><span class="breed-tag">Jack Russell</span>
-                <span class="breed-tag">Parson Terrier</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Shih Tzu</span><span class="breed-tag">Malteser</span><span class="breed-tag">Havaneser</span><span class="breed-tag">Pomeranian</span><span class="breed-tag">Zwergpudel</span><span class="breed-tag">Bolonka</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-m">
-            <div class="breed-header" onclick="toggleBreed('m')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-m">M</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe M — bis 50 cm Schulterhöhe</div>
@@ -795,16 +800,11 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Cocker Spaniel</span><span class="breed-tag">Doodle (klein)</span>
-                <span class="breed-tag">Zwergschnauzer</span><span class="breed-tag">West Highland White Terrier</span>
-                <span class="breed-tag">Cairn Terrier</span><span class="breed-tag">Cavalier King Charles</span>
-                <span class="breed-tag">Norfolk Terrier</span><span class="breed-tag">Norwich Terrier</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Pudel</span><span class="breed-tag">Doodle (klein)</span><span class="breed-tag">Cockerpoo</span><span class="breed-tag">Cocker Spaniel</span><span class="breed-tag">Havaneser (groß)</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-l">
-            <div class="breed-header" onclick="toggleBreed('l')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-l">L</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe L — bis 60 cm Schulterhöhe</div>
@@ -814,16 +814,11 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Golden Retriever</span><span class="breed-tag">Großpudel</span>
-                <span class="breed-tag">Doodle (groß)</span><span class="breed-tag">Australian Shepherd</span>
-                <span class="breed-tag">Border Collie</span><span class="breed-tag">Bearded Collie</span>
-                <span class="breed-tag">Samojede</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Großpudel</span><span class="breed-tag">Doodle (groß)</span><span class="breed-tag">Labradoodle</span><span class="breed-tag">Goldendoodle</span><span class="breed-tag">Bearded Collie</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-xl">
-            <div class="breed-header" onclick="toggleBreed('xl')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-xl">XL</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe XL — bis 80 cm Schulterhöhe</div>
@@ -833,14 +828,10 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Berner Sennenhund</span><span class="breed-tag">Leonberger</span>
-                <span class="breed-tag">Neufundländer</span><span class="breed-tag">Landseer</span>
-                <span class="breed-tag">Irischer Wolfshund</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Königspudel</span><span class="breed-tag">Doodle XL</span><span class="breed-tag">Bobtail</span><span class="breed-tag">Große Mischlinge mit Schnittaufwand</span></div>
             </div>
           </div>
-          <div class="breed-hint">Nicht sicher? Einfach die Rasse ins Buchungsformular schreiben — Anni ordnet sie dann richtig zu.</div>
+          <div class="breed-hint">Nicht sicher? Schick uns einfach ein Foto deines Hundes per WhatsApp - wir helfen dir gerne bei der Auswahl des passenden Pakets.</div>
         </div>
         <div class="verfilz-box">
           <div class="verfilz-header">
@@ -860,8 +851,13 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     </div>
     <div class="svc-panel" id="panel-formschnitt">
       <div class="svc-card-big">
-        <h3>Baden, Pflege, Carding & Formschnitt</h3>
-        <p class="svc-desc">Inkl. gründlicher Unterwollentfernung (Carding) und Formschnitt mit Schere.</p>
+        <h3>Baden & Formschnitt</h3>
+        <p class="svc-desc">Für Hunde, bei denen hauptsächlich die Konturen gepflegt und kleinere Korrekturen vorgenommen werden.</p>
+        <div class="svc-advice">
+          <div class="svc-advice-title">Konturenpflege und kleine Korrekturen</div>
+          <p>Dieses Paket passt besonders, wenn die Form erhalten, Kanten sauber gesetzt und einzelne Bereiche gepflegt werden sollen.</p>
+          <p><strong>Zum Beispiel:</strong> Yorkshire Terrier, Chihuahua, Golden Retriever, Australian Shepherd, Border Collie und ähnliche Rassen.</p>
+        </div>
         <ul class="svc-features">
           <li>Baden mit Massagebrause</li><li>Shampoo & Conditioner gem. Felltyp</li>
           <li>Fachgerechtes Föhnen</li><li>Gründliche Unterwollentfernung (Carding)</li>
@@ -871,7 +867,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         <p class="svc-note" style="margin-bottom:0">→ Gesichts-Refresh innerhalb 2 Monaten inklusive.</p>
         <div class="breed-accordion">
           <div class="breed-row" id="brow-s">
-            <div class="breed-header" onclick="toggleBreed('s')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-s">S</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe S — bis 40 cm Schulterhöhe</div>
@@ -881,19 +877,11 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Shih Tzu</span><span class="breed-tag">Yorkshire Terrier</span>
-                <span class="breed-tag">Malteser</span><span class="breed-tag">Zwergpudel</span>
-                <span class="breed-tag">Pomeranian</span><span class="breed-tag">Chihuahua</span>
-                <span class="breed-tag">Mops</span><span class="breed-tag">Havaneser</span>
-                <span class="breed-tag">Bolonka</span><span class="breed-tag">Zwergspitz</span>
-                <span class="breed-tag">Rauhaardackel</span><span class="breed-tag">Jack Russell</span>
-                <span class="breed-tag">Parson Terrier</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Yorkshire Terrier</span><span class="breed-tag">Chihuahua</span><span class="breed-tag">Zwergspitz</span><span class="breed-tag">Jack Russell</span><span class="breed-tag">Rauhaardackel</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-m">
-            <div class="breed-header" onclick="toggleBreed('m')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-m">M</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe M — bis 50 cm Schulterhöhe</div>
@@ -903,16 +891,11 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Cocker Spaniel</span><span class="breed-tag">Doodle (klein)</span>
-                <span class="breed-tag">Zwergschnauzer</span><span class="breed-tag">West Highland White Terrier</span>
-                <span class="breed-tag">Cairn Terrier</span><span class="breed-tag">Cavalier King Charles</span>
-                <span class="breed-tag">Norfolk Terrier</span><span class="breed-tag">Norwich Terrier</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Cocker Spaniel</span><span class="breed-tag">Zwergschnauzer</span><span class="breed-tag">Cairn Terrier</span><span class="breed-tag">Cavalier King Charles</span><span class="breed-tag">West Highland White Terrier</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-l">
-            <div class="breed-header" onclick="toggleBreed('l')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-l">L</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe L — bis 60 cm Schulterhöhe</div>
@@ -922,16 +905,11 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Golden Retriever</span><span class="breed-tag">Großpudel</span>
-                <span class="breed-tag">Doodle (groß)</span><span class="breed-tag">Australian Shepherd</span>
-                <span class="breed-tag">Border Collie</span><span class="breed-tag">Bearded Collie</span>
-                <span class="breed-tag">Samojede</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Golden Retriever</span><span class="breed-tag">Australian Shepherd</span><span class="breed-tag">Border Collie</span><span class="breed-tag">Samojede</span><span class="breed-tag">Collie</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-xl">
-            <div class="breed-header" onclick="toggleBreed('xl')">
+            <div class="breed-header" onclick="toggleBreed(this)">
               <div class="breed-badge bs-xl">XL</div>
               <div class="breed-header-info">
                 <div class="breed-header-title">Größe XL — bis 80 cm Schulterhöhe</div>
@@ -941,14 +919,10 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list">
-                <span class="breed-tag">Berner Sennenhund</span><span class="breed-tag">Leonberger</span>
-                <span class="breed-tag">Neufundländer</span><span class="breed-tag">Landseer</span>
-                <span class="breed-tag">Irischer Wolfshund</span>
-              </div>
+              <div class="breed-list"><span class="breed-tag">Berner Sennenhund</span><span class="breed-tag">Leonberger</span><span class="breed-tag">Neufundländer</span><span class="breed-tag">Landseer</span><span class="breed-tag">Große Mischlinge mit Konturenpflege</span></div>
             </div>
           </div>
-          <div class="breed-hint">Nicht sicher? Einfach die Rasse ins Buchungsformular schreiben — Anni ordnet sie dann richtig zu.</div>
+          <div class="breed-hint">Nicht sicher? Schick uns einfach ein Foto deines Hundes per WhatsApp - wir helfen dir gerne bei der Auswahl des passenden Pakets.</div>
         </div>
         <div class="verfilz-box">
           <div class="verfilz-header">
@@ -1130,8 +1104,8 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="kn-inline" id="knInline">
             <span class="kn-label">🔑 Deine Kundennummer</span>
             <div class="kn-wrap">
-              <span class="kn-prefix">LPL –</span>
-              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. 047" maxlength="6"
+              <span class="kn-prefix">KN-</span>
+              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. 5" maxlength="6"
                 oninput="flowValidateKN(this)" autocomplete="off">
             </div>
             <div class="kn-status" id="knStatusFlow"></div>
@@ -1191,6 +1165,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
                   </button>
                 </div>
               </div>
+                <div class="breed-size-warning" id="breedSizeWarning"></div>
               <div class="ff"><label>Anmerkungen (optional)</label>
                 <textarea id="fv-notes" placeholder="Besonderheiten, Allergien…" style="min-height:60px;resize:vertical"></textarea>
               </div>
@@ -1578,10 +1553,12 @@ function submitVoice() {
 }
 
 function fmtTime(s) { return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
-function toggleBreed(size) {
-  const row = document.getElementById('brow-' + size);
+function toggleBreed(target) {
+  const row = target && target.closest ? target.closest('.breed-row') : document.getElementById('brow-' + target);
+  if (!row) return;
+  const wrap = row.closest('.breed-accordion') || document;
   const isOpen = row.classList.contains('open');
-  document.querySelectorAll('.breed-row.open').forEach(r => r.classList.remove('open'));
+  wrap.querySelectorAll('.breed-row.open').forEach(r => r.classList.remove('open'));
   if (!isOpen) row.classList.add('open');
 }
 function toggleFaq(btn) {
@@ -1597,7 +1574,7 @@ function validateKundennummer(input) {
   input.value = val;
   var status = document.getElementById('knStatus');
   if (!status) return;
-  if (val.length < 3) {
+  if (val.length < 1) {
     status.className = 'kn-status';
     input.classList.remove('valid','invalid');
     return;
@@ -1615,7 +1592,7 @@ function checkKundennummerMake(val, input, status) {
   fetch('https://hook.eu1.make.com/9fapeyv3p3sege5bgg4ainbshn7fpdmq', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ kundennummer: 'KN-' + val })
+    body: JSON.stringify({ kundennummer: val })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
@@ -1623,7 +1600,9 @@ function checkKundennummerMake(val, input, status) {
     var btn = document.getElementById('formSubmit');
     if (data.gefunden) {
       input.classList.add('valid'); input.classList.remove('invalid');
-      status.innerHTML = '<span class="kn-ok">✓ Willkommen zurück, ' + (data.name || 'Bestandskunde') + '! Keine Anzahlung nötig.</span>';
+      if (typeof flowPrefillCustomer === 'function') flowPrefillCustomer(data);
+      var displayName = flowGetValue(data, ['name', 'Name']) || 'Bestandskunde';
+      status.innerHTML = '<span class="kn-ok">✓ Willkommen zurück, ' + displayName + '! Deine Daten wurden vorausgefüllt. Keine Anzahlung nötig.</span>';
       if(prepayBox) prepayBox.classList.remove('show');
       if(btn) { btn.classList.remove('pay-now'); btn.innerHTML='<span id="submitLabel">Anfrage absenden</span>'; }
       var fn = document.getElementById('formNote');
@@ -1633,9 +1612,10 @@ function checkKundennummerMake(val, input, status) {
       status.innerHTML = '<span class="kn-err">✗ Kundennummer nicht gefunden. Bitte prüfen oder als Neukunde buchen.</span>';
     }
   })
-  .catch(function() {
+  .catch(function(err) {
     input.classList.add('invalid'); input.classList.remove('valid');
-    status.innerHTML = '<span class="kn-err">⚠️ Prüfung fehlgeschlagen. Bitte Anni kontaktieren: 0176 73672723</span>';
+    var msg = err && err.message ? err.message : 'Prüfung fehlgeschlagen';
+    status.innerHTML = '<span class="kn-err">⚠️ ' + msg + '</span>';
   });
 }
 
@@ -1719,6 +1699,67 @@ if (flowLeistungSelect) {
   updateFlowSizePrices();
 }
 
+var breedSizeHints = {
+  s: ['shih tzu','shitzu','shih-tzu','yorkshire terrier','yorkie','malteser','zwergpudel','pomeranian','zwergspitz','chihuahua','mops','havaneser','bolonka','rauhaardackel','dackel','jack russell','parson terrier'],
+  m: ['cocker spaniel','cockerspaniel','cockerpoo','doodle klein','kleiner doodle','zwergschnauzer','west highland white terrier','westie','cairn terrier','cavalier king charles','norfolk terrier','norwich terrier','havaneser gross','havaneser groß'],
+  l: ['golden retriever','grosspudel','großpudel','doodle gross','doodle groß','grosser doodle','großer doodle','labradoodle','goldendoodle','australian shepherd','border collie','bearded collie','samojede','collie'],
+  xl: ['konigspudel','königspudel','doodle xl','bobtail','berner sennenhund','leonberger','neufundlander','neufundländer','schäferhund','schaeferhund','deutscher schäferhund','german shepherd','grosse mischlinge','große mischlinge']
+};
+
+var flowSizeLabels = {
+  s: 'S - bis 40 cm',
+  m: 'M - bis 50 cm',
+  l: 'L - bis 60 cm',
+  xl: 'XL - bis 80 cm'
+};
+
+function normalizeBreedText(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function detectSuggestedSizeForBreed(value) {
+  var breed = normalizeBreedText(value);
+  if (!breed) return '';
+  var order = ['s','m','l','xl'];
+  for (var i = 0; i < order.length; i++) {
+    var size = order[i];
+    var list = breedSizeHints[size] || [];
+    for (var j = 0; j < list.length; j++) {
+      var needle = normalizeBreedText(list[j]);
+      if (needle && (breed.indexOf(needle) !== -1 || needle.indexOf(breed) !== -1)) return size;
+    }
+  }
+  return '';
+}
+
+function updateBreedSizeWarning() {
+  var warning = document.getElementById('breedSizeWarning');
+  if (!warning) return;
+  var breedInput = document.getElementById('fv-rasse');
+  var breed = breedInput ? breedInput.value : '';
+  var suggested = detectSuggestedSizeForBreed(breed);
+  if (!flowSize || !suggested || suggested === flowSize) {
+    warning.classList.remove('show');
+    warning.innerHTML = '';
+    return;
+  }
+  warning.innerHTML = '<strong>Hinweis zur Größenklasse:</strong> Für die eingegebene Rasse passt häufig eher <strong>' + flowSizeLabels[suggested] + '</strong> statt <strong>' + flowSizeLabels[flowSize] + '</strong>. Bitte prüfe die Größe kurz oder schick uns ein Foto per WhatsApp, wenn du unsicher bist.';
+  warning.classList.add('show');
+}
+
+var flowBreedInput = document.getElementById('fv-rasse');
+if (flowBreedInput) {
+  flowBreedInput.addEventListener('input', updateBreedSizeWarning);
+  flowBreedInput.addEventListener('change', updateBreedSizeWarning);
+}
+
 function flowGoStep(n) {
   // Validate before going forward
   if (n === 2) {
@@ -1760,6 +1801,7 @@ function resetBookingFlow() {
   });
   document.querySelectorAll('.size-btn-v2').forEach(function(btn){ btn.classList.remove('selected'); });
   updateFlowSizePrices();
+  var warning=document.getElementById('breedSizeWarning'); if(warning){ warning.classList.remove('show'); warning.innerHTML=''; }
   var kn=document.getElementById('knInline'); if(kn) kn.classList.remove('show');
   var pc=document.getElementById('prepayCard'); if(pc) pc.classList.remove('show');
   var summary=document.getElementById('step3Summary'); if(summary) summary.innerHTML='';
@@ -1787,11 +1829,80 @@ function flowSelectType(type) {
 
 var flowKnCheckTimer = null;
 
+function flowSetField(id, value) {
+  var el = document.getElementById(id);
+  if (el && value != null && String(value).trim() !== '') {
+    el.value = String(value).trim();
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
+function flowNormalizeService(value) {
+  var service = value ? String(value).trim() : '';
+  var map = {
+    'Baden & Pflege': 'Baden & Pflegen',
+    'Baden & Pflegen': 'Baden & Pflegen',
+    'Baden & Schnitt': 'Baden & Schnitt',
+    'Formschnitt': 'Formschnitt',
+    'Baden, Pflege, Carding & Formschnitt': 'Formschnitt',
+    'Welpeneingewöhnung': 'Welpeneingewöhnung'
+  };
+  return map[service] || service;
+}
+
+function flowNormalizeSize(value) {
+  var size = value ? String(value).trim().toLowerCase() : '';
+  if (size.indexOf('xl') === 0) return 'xl';
+  if (size.indexOf('l') === 0) return 'l';
+  if (size.indexOf('m') === 0) return 'm';
+  if (size.indexOf('s') === 0) return 's';
+  return '';
+}
+
+function flowGetValue(data, keys) {
+  var sources = [data];
+  if (data && data.fields) sources.push(data.fields);
+  if (data && data.record) sources.push(data.record);
+  if (data && data.record && data.record.fields) sources.push(data.record.fields);
+  for (var s = 0; s < sources.length; s++) {
+    var source = sources[s] || {};
+    for (var i = 0; i < keys.length; i++) {
+      var value = source[keys[i]];
+      if (Array.isArray(value)) value = value.join(', ');
+      if (value != null && String(value).trim() !== '') return value;
+    }
+  }
+  return '';
+}
+
+function flowPrefillCustomer(data) {
+  var prefill = {
+    name: flowGetValue(data, ['name', 'Name']),
+    email: flowGetValue(data, ['email', 'E-Mail', 'E Mail', 'mail', 'Mail']),
+    telefon: flowGetValue(data, ['telefon', 'Telefon', 'phone', 'Phone']),
+    hundename: flowGetValue(data, ['hundename', 'Hundename', 'Hundename ', 'dogName', 'DogName']),
+    rasse: flowGetValue(data, ['rasse', 'Rasse', 'breed', 'Breed']),
+    groesse: flowGetValue(data, ['groesse', 'größe', 'Größe', 'Groesse', 'size', 'Size'])
+  };
+
+  flowSetField('fv-name', prefill.name);
+  flowSetField('fv-email', prefill.email);
+  flowSetField('fv-tel', prefill.telefon);
+  flowSetField('fv-dogname', prefill.hundename);
+  flowSetField('fv-rasse', prefill.rasse);
+
+  var size = flowNormalizeSize(prefill.groesse);
+  if (size) {
+    var btn = document.querySelector('.size-btn-v2[data-size="' + size + '"]');
+    if (btn) flowSelectSize(size, btn);
+  }
+}
+
 function flowValidateKN(input) {
   var val = input.value.replace(/[^0-9]/g,'');
   input.value = val;
   var status = document.getElementById('knStatusFlow');
-  if (val.length < 3) { input.classList.remove('valid','invalid'); status.className='kn-status'; return; }
+  if (val.length < 1) { input.classList.remove('valid','invalid'); status.className='kn-status'; return; }
   clearTimeout(flowKnCheckTimer);
   status.className = 'kn-status show';
   status.innerHTML = '<span style="color:var(--mocha)">⏳ Wird geprüft…</span>';
@@ -1799,13 +1910,21 @@ function flowValidateKN(input) {
     fetch('https://hook.eu1.make.com/9fapeyv3p3sege5bgg4ainbshn7fpdmq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kundennummer: 'KN-' + val })
+      body: JSON.stringify({ kundennummer: val })
     })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
+    .then(function(r) { return r.text(); })
+    .then(function(text) {
+      var data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error('Make hat kein gültiges JSON zurückgegeben: ' + text.slice(0, 180));
+      }
       if (data.gefunden) {
         input.classList.add('valid'); input.classList.remove('invalid');
-        status.innerHTML = '<span class="kn-ok">✓ Willkommen zurück, ' + (data.name || 'Bestandskunde') + '!</span>';
+        flowPrefillCustomer(data);
+        var displayName = flowGetValue(data, ['name', 'Name']) || 'Bestandskunde';
+        status.innerHTML = '<span class="kn-ok">✓ Willkommen zurück, ' + displayName + '! Deine Daten wurden vorausgefüllt.</span>';
         flowKnValid = true;
       } else {
         input.classList.add('invalid'); input.classList.remove('valid');
@@ -1813,9 +1932,10 @@ function flowValidateKN(input) {
         flowKnValid = false;
       }
     })
-    .catch(function() {
+    .catch(function(err) {
       input.classList.add('invalid'); input.classList.remove('valid');
-      status.innerHTML = '<span class="kn-err">⚠️ Prüfung fehlgeschlagen. Bitte Anni kontaktieren: 0176 73672723</span>';
+      var msg = err && err.message ? err.message : 'Prüfung fehlgeschlagen';
+      status.innerHTML = '<span class="kn-err">⚠️ ' + msg + '</span>';
       flowKnValid = false;
     });
   }, 600);
@@ -1832,6 +1952,7 @@ function flowSelectSize(size, btn) {
   flowSize = size;
   document.querySelectorAll('.size-btn-v2').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
+  updateBreedSizeWarning();
 }
 
 function switchInputMode(mode) {
@@ -2066,3 +2187,5 @@ function transcribeStep2() {
 </script>
 </body>
 </html>
+
+
