@@ -1832,6 +1832,7 @@ function flowSelectType(type) {
 }
 
 var flowKnCheckTimer = null;
+var flowKnRequestId = 0;
 
 function flowSetField(id, value) {
   var el = document.getElementById(id);
@@ -1885,8 +1886,9 @@ function flowPrefillCustomer(data) {
     email: flowGetValue(data, ['email', 'E-Mail', 'E Mail', 'mail', 'Mail']),
     telefon: flowGetValue(data, ['telefon', 'Telefon', 'phone', 'Phone']),
     hundename: flowGetValue(data, ['hundename', 'Hundename', 'Hundename ', 'dogName', 'DogName']),
-    rasse: flowGetValue(data, ['rasse', 'Rasse', 'breed', 'Breed']),
-    groesse: flowGetValue(data, ['groesse', 'größe', 'Größe', 'Groesse', 'size', 'Size'])
+    rasse: flowGetValue(data, ['rasse', 'Rasse', 'Rasse ', 'hunderasse', 'Hunderasse', 'Hund Rasse', 'Rasse des Hundes', 'breed', 'Breed', 'dogBreed', 'DogBreed']),
+    groesse: flowGetValue(data, ['groesse', 'größe', 'Größe', 'Groesse', 'size', 'Size']),
+    anmerkung: flowGetValue(data, ['anmerkung', 'Anmerkung', 'Anmerkungen', 'Anmerkung optional', 'anmerkungOptional', 'notes', 'note', 'Notiz', 'Notizen'])
   };
 
   flowSetField('fv-name', prefill.name);
@@ -1894,6 +1896,7 @@ function flowPrefillCustomer(data) {
   flowSetField('fv-tel', prefill.telefon);
   flowSetField('fv-dogname', prefill.hundename);
   flowSetField('fv-rasse', prefill.rasse);
+  flowSetField('fv-notes', prefill.anmerkung);
 
   var size = flowNormalizeSize(prefill.groesse);
   if (size) {
@@ -1906,11 +1909,22 @@ function flowValidateKN(input) {
   var raw = input.value.replace(/[^a-zA-Z0-9]/g,'').toUpperCase();
   input.value = raw;
   var status = document.getElementById('knStatusFlow');
-  if (raw.length < 2) { input.classList.remove('valid','invalid'); status.className='kn-status'; flowKnValid = false; return; }
+  flowKnRequestId += 1;
+  var requestId = flowKnRequestId;
+
+  if (raw.length < 2) {
+    clearTimeout(flowKnCheckTimer);
+    input.classList.remove('valid','invalid');
+    status.className='kn-status';
+    flowKnValid = false;
+    return;
+  }
 
   var kundencode = raw.indexOf('LPL') === 0 ? raw.replace(/^LPL-?/, 'LPL-') : 'LPL-' + raw;
 
   clearTimeout(flowKnCheckTimer);
+  input.classList.remove('valid','invalid');
+  flowKnValid = false;
   status.className = 'kn-status show';
   status.innerHTML = '<span style="color:var(--mocha)">⏳ Kundencode wird geprüft…</span>';
   flowKnCheckTimer = setTimeout(function() {
@@ -1921,6 +1935,7 @@ function flowValidateKN(input) {
     })
     .then(function(r) { return r.text(); })
     .then(function(text) {
+      if (requestId !== flowKnRequestId) return;
       var data;
       try {
         data = JSON.parse(text);
@@ -1940,12 +1955,13 @@ function flowValidateKN(input) {
       }
     })
     .catch(function(err) {
+      if (requestId !== flowKnRequestId) return;
       input.classList.add('invalid'); input.classList.remove('valid');
       var msg = err && err.message ? err.message : 'Prüfung fehlgeschlagen';
       status.innerHTML = '<span class="kn-err">⚠️ ' + msg + '</span>';
       flowKnValid = false;
     });
-  }, 600);
+  }, 700);
 }
 
 function flowSkipKN() {
@@ -2191,6 +2207,10 @@ function transcribeStep2() {
 </script>
 </body>
 </html>
+
+
+
+
 
 
 
