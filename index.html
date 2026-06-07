@@ -921,7 +921,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="breed-chevron">▾</span>
             </div>
             <div class="breed-body">
-              <div class="breed-list"><span class="breed-tag">Yorkshire Terrier</span><span class="breed-tag">Chihuahua</span><span class="breed-tag">Zwergspitz</span><span class="breed-tag">Jack Russell</span><span class="breed-tag">Rauhaardackel</span></div>
+              <div class="breed-list"><span class="breed-tag">Yorkshire Terrier</span><span class="breed-tag">Chihuahua</span><span class="breed-tag">Zwergspitz</span><span class="breed-tag">Pekinese</span><span class="breed-tag">Jack Russell</span><span class="breed-tag">Rauhaardackel</span></div>
             </div>
           </div>
           <div class="breed-row" id="brow-m">
@@ -1958,6 +1958,90 @@ function detectSuggestedSizeForBreed(value) {
   return '';
 }
 
+var formschnittBreedHints = [
+  'yorkshire terrier','yorkie','chihuahua','zwergspitz','pomeranian','pekinese','pekingese','jack russell','rauhaardackel','dackel',
+  'cocker spaniel','cockerspaniel','zwergschnauzer','cairn terrier','cavalier king charles','west highland white terrier','westie',
+  'golden retriever','australian shepherd','border collie','samojede','collie',
+  'berner sennenhund','leonberger','neufundlander','neufundländer','landseer','grosse mischlinge','große mischlinge','mischling konturenpflege'
+];
+
+function isFormschnittBreedAllowed(value) {
+  var breed = normalizeBreedText(value);
+  if (!breed) return false;
+  for (var i = 0; i < formschnittBreedHints.length; i++) {
+    var needle = normalizeBreedText(formschnittBreedHints[i]);
+    if (needle && (breed.indexOf(needle) !== -1 || needle.indexOf(breed) !== -1)) return true;
+  }
+  return false;
+}
+
+function getFormschnittOption() {
+  var select = document.getElementById('fv-leistung');
+  if (!select) return null;
+  for (var i = 0; i < select.options.length; i++) {
+    var option = select.options[i];
+    if (option.value === 'Formschnitt' || /formschnitt/i.test(option.textContent || '')) return option;
+  }
+  return null;
+}
+
+function ensureFormschnittWarning() {
+  var select = document.getElementById('fv-leistung');
+  if (!select) return null;
+  var warning = document.getElementById('formschnittBreedWarning');
+  if (!warning) {
+    warning = document.createElement('div');
+    warning.id = 'formschnittBreedWarning';
+    warning.className = 'breed-size-warning';
+    select.insertAdjacentElement('afterend', warning);
+  }
+  return warning;
+}
+
+function updateFormschnittAvailability(showHint) {
+  var select = document.getElementById('fv-leistung');
+  var breedInput = document.getElementById('fv-rasse');
+  if (!select || !breedInput) return true;
+
+  var breed = breedInput.value || '';
+  var cleanBreed = normalizeBreedText(breed);
+  var allowed = isFormschnittBreedAllowed(breed);
+  var option = getFormschnittOption();
+  var warning = ensureFormschnittWarning();
+
+  if (option) { option.disabled = !allowed; option.hidden = !allowed; }
+
+  if (select.value === 'Formschnitt' && !allowed) {
+    select.value = cleanBreed ? 'Baden & Schnitt' : '';
+    updateFlowSizePrices();
+  }
+
+  if (warning) {
+    if (cleanBreed && !allowed && (showHint || select.value !== 'Formschnitt')) {
+      warning.innerHTML = '<strong>Formschnitt nicht passend:</strong> Für diese Rasse ist online <strong>Baden & Pflege</strong> oder <strong>Baden & Schnitt</strong> auswählbar. Wenn du unsicher bist, schick uns gern ein Foto per WhatsApp.';
+      warning.classList.add('show');
+    } else if (cleanBreed && allowed && select.value && select.value !== 'Formschnitt') {
+      warning.innerHTML = '<strong>Hinweis zur Leistung:</strong> Für diese Rasse empfehlen wir <strong>Baden & Formschnitt</strong>. Bitte prüfe kurz, ob diese Leistung besser passt. Wenn du unsicher bist, schick uns gern ein Foto per WhatsApp.';
+      warning.classList.add('show');
+    } else {
+      warning.classList.remove('show');
+      warning.innerHTML = '';
+    }
+  }
+
+  return allowed;
+}
+
+function validateFormschnittSelection() {
+  var select = document.getElementById('fv-leistung');
+  var breedInput = document.getElementById('fv-rasse');
+  if (!select || select.value !== 'Formschnitt') return true;
+  if (isFormschnittBreedAllowed(breedInput ? breedInput.value : '')) return true;
+  updateFormschnittAvailability(true);
+  alert('Baden & Formschnitt ist für diese Rasse online nicht auswählbar. Bitte wähle Baden & Schnitt oder schick uns ein Foto per WhatsApp.');
+  return false;
+}
+
 function updateBreedSizeWarning() {
   var warning = document.getElementById('breedSizeWarning');
   if (!warning) return;
@@ -1975,8 +2059,17 @@ function updateBreedSizeWarning() {
 
 var flowBreedInput = document.getElementById('fv-rasse');
 if (flowBreedInput) {
-  flowBreedInput.addEventListener('input', updateBreedSizeWarning);
-  flowBreedInput.addEventListener('change', updateBreedSizeWarning);
+  flowBreedInput.addEventListener('input', function(){ updateBreedSizeWarning(); updateFormschnittAvailability(true); });
+  flowBreedInput.addEventListener('change', function(){ updateBreedSizeWarning(); updateFormschnittAvailability(true); });
+}
+
+if (flowLeistungSelect) {
+  flowLeistungSelect.addEventListener('change', function(){
+    updateFormschnittAvailability(true);
+    updateFlowSizePrices();
+  });
+  updateFormschnittAvailability(false);
+  updateFlowSizePrices();
 }
 
 function flowGoStep(n) {
@@ -1991,6 +2084,7 @@ function flowGoStep(n) {
     if (name && !name.value.trim()) { name.style.borderColor='#c0392b'; alert('Bitte Vorname eingeben.'); return; }
     if (tel && !tel.value.trim()) { tel.style.borderColor='#c0392b'; alert('Bitte WhatsApp-Nummer eingeben.'); return; }
     if (!flowSize) { alert('Bitte Größenklasse wählen.'); return; }
+    if (!validateFormschnittSelection()) return;
     buildSummary();
   }
   [1,2,3].forEach(function(i) {
@@ -2020,7 +2114,7 @@ function resetBookingFlow() {
   });
   document.querySelectorAll('.size-btn-v2').forEach(function(btn){ btn.classList.remove('selected'); });
   updateFlowSizePrices();
-  var warning=document.getElementById('breedSizeWarning'); if(warning){ warning.classList.remove('show'); warning.innerHTML=''; }
+  var warning=document.getElementById('breedSizeWarning'); if(warning){ warning.classList.remove('show'); warning.innerHTML=''; } var fsWarning=document.getElementById('formschnittBreedWarning'); if(fsWarning){ fsWarning.classList.remove('show'); fsWarning.innerHTML=''; }
   var kn=document.getElementById('knInline'); if(kn) kn.classList.remove('show');
   var pc=document.getElementById('prepayCard'); if(pc) pc.classList.remove('show');
   var summary=document.getElementById('step3Summary'); if(summary) summary.innerHTML='';
@@ -2112,8 +2206,8 @@ function flowPrefillCustomer(data) {
   flowSetField('fv-dogname', prefill.hundename);
   flowSetField('fv-rasse', prefill.rasse);
   flowSetField('fv-notes', prefill.anmerkung);
-
-  var size = flowNormalizeSize(prefill.groesse);
+  updateFormschnittAvailability(false);
+var size = flowNormalizeSize(prefill.groesse);
   if (size) {
     var btn = document.querySelector('.size-btn-v2[data-size="' + size + '"]');
     if (btn) flowSelectSize(size, btn);
@@ -2422,6 +2516,13 @@ function transcribeStep2() {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
