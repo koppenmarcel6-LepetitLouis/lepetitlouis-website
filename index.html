@@ -1621,7 +1621,7 @@ function updatePrepay() {
   const base = prices[groesse] || null;
   document.getElementById('prepayBox').classList.add('show');
   document.getElementById('prepayAmount').innerHTML = base
-    ? `${Math.round(base*0.5)} € <small>Anzahlung (50% von ${base} €)</small>`
+    ? `${formatEuro(base * 0.5)} <small>Anzahlung (50% von ${formatEuro(base)})</small>`
     : `-- € <small>Bitte zuerst Größenklasse wählen</small>`;
 }
 
@@ -1896,6 +1896,11 @@ var servicePrices = {
   'Welpeneingewöhnung': {'s':25,'m':25,'l':25,'xl':25}
 };
 var basePrices = servicePrices['Baden & Pflegen'];
+
+function formatEuro(value) {
+  var amount = Number(value || 0);
+  return amount.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+}
 
 function getFlowPrices() {
   var leistung = document.getElementById('fv-leistung') ? document.getElementById('fv-leistung').value : '';
@@ -2313,8 +2318,8 @@ function buildSummary() {
   var pc = document.getElementById('prepayCard');
   if (flowCustomerType === 'new' && flowSize) {
     pc.classList.add('show');
-    var prepay = Math.round(getFlowPrices()[flowSize] * 0.5);
-    document.getElementById('prepayAmountFlow').innerHTML = prepay + ' € <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
+    var prepay = Number(getFlowPrices()[flowSize] || 0) * 0.5;
+    document.getElementById('prepayAmountFlow').innerHTML = formatEuro(prepay) + ' <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
   } else {
     pc.classList.remove('show');
   }
@@ -2516,6 +2521,7 @@ function transcribeStep2() {
 </script>
 </body>
 </html>
+
 
 
 
