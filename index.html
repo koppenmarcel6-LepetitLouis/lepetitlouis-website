@@ -1153,12 +1153,12 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <div class="ff"><label>Rasse</label><input type="text" id="fv-rasse" placeholder="z.B. Shih Tzu, Pudel…"></div>
               <div class="ff">
                 <label>Gewünschte Leistung</label>
-                <select id="fv-leistung">
-                  <option value="">Bitte wählen</option>
-                  <option>Baden & Pflegen</option>
-                  <option>Baden & Schnitt</option>
-                  <option>Formschnitt</option>
-                  <option>Welpeneingewöhnung</option>
+              <select id="fv-leistung" onchange="flowSelectService(this.value)">
+                <option value="">Bitte wählen</option>
+                <option value="Baden & Pflege">Baden & Pflegen</option>
+                <option value="Baden & Schnitt">Baden & Schnitt</option>
+                <option value="Baden, Pflege, Carding & Formschnitt">Formschnitt</option>
+                <option value="Welpeneingewöhnung">Welpeneingewöhnung</option>
                 </select>
               </div>
               <div class="ff">
@@ -1167,22 +1167,22 @@ footer{background:var(--brown-dark);padding:56px 0 0}
                   <button class="size-btn-v2" onclick="flowSelectSize('s',this)">
                     <span class="sbv2-letter">S</span>
                     <span class="sbv2-cm">bis 40 cm</span>
-                    <span class="sbv2-price">ab 45 €</span>
+                    <span class="sbv2-price" data-size="s">Preis nach Auswahl</span>
                   </button>
                   <button class="size-btn-v2" onclick="flowSelectSize('m',this)">
                     <span class="sbv2-letter">M</span>
                     <span class="sbv2-cm">bis 50 cm</span>
-                    <span class="sbv2-price">ab 90 €</span>
+                    <span class="sbv2-price" data-size="m">Preis nach Auswahl</span>
                   </button>
                   <button class="size-btn-v2" onclick="flowSelectSize('l',this)">
                     <span class="sbv2-letter">L</span>
                     <span class="sbv2-cm">bis 60 cm</span>
-                    <span class="sbv2-price">ab 120 €</span>
+                    <span class="sbv2-price" data-size="l">Preis nach Auswahl</span>
                   </button>
                   <button class="size-btn-v2" onclick="flowSelectSize('xl',this)">
                     <span class="sbv2-letter">XL</span>
                     <span class="sbv2-cm">bis 80 cm</span>
-                    <span class="sbv2-price">ab 150 €</span>
+                    <span class="sbv2-price" data-size="xl">Preis nach Auswahl</span>
                   </button>
                 </div>
               </div>
@@ -1241,7 +1241,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <h2 class="sec-title">Schnelle <em>Antworten</em></h2>
     <div class="faq-list">
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 24h vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Was ist die Spracheingabe beim Buchen?</span><span class="faq-icon">+</span></button><div class="faq-a">Statt Tippen einfach alles einsprechen — Name, Rasse, Leistung, Termin, Besonderheiten. Das System transkribiert die Aufnahme und füllt das Formular automatisch aus. Das Ergebnis ist <strong>identisch</strong> zur normalen Formulareingabe — inklusive Vorauszahlung bei Neukunden.</div></div>
         <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Formular ausfüllen und absenden. Anni bestätigt <strong>persönlich innerhalb von 24h via WhatsApp</strong>. Erst nach Bestätigung ist der Termin verbindlich.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Kann ich einen Termin absagen?</span><span class="faq-icon">+</span></button><div class="faq-a">Ja — bitte <strong>mindestens 24h vorher per WhatsApp</strong>. Neukunden erhalten die Anzahlung vollständig zurück. Bei kurzfristigeren Absagen behält Anni die 50% als Aufwandsentschädigung.</div></div>
     </div>
@@ -1664,7 +1663,32 @@ var zeegLinks = {
   'xl': 'https://zeeg.me/annemausolf/Termin-copy-1-copy-1-copy-1'
 };
 
-var basePrices = {'s':45,'m':90,'l':120,'xl':150};
+var servicePrices = {
+  'Baden & Pflege': {'s':45,'m':90,'l':120,'xl':150},
+  'Baden & Schnitt': {'s':85,'m':120,'l':150,'xl':180},
+  'Baden, Pflege, Carding & Formschnitt': {'s':45,'m':85,'l':120,'xl':150},
+  'Welpeneingewöhnung': {'s':25,'m':25,'l':25,'xl':25}
+};
+
+function formatPrice(value) {
+  return Number(value).toLocaleString('de-DE', {
+    minimumFractionDigits: Number(value) % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function getFlowPrice(size) {
+  var service = document.getElementById('fv-leistung');
+  var serviceName = service ? service.value : '';
+  return servicePrices[serviceName] ? servicePrices[serviceName][size] : null;
+}
+
+function flowSelectService() {
+  document.querySelectorAll('.sbv2-price[data-size]').forEach(function(label) {
+    var price = getFlowPrice(label.getAttribute('data-size'));
+    label.textContent = price == null ? 'Preis nach Auswahl' : 'ab ' + formatPrice(price) + ' €';
+  });
+}
 
 function flowGoStep(n) {
   // Validate before going forward
@@ -1675,8 +1699,10 @@ function flowGoStep(n) {
   if (n === 3) {
     var name = document.getElementById('fv-name');
     var tel = document.getElementById('fv-tel');
+    var service = document.getElementById('fv-leistung');
     if (name && !name.value.trim()) { name.style.borderColor='#c0392b'; alert('Bitte Vorname eingeben.'); return; }
     if (tel && !tel.value.trim()) { tel.style.borderColor='#c0392b'; alert('Bitte WhatsApp-Nummer eingeben.'); return; }
+    if (service && !service.value) { service.style.borderColor='#c0392b'; alert('Bitte gewünschte Leistung wählen.'); return; }
     if (!flowSize) { alert('Bitte Größenklasse wählen.'); return; }
     buildSummary();
   }
@@ -1752,15 +1778,17 @@ function buildSummary() {
   if (rasse) html += '<div class="summary-row"><span>Rasse</span><span>'+rasse+'</span></div>';
   if (flowSize) html += '<div class="summary-row"><span>Größe</span><span>'+(sizeLabel[flowSize]||flowSize)+'</span></div>';
   if (leistung) html += '<div class="summary-row"><span>Leistung</span><span>'+leistung+'</span></div>';
+  var totalPrice = flowSize ? getFlowPrice(flowSize) : null;
+  if (totalPrice != null) html += '<div class="summary-row"><span>Preis ab</span><span>'+formatPrice(totalPrice)+' €</span></div>';
   html += '<div class="summary-row"><span>Kundenstatus</span><span>'+(flowCustomerType==='existing' ? 'Bestandskunde' : 'Neukunde')+'</span></div>';
   document.getElementById('step3Summary').innerHTML = html;
 
   // Show prepay for new customers
   var pc = document.getElementById('prepayCard');
-  if (flowCustomerType === 'new' && flowSize) {
+  if (flowCustomerType === 'new' && totalPrice != null) {
     pc.classList.add('show');
-    var prepay = Math.round(basePrices[flowSize] * 0.5);
-    document.getElementById('prepayAmountFlow').innerHTML = prepay + ' € <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
+    var prepay = totalPrice * 0.5;
+    document.getElementById('prepayAmountFlow').innerHTML = formatPrice(prepay) + ' € <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
   } else {
     pc.classList.remove('show');
   }
