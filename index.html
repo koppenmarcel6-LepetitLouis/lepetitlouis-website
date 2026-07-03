@@ -483,11 +483,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .sbv2-cm{font-size:10px;color:var(--text-light);display:block;margin-top:1px}
 .sbv2-price{font-size:10px;color:var(--mocha);display:block}
 
-/* Voice toggle */
-.input-mode-toggle{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
-.imt-btn{flex:1;padding:10px;background:transparent;border:none;font-family:var(--sans);font-size:12px;font-weight:400;color:var(--text-light);cursor:pointer;transition:all 0.2s;letter-spacing:0.04em}
-.imt-btn.active{background:var(--brown);color:#fff;font-weight:500}
-
 /* Step 3 – Termin & Zahlung */
 .step3-summary{background:var(--beige-light);border-radius:8px;padding:16px;margin-bottom:20px}
 .summary-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--beige)}
@@ -1078,7 +1073,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           </div>
           <div style="display:flex;align-items:flex-start;gap:14px">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Hund & Leistung angeben</strong><br>Größe, Rasse und gewünschte Leistung — oder einfach per Sprachnachricht.</div>
+          <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Hund & Leistung angeben</strong><br>Größe, Rasse und gewünschte Leistung eintragen.</div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:14px">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
@@ -1147,13 +1142,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 
         <!-- ── STEP 2: Hund & Leistung ── -->
         <div class="flow-panel" id="flowStep2">
-          <!-- Input Mode Toggle -->
-          <div class="input-mode-toggle">
-            <button class="imt-btn active" id="imtForm" onclick="switchInputMode('form')">✏️ Formular</button>
-            <button class="imt-btn" id="imtVoice" onclick="switchInputMode('voice')">🎙️ Sprachnachricht</button>
-          </div>
-
-          <!-- FORM MODE -->
           <div id="inputForm">
             <div class="dog-form">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -1201,22 +1189,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <div class="ff"><label>Anmerkungen (optional)</label>
                 <textarea id="fv-notes" placeholder="Besonderheiten, Allergien…" style="min-height:60px;resize:vertical"></textarea>
               </div>
-            </div>
-          </div>
-
-          <!-- VOICE MODE -->
-          <div id="inputVoice" style="display:none">
-            <div style="background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.6">
-              <strong style="color:var(--brown)">Bitte nennen:</strong> Name, WhatsApp, Hundename, Rasse, Größe (S/M/L/XL), Leistung, Besonderheiten
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 0">
-              <button class="voice-rec-btn" id="vRecBtn2" onclick="toggleVoice2()" style="width:64px;height:64px;border-radius:50%;background:var(--brown);color:#fff;border:none;cursor:pointer;font-size:24px;box-shadow:0 3px 12px rgba(107,63,42,0.25)">🎙️</button>
-              <div id="vStatus2" style="font-size:13px;color:var(--text-mid)">Tippe zum Aufnehmen</div>
-              <div id="vTimer2" style="font-family:var(--serif);font-size:24px;color:var(--brown);display:none">0:00</div>
-            </div>
-            <div id="vFilledForm2" style="display:none;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px">
-              <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px;font-weight:500" id="vffTitle2">Wird ausgefüllt…</div>
-              <div id="vffFields2" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"></div>
             </div>
           </div>
 
@@ -1270,7 +1242,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <div class="faq-list">
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 24h vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Was ist die Spracheingabe beim Buchen?</span><span class="faq-icon">+</span></button><div class="faq-a">Statt Tippen einfach alles einsprechen — Name, Rasse, Leistung, Termin, Besonderheiten. Das System transkribiert die Aufnahme und füllt das Formular automatisch aus. Das Ergebnis ist <strong>identisch</strong> zur normalen Formulareingabe — inklusive Vorauszahlung bei Neukunden.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Formular ausfüllen oder Sprachnachricht aufnehmen, absenden. Anni bestätigt <strong>persönlich innerhalb von 24h via WhatsApp</strong>. Erst nach Bestätigung ist der Termin verbindlich.</div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Formular ausfüllen und absenden. Anni bestätigt <strong>persönlich innerhalb von 24h via WhatsApp</strong>. Erst nach Bestätigung ist der Termin verbindlich.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Kann ich einen Termin absagen?</span><span class="faq-icon">+</span></button><div class="faq-a">Ja — bitte <strong>mindestens 24h vorher per WhatsApp</strong>. Neukunden erhalten die Anzahlung vollständig zurück. Bei kurzfristigeren Absagen behält Anni die 50% als Aufwandsentschädigung.</div></div>
     </div>
     <div class="faq-all-link"><a href="fragen-und-antworten.html">Alle Fragen & Antworten lesen →</a></div>
@@ -1768,13 +1740,6 @@ function flowSelectSize(size, btn) {
   btn.classList.add('selected');
 }
 
-function switchInputMode(mode) {
-  document.getElementById('inputForm').style.display = mode==='form' ? 'block' : 'none';
-  document.getElementById('inputVoice').style.display = mode==='voice' ? 'block' : 'none';
-  document.getElementById('imtForm').classList.toggle('active', mode==='form');
-  document.getElementById('imtVoice').classList.toggle('active', mode==='voice');
-}
-
 function buildSummary() {
   var name = document.getElementById('fv-name') ? document.getElementById('fv-name').value : '';
   var rasse = document.getElementById('fv-rasse') ? document.getElementById('fv-rasse').value : '';
@@ -1941,57 +1906,6 @@ function initZeegEmbed(url, prefill) {
   } catch(e) {
     window.open(url, '_blank');
   }
-}
-
-// Voice for Step 2
-var vState2='idle', vInterval2, vSecs2=0, vRec2=null;
-async function toggleVoice2() {
-  var btn=document.getElementById('vRecBtn2'), status=document.getElementById('vStatus2'), timer=document.getElementById('vTimer2');
-  if (vState2==='idle') {
-    try {
-      var stream = await navigator.mediaDevices.getUserMedia({audio:true});
-      vRec2 = new MediaRecorder(stream);
-      vRec2.onstop = function() { stream.getTracks().forEach(function(t){t.stop();}); transcribeStep2(); };
-      vRec2.start(); vState2='recording'; vSecs2=0;
-      btn.style.background='#c0392b'; btn.textContent='⏹';
-      status.textContent='Aufnahme läuft…';
-      timer.style.display='block';
-      vInterval2 = setInterval(function() { vSecs2++; timer.textContent=Math.floor(vSecs2/60)+':'+String(vSecs2%60).padStart(2,'0'); if(vSecs2>=120) toggleVoice2(); }, 1000);
-    } catch(e) {
-      status.textContent='Kein Mikrofon – Demo-Modus';
-      simulateVoice2(btn, status, timer);
-    }
-  } else if (vState2==='recording') {
-    clearInterval(vInterval2); if(vRec2) vRec2.stop(); vState2='done';
-    btn.style.background='#1a7a4a'; btn.textContent='✓';
-    status.textContent='Verarbeite Aufnahme…';
-    timer.style.display='none';
-  }
-}
-
-function simulateVoice2(btn, status, timer) {
-  vState2='recording'; vSecs2=0;
-  btn.style.background='#c0392b'; btn.textContent='⏹';
-  status.textContent='Demo-Aufnahme läuft…';
-  timer.style.display='block';
-  vInterval2 = setInterval(function() { vSecs2++; timer.textContent=Math.floor(vSecs2/60)+':'+String(vSecs2%60).padStart(2,'0'); }, 1000);
-}
-
-function transcribeStep2() {
-  setTimeout(function() {
-    var box = document.getElementById('vFilledForm2');
-    var title = document.getElementById('vffTitle2');
-    var fields = document.getElementById('vffFields2');
-    box.style.display='block';
-    title.textContent='✓ Formular ausgefüllt – bitte prüfen';
-    var data = [['Name','Maria Schmidt'],['WhatsApp','0176 12345678'],['Hund','Luna'],['Rasse','Shih Tzu'],['Größe','S – bis 40 cm'],['Leistung','Vollpflege']];
-    fields.innerHTML = data.map(function(d) {
-      return '<div style="background:#fff;border:1px solid var(--border);border-radius:4px;padding:7px 10px"><div style="font-size:9px;text-transform:uppercase;color:var(--text-light);margin-bottom:2px">'+d[0]+'</div><div style="font-size:13px;color:var(--text)">'+d[1]+'</div></div>';
-    }).join('');
-    // Auto-select S size
-    flowSize = 's';
-    document.querySelectorAll('.size-btn-v2').forEach(function(b) { b.classList.remove('selected'); });
-  }, 2000);
 }
 
 </script>
