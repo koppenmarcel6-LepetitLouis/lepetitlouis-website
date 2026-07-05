@@ -82,6 +82,18 @@ nav.scrolled .nav-logo img{height:42px}
 .svc-tab{flex:1;padding:12px 8px;background:transparent;font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase;border:none;cursor:pointer;color:var(--text-light);transition:background 0.2s,color 0.2s;border-right:1px solid var(--border)}
 .svc-tab:last-child{border-right:none}
 .svc-tab.active{background:var(--brown);color:#fff;font-weight:500}
+.svc-tabs::-webkit-scrollbar{height:0}
+.svc-tabs-hint{display:none;align-items:center;justify-content:flex-end;gap:8px;margin:-20px 2px 24px;color:var(--text-light);font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
+.svc-tabs-hint span{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;border:1px solid var(--border);color:var(--brown);font-size:14px;background:rgba(255,255,255,0.55)}
+.cat-note{background:var(--beige-light);border:1px solid var(--beige);border-radius:8px;padding:16px 18px;margin:0 0 20px}
+.cat-note-title{font-size:13px;font-weight:500;color:var(--brown-dark);margin-bottom:6px}
+.cat-note p{font-size:13px;color:var(--text-mid);line-height:1.6;margin:0}
+.cat-limit-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 0;padding:0}
+.cat-limit-list li{font-size:13px;color:var(--text-mid);background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.cat-whatsapp{display:inline-flex;align-items:center;justify-content:center;margin-top:18px;background:#1f8f5f;color:#fff;text-decoration:none;border-radius:6px;padding:12px 20px;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;transition:transform 0.2s,background 0.2s}
+.cat-whatsapp:hover{background:#176d49;transform:translateY(-1px)}
+@media(max-width:900px){.svc-tabs{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;position:relative}.svc-tabs::after{content:"";flex:0 0 18px}.svc-tab{flex:0 0 auto;min-width:142px;white-space:nowrap;scroll-snap-align:start}.cat-limit-list{grid-template-columns:1fr}.svc-tabs-hint{display:flex;margin:-18px 2px 22px}.svc-tabs-hint span{animation:tabsNudge 1.5s ease-in-out infinite}}
+@keyframes tabsNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 .svc-panel{display:none}
 .svc-panel.active{display:block}
 .svc-card-big{background:#fff;border:1px solid var(--border);border-radius:8px;padding:32px;margin-bottom:16px}
@@ -152,7 +164,7 @@ nav.scrolled .nav-logo img{height:42px}
 .ref-slide-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(45,20,5,0.92));padding:40px 20px 20px;transform:translateY(8px);transition:transform 0.3s}
 .ref-slide:hover .ref-slide-info{transform:translateY(0)}
 .ref-slide-breed{font-size:15px;font-weight:500;color:#fff;margin-bottom:3px;font-family:var(--serif);font-style:italic}
-.ref-slide-service{font-size:11px;color:rgba(232,213,192,0.7);letter-spacing:0.08em;text-transform:uppercase}
+.ref-slide-service{display:none}
 .ref-slide-tag{position:absolute;top:14px;left:14px;background:rgba(250,246,240,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px}
 .ref-dots{display:flex;gap:8px;justify-content:center;margin-top:28px}
 .ref-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);border:none;cursor:pointer;padding:0;transition:background 0.2s,transform 0.2s}
@@ -482,6 +494,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .sbv2-letter{font-family:var(--serif);font-size:20px;color:var(--brown);display:block}
 .sbv2-cm{font-size:10px;color:var(--text-light);display:block;margin-top:1px}
 .sbv2-price{font-size:10px;color:var(--mocha);display:block}
+.breed-size-warning{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;border:1px solid #E8D5C0;background:#FFF8E8;color:#7A4A20;font-size:12px;line-height:1.45}
+.breed-size-warning.show{display:block}
+.breed-size-warning strong{color:var(--brown-dark)}
 
 /* Step 3 – Termin & Zahlung */
 .step3-summary{background:var(--beige-light);border-radius:8px;padding:16px;margin-bottom:20px}
@@ -631,14 +646,16 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <div style="max-width:700px;margin-bottom:48px">
       <p class="sec-label">Leistungen & Preise</p>
       <h2 class="sec-title">Professionelle Pflege —<br><em>transparent bepreist</em></h2>
-      <p class="sec-sub">Angepasst an Rasse, Fell und Bedürfnisse deines Hundes.</p>
+      <p class="sec-sub">Angepasst an Rasse, Fell und Bedürfnisse deines Hundes oder deiner Katze.</p>
     </div>
     <div class="svc-tabs">
       <button class="svc-tab active" onclick="switchSvc(this,'panel-pflege')">Baden & Pflegen</button>
       <button class="svc-tab" onclick="switchSvc(this,'panel-schnitt')">Baden & Schnitt</button>
       <button class="svc-tab" onclick="switchSvc(this,'panel-formschnitt')">Formschnitt</button>
       <button class="svc-tab" onclick="switchSvc(this,'panel-extras')">Extras</button>
+      <button class="svc-tab" onclick="switchSvc(this,'panel-katzen')">Katzenpflege</button>
     </div>
+    <div class="svc-tabs-hint">Nach rechts wischen <span>→</span></div>
     <div class="svc-panel active" id="panel-pflege">
       <div class="svc-card-big">
         <h3>Baden & Pflegen</h3>
@@ -970,6 +987,30 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         <div class="svc-extra" style="background:var(--beige-light);border-color:var(--beige)"><h3>📏 Größenklassen</h3><p><strong>S</strong> bis 40 cm · Shih Tzu, Yorkie, Malteser…<br><strong>M</strong> bis 50 cm · Cocker, Doodle (klein)…<br><strong>L</strong> bis 60 cm · Golden, Collie, Pudel (groß)…<br><strong>XL</strong> bis 80 cm · Berner, Leonberger…</p></div>
       </div>
     </div>
+    <div class="svc-panel" id="panel-katzen">
+      <div class="svc-card-big">
+        <h3>Katzenpflege</h3>
+        <p class="svc-desc">Sanfte Fellpflege für Katzen, abgestimmt auf Fellzustand, Verhalten und Pflegeaufwand. Die Preise richten sich nach Aufwand und werden nach einer kurzen Einschätzung besprochen.</p>
+        <ul class="svc-features">
+          <li>Entfilzen</li>
+          <li>Fellpflege</li>
+          <li>Intimbereichspflege</li>
+          <li>Unterwolle entfernen</li>
+        </ul>
+        <div class="cat-note">
+          <div class="cat-note-title">Wichtig für Katzen-Termine</div>
+          <p>Die Besitzer bleiben während der Behandlung dabei, damit die Katze möglichst ruhig und sicher begleitet wird. Wir bieten bei Katzen ausdrücklich keine Badeleistung an.</p>
+          <ul class="cat-limit-list">
+            <li>Keine Badeleistung für Katzen</li>
+            <li>Kein Krallenschneiden</li>
+            <li>Besitzer bleiben dabei</li>
+            <li>Preise richten sich nach Aufwand</li>
+          </ul>
+        </div>
+        <p class="svc-note">→ Katzenpflege bitte vorab per WhatsApp mit Foto und kurzer Info zum Fellzustand anfragen.</p>
+        <a class="cat-whatsapp" href="https://wa.me/4917673672723?text=Hallo%20Anni%2C%20ich%20m%C3%B6chte%20gerne%20wegen%20einer%20Katzenpflege%20anfragen.%20Ich%20schicke%20dir%20gleich%20ein%20Foto%20und%20Infos%20zum%20Fellzustand." target="_blank" rel="noopener">Katzenpflege per WhatsApp anfragen</a>
+      </div>
+    </div>
     <div style="text-align:center;margin-top:32px"><a href="#booking" class="btn-w" style="display:inline-block">Wunschleistung buchen →</a></div>
   </div>
 </div>
@@ -997,7 +1038,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Cavapoo</div>
-            <div class="ref-slide-service">Vollpflege</div>
           </div>
         </div>
         <div class="ref-slide">
@@ -1005,7 +1045,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Shih Tzu</div>
-            <div class="ref-slide-service">Baden & Formschnitt</div>
           </div>
         </div>
         <div class="ref-slide">
@@ -1013,7 +1052,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Pomeranian</div>
-            <div class="ref-slide-service">Baden & Styling</div>
           </div>
         </div>
         <div class="ref-slide">
@@ -1021,7 +1059,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Großpudel</div>
-            <div class="ref-slide-service">Vollpflege</div>
           </div>
         </div>
         <div class="ref-slide">
@@ -1029,7 +1066,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Pomeranian</div>
-            <div class="ref-slide-service">Baden & Pflegen</div>
           </div>
         </div>
         <div class="ref-slide">
@@ -1037,7 +1073,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Pomeranian</div>
-            <div class="ref-slide-service">Vollpflege</div>
           </div>
         </div>
         <div class="ref-slide">
@@ -1045,7 +1080,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           <div class="ref-slide-tag">Ergebnis</div>
           <div class="ref-slide-info">
             <div class="ref-slide-breed">Karelischer Bärenhund</div>
-            <div class="ref-slide-service">Vollpflege</div>
           </div>
         </div>
       </div>
@@ -1186,6 +1220,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
                   </button>
                 </div>
               </div>
+              <div class="breed-size-warning" id="breedSizeWarning"></div>
               <div class="ff"><label>Anmerkungen (optional)</label>
                 <textarea id="fv-notes" placeholder="Besonderheiten, Allergien…" style="min-height:60px;resize:vertical"></textarea>
               </div>
@@ -1573,9 +1608,11 @@ function submitVoice() {
 
 function fmtTime(s) { return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function toggleBreed(size) {
-  const row = document.getElementById('brow-' + size);
+  const panel = document.querySelector('.svc-panel.active');
+  const row = panel ? panel.querySelector('[id="brow-' + size + '"]') : null;
+  if (!row) return;
   const isOpen = row.classList.contains('open');
-  document.querySelectorAll('.breed-row.open').forEach(r => r.classList.remove('open'));
+  panel.querySelectorAll('.breed-row.open').forEach(r => r.classList.remove('open'));
   if (!isOpen) row.classList.add('open');
 }
 function toggleFaq(btn) {
@@ -1655,6 +1692,65 @@ var flowCustomerType = null;
 var flowSize = null;
 var flowPayMethod = null;
 var flowKnValid = false;
+
+var breedSizeHints = {
+  s: ['shih tzu','shitzu','shih-tzu','yorkshire terrier','yorkie','malteser','zwergpudel','pomeranian','zwergspitz','chihuahua','mops','havaneser','bolonka','rauhaardackel','dackel','jack russell','parson terrier'],
+  m: ['cocker spaniel','cockerspaniel','cockerpoo','doodle klein','kleiner doodle','zwergschnauzer','west highland white terrier','westie','cairn terrier','cavalier king charles','norfolk terrier','norwich terrier','havaneser gross','havaneser groß'],
+  l: ['golden retriever','grosspudel','großpudel','doodle gross','doodle groß','grosser doodle','großer doodle','labradoodle','goldendoodle','australian shepherd','border collie','bearded collie','samojede','collie'],
+  xl: ['konigspudel','königspudel','doodle xl','bobtail','berner sennenhund','leonberger','neufundlander','neufundländer','schäferhund','schaeferhund','deutscher schäferhund','german shepherd','grosse mischlinge','große mischlinge']
+};
+
+var breedSizeLabels = {
+  s: 'S - bis 40 cm',
+  m: 'M - bis 50 cm',
+  l: 'L - bis 60 cm',
+  xl: 'XL - bis 80 cm'
+};
+
+function normalizeBreedText(value) {
+  return String(value || '').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function detectSuggestedSizeForBreed(value) {
+  var breed = normalizeBreedText(value);
+  if (!breed) return '';
+
+  var order = ['s', 'm', 'l', 'xl'];
+  for (var i = 0; i < order.length; i++) {
+    var size = order[i];
+    for (var j = 0; j < breedSizeHints[size].length; j++) {
+      var knownBreed = normalizeBreedText(breedSizeHints[size][j]);
+      if (breed.indexOf(knownBreed) !== -1 || knownBreed.indexOf(breed) !== -1) {
+        return size;
+      }
+    }
+  }
+  return '';
+}
+
+function updateBreedSizeWarning() {
+  var warning = document.getElementById('breedSizeWarning');
+  var breedInput = document.getElementById('fv-rasse');
+  if (!warning || !breedInput) return;
+
+  var suggestedSize = detectSuggestedSizeForBreed(breedInput.value);
+  if (!flowSize || !suggestedSize || suggestedSize === flowSize) {
+    warning.classList.remove('show');
+    warning.innerHTML = '';
+    return;
+  }
+
+  warning.innerHTML = '<strong>Bitte Größenklasse prüfen:</strong> Für die Rasse <strong>' +
+    breedInput.value.replace(/[<>]/g, '') + '</strong> ist meist <strong>' +
+    breedSizeLabels[suggestedSize] + '</strong> passend. Du hast <strong>' +
+    breedSizeLabels[flowSize] + '</strong> gewählt. Bei Unsicherheit wähle bitte die größere Klasse.';
+  warning.classList.add('show');
+}
 
 var zeegLinks = {
   's':  'https://zeeg.me/annemausolf/Termin',
@@ -1764,6 +1860,13 @@ function flowSelectSize(size, btn) {
   flowSize = size;
   document.querySelectorAll('.size-btn-v2').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
+  updateBreedSizeWarning();
+}
+
+var flowBreedInput = document.getElementById('fv-rasse');
+if (flowBreedInput) {
+  flowBreedInput.addEventListener('input', updateBreedSizeWarning);
+  flowBreedInput.addEventListener('change', updateBreedSizeWarning);
 }
 
 function buildSummary() {
