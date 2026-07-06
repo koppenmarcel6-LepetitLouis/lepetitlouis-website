@@ -1116,7 +1116,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         </div>
         <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:13px;color:var(--text-mid);line-height:1.6">
           <strong style="color:var(--brown-dark);display:block;margin-bottom:6px">🛡️ No-Show Schutz</strong>
-          Bei Neukunden sichern wir 50% als Anzahlung. Bei Absage bis 24h vorher vollständige Rückerstattung. Bei No-Show verfällt die Anzahlung als Ausfallentschädigung.
+          Bei Neukunden sichern wir 50% als Anzahlung. Bei Absage bis 48 Stunden vorher vollständige Rückerstattung. Bei No-Show verfällt die Anzahlung als Ausfallentschädigung.
         </div>
       </div>
 
@@ -1161,8 +1161,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             <span class="kn-label">🔑 Deine Kundennummer</span>
             <div class="kn-wrap">
               <span class="kn-prefix">LPL –</span>
-              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. 047" maxlength="6"
-                oninput="flowValidateKN(this)" autocomplete="off">
+              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. MB84H" maxlength="5"
+                pattern="[A-Za-zÄÖÜäöü]{2}[0-9]{2}[A-Za-zÄÖÜäöü]"
+                oninput="flowValidateKN(this)" autocomplete="off" autocapitalize="characters" spellcheck="false">
             </div>
             <div class="kn-status" id="knStatusFlow"></div>
             <div class="kn-hint">Nummer nach erstem Besuch per WhatsApp erhalten.<br>
@@ -1238,7 +1239,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 
           <!-- No-Show Hinweis -->
           <div class="no-show-hint">
-            🛡️ <strong>Absage bis 24h vorher:</strong> kostenlos. <strong>No-Show oder kurzfristige Absage:</strong> 50% Ausfallgebühr.
+            🛡️ <strong>Absage bis 48 Stunden vorher:</strong> kostenlos. <strong>No-Show oder kurzfristige Absage:</strong> 50% Ausfallgebühr.
           </div>
 
           <!-- Neukunde: Anzahlung NACH Terminfindung -->
@@ -1275,9 +1276,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <p class="sec-label">Häufige Fragen</p>
     <h2 class="sec-title">Schnelle <em>Antworten</em></h2>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 24h vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 48 Stunden vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
         <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Formular ausfüllen und absenden. Anni bestätigt <strong>persönlich innerhalb von 24h via WhatsApp</strong>. Erst nach Bestätigung ist der Termin verbindlich.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Kann ich einen Termin absagen?</span><span class="faq-icon">+</span></button><div class="faq-a">Ja — bitte <strong>mindestens 24h vorher per WhatsApp</strong>. Neukunden erhalten die Anzahlung vollständig zurück. Bei kurzfristigeren Absagen behält Anni die 50% als Aufwandsentschädigung.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Kann ich einen Termin absagen?</span><span class="faq-icon">+</span></button><div class="faq-a">Ja — bitte <strong>mindestens 48 Stunden vorher per WhatsApp</strong>. Neukunden erhalten die Anzahlung vollständig zurück. Bei kurzfristigeren Absagen behält Anni die 50% als Aufwandsentschädigung.</div></div>
     </div>
     <div class="faq-all-link"><a href="fragen-und-antworten.html">Alle Fragen & Antworten lesen →</a></div>
   </div>
@@ -1621,14 +1622,14 @@ function toggleFaq(btn) {
   if (!isOpen) item.classList.add('open');
 }
 
-var validNumbers = ['001','002','003','047','012','023','099'];
+var customerCodePattern = /^[A-ZÄÖÜ]{2}[0-9]{2}[A-ZÄÖÜ]$/;
 
 function validateKundennummer(input) {
-  var val = input.value.replace(/[^0-9]/g,'');
+  var val = input.value.toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,5);
   input.value = val;
   var status = document.getElementById('knStatus');
   if (!status) return;
-  if (val.length < 3) {
+  if (val.length < 5) {
     status.className = 'kn-status';
     input.classList.remove('valid','invalid');
     return;
@@ -1636,7 +1637,7 @@ function validateKundennummer(input) {
   status.className = 'kn-status show';
   var prepayBox = document.getElementById('prepayBox');
   var btn = document.getElementById('formSubmit');
-  if (validNumbers.indexOf(val) !== -1) {
+  if (customerCodePattern.test(val)) {
     input.classList.add('valid'); input.classList.remove('invalid');
     status.innerHTML = '<span class="kn-ok">Kundennummer erkannt - willkommen zurueck! Keine Anzahlung.</span>';
     if(prepayBox) prepayBox.classList.remove('show');
@@ -1830,15 +1831,18 @@ function flowSelectType(type) {
   }
 }
 
-var validNumbers = ['001','002','003','047','012','023','099'];
-
 function flowValidateKN(input) {
-  var val = input.value.replace(/[^0-9]/g,'');
+  var val = input.value.toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,5);
   input.value = val;
   var status = document.getElementById('knStatusFlow');
-  if (val.length < 3) { input.classList.remove('valid','invalid'); status.className='kn-status'; return; }
+  if (val.length < 5) {
+    input.classList.remove('valid','invalid');
+    status.className='kn-status';
+    flowKnValid = false;
+    return;
+  }
   status.className = 'kn-status show';
-  if (validNumbers.indexOf(val) !== -1) {
+  if (customerCodePattern.test(val)) {
     input.classList.add('valid'); input.classList.remove('invalid');
     status.innerHTML = '<span class="kn-ok">✓ Kundennummer erkannt – willkommen zurück!</span>';
     flowKnValid = true;
@@ -1918,6 +1922,7 @@ function openZeegFinal() {
   var rasse   = (document.getElementById('fv-rasse')   || {}).value || '';
   var leistung= (document.getElementById('fv-leistung')|| {}).value || '';
   var notes   = (document.getElementById('fv-notes')   || {}).value || '';
+  var customerCode = (document.getElementById('knInputFlow') || {}).value || '';
 
   // Build the customer note shown in Zeeg's first custom field.
   var allNotes = [];
@@ -1934,6 +1939,9 @@ function openZeegFinal() {
   var sizeOptions = {'s':'S (bis40cm)','m':'M (bis 50cm)','l':'L (bis 60cm)','xl':'XL (bis 80cm)'};
   var statusNote = flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde';
   var infoText = statusNote;
+  if (flowCustomerType === 'existing' && customerCode) {
+    infoText += ' | Kundennummer: ' + customerCode;
+  }
   if (notes) infoText += ' | ' + notes;
 
   // Normalize the phone number to E.164 for Zeeg and WhatsApp.
