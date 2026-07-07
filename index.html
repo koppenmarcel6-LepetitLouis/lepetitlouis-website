@@ -1249,7 +1249,6 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             <div class="prepay-amount-big" id="prepayAmountFlow">-- €</div>
             <div class="pay-methods-v2">
               <button class="pmv2" id="pmPaypal" onclick="selectPayV2('paypal')">🅿️ PayPal</button>
-              <button class="pmv2" id="pmStripe" onclick="selectPayV2('stripe')">💳 Kreditkarte</button>
             </div>
             <div style="font-size:11px;color:var(--text-light);border-left:3px solid var(--beige);padding-left:10px">
               Zahlung wird erst nach Annis Bestätigung ausgeführt.
@@ -1903,8 +1902,8 @@ function buildSummary() {
 
 function selectPayV2(method) {
   flowPayMethod = method;
-  document.getElementById('pmPaypal').classList.toggle('selected', method==='paypal');
-  document.getElementById('pmStripe').classList.toggle('selected', method==='stripe');
+  var paypalButton = document.getElementById('pmPaypal');
+  if (paypalButton) paypalButton.classList.toggle('selected', method === 'paypal');
 }
 
 function openZeegFinal() {
