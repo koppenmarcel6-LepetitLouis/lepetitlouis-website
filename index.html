@@ -491,12 +491,23 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .size-btn-v2{border:2px solid var(--border);border-radius:8px;padding:12px 6px;cursor:pointer;text-align:center;background:var(--cream);transition:all 0.2s;font-family:var(--sans)}
 .size-btn-v2:hover{border-color:var(--brown-light);background:var(--beige-light)}
 .size-btn-v2.selected{border-color:var(--brown);background:var(--beige-light)}
+.size-btn-v2.locked{opacity:.38;cursor:not-allowed;background:#f3eee7;border-color:#e6d8cb;color:var(--text-light)}
+.size-btn-v2.locked:hover{border-color:#e6d8cb;background:#f3eee7}
+.size-btn-v2.locked .sbv2-letter,.size-btn-v2.locked .sbv2-price{color:var(--text-light)}
 .sbv2-letter{font-family:var(--serif);font-size:20px;color:var(--brown);display:block}
 .sbv2-cm{font-size:10px;color:var(--text-light);display:block;margin-top:1px}
 .sbv2-price{font-size:10px;color:var(--mocha);display:block}
 .breed-size-warning{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;border:1px solid #E8D5C0;background:#FFF8E8;color:#7A4A20;font-size:12px;line-height:1.45}
 .breed-size-warning.show{display:block}
 .breed-size-warning strong{color:var(--brown-dark)}
+.reference-upload-box{border:1px dashed var(--beige);border-radius:8px;background:var(--cream);padding:14px;display:flex;flex-direction:column;gap:10px}
+.reference-upload-box input[type=file]{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px;font-size:13px;color:var(--text-mid)}
+.reference-upload-hint{font-size:11px;color:var(--text-light);line-height:1.5}
+.reference-upload-preview{display:none;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px}
+.reference-upload-preview.show{display:flex}
+.reference-upload-preview img{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--beige)}
+.reference-upload-name{font-size:12px;color:var(--text);font-weight:500;line-height:1.4}
+.reference-upload-status{font-size:11px;color:var(--text-light);line-height:1.4}
 
 /* Step 3 – Termin & Zahlung */
 .step3-summary{background:var(--beige-light);border-radius:8px;padding:16px;margin-bottom:20px}
@@ -1187,6 +1198,20 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <div class="ff"><label>Hundename</label><input type="text" id="fv-dogname" placeholder="z.B. Luna, Max…"></div>
               <div class="ff"><label>Rasse</label><input type="text" id="fv-rasse" placeholder="z.B. Shih Tzu, Pudel…"></div>
               <div class="ff">
+                <label>Referenzbild deines Hundes</label>
+                <div class="reference-upload-box">
+                  <input type="file" id="fv-reference-image" accept="image/*" onchange="handleReferenceImage(this)">
+                  <div class="reference-upload-hint">Bitte lade ein aktuelles Bild deines Hundes hoch. Das hilft uns, Fellzustand und Schnittwunsch besser einzuschätzen.</div>
+                  <div class="reference-upload-preview" id="referenceImagePreview">
+                    <img id="referenceImagePreviewImg" alt="Referenzbild Vorschau">
+                    <div>
+                      <div class="reference-upload-name" id="referenceImageName"></div>
+                      <div class="reference-upload-status" id="referenceImageStatus">Bild ausgewählt</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ff">
                 <label>Gewünschte Leistung</label>
               <select id="fv-leistung" onchange="flowSelectService(this.value)">
                 <option value="">Bitte wählen</option>
@@ -1199,22 +1224,22 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <div class="ff">
                 <label>Größenklasse deines Hundes</label>
                 <div class="size-grid-v2">
-                  <button class="size-btn-v2" onclick="flowSelectSize('s',this)">
+                  <button class="size-btn-v2" data-flow-size="s" onclick="flowSelectSize('s',this)">
                     <span class="sbv2-letter">S</span>
                     <span class="sbv2-cm">bis 40 cm</span>
                     <span class="sbv2-price" data-size="s">Preis nach Auswahl</span>
                   </button>
-                  <button class="size-btn-v2" onclick="flowSelectSize('m',this)">
+                  <button class="size-btn-v2" data-flow-size="m" onclick="flowSelectSize('m',this)">
                     <span class="sbv2-letter">M</span>
                     <span class="sbv2-cm">bis 50 cm</span>
                     <span class="sbv2-price" data-size="m">Preis nach Auswahl</span>
                   </button>
-                  <button class="size-btn-v2" onclick="flowSelectSize('l',this)">
+                  <button class="size-btn-v2" data-flow-size="l" onclick="flowSelectSize('l',this)">
                     <span class="sbv2-letter">L</span>
                     <span class="sbv2-cm">bis 60 cm</span>
                     <span class="sbv2-price" data-size="l">Preis nach Auswahl</span>
                   </button>
-                  <button class="size-btn-v2" onclick="flowSelectSize('xl',this)">
+                  <button class="size-btn-v2" data-flow-size="xl" onclick="flowSelectSize('xl',this)">
                     <span class="sbv2-letter">XL</span>
                     <span class="sbv2-cm">bis 80 cm</span>
                     <span class="sbv2-price" data-size="xl">Preis nach Auswahl</span>
@@ -1692,6 +1717,10 @@ var flowCustomerType = null;
 var flowSize = null;
 var flowPayMethod = null;
 var flowKnValid = false;
+var referenceImageFile = null;
+var referenceImageRequestId = '';
+var referenceImageUploaded = false;
+var referenceImageWebhookUrl = 'https://hook.eu1.make.com/rywitst0islpu9qa0rq3z4ygi8h2phus';
 
 var breedSizeHints = {
   s: ['shih tzu','shitzu','shih-tzu','yorkshire terrier','yorkie','malteser','zwergpudel','pomeranian','zwergspitz','chihuahua','mops','havaneser','bolonka','rauhaardackel','dackel','jack russell','parson terrier'],
@@ -1766,6 +1795,39 @@ var servicePrices = {
   'Welpeneingewöhnung': {'s':25,'m':25,'l':25,'xl':25}
 };
 
+function updateBreedSizeWarning() {
+  var warning = document.getElementById('breedSizeWarning');
+  var breedInput = document.getElementById('fv-rasse');
+  if (!warning || !breedInput) return;
+
+  var suggestedSize = detectSuggestedSizeForBreed(breedInput.value);
+  var buttons = document.querySelectorAll('.size-btn-v2[data-flow-size]');
+
+  if (!suggestedSize) {
+    buttons.forEach(function(button) {
+      button.disabled = false;
+      button.classList.remove('locked');
+    });
+    warning.classList.remove('show');
+    warning.innerHTML = '';
+    return;
+  }
+
+  flowSize = suggestedSize;
+  buttons.forEach(function(button) {
+    var buttonSize = button.getAttribute('data-flow-size');
+    var isAllowed = buttonSize === suggestedSize;
+    button.disabled = !isAllowed;
+    button.classList.toggle('locked', !isAllowed);
+    button.classList.toggle('selected', isAllowed);
+  });
+
+  warning.innerHTML = '<strong>Groesse automatisch gesetzt:</strong> Fuer die Rasse <strong>' +
+    breedInput.value.replace(/[<>]/g, '') + '</strong> ist <strong>' +
+    breedSizeLabels[suggestedSize] + '</strong> hinterlegt. Andere Groessen sind gesperrt, damit keine Fehlbuchung entsteht.';
+  warning.classList.add('show');
+}
+
 function formatPrice(value) {
   return Number(value).toLocaleString('de-DE', {
     minimumFractionDigits: Number(value) % 1 === 0 ? 0 : 2,
@@ -1786,7 +1848,110 @@ function flowSelectService() {
   });
 }
 
-function flowGoStep(n) {
+function getOrCreateReferenceImageRequestId() {
+  if (!referenceImageRequestId) {
+    referenceImageRequestId = 'ref-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+  }
+  return referenceImageRequestId;
+}
+
+function setReferenceImageStatus(text) {
+  var status = document.getElementById('referenceImageStatus');
+  if (status) status.textContent = text;
+}
+
+function handleReferenceImage(input) {
+  var file = input && input.files ? input.files[0] : null;
+  var preview = document.getElementById('referenceImagePreview');
+  var previewImg = document.getElementById('referenceImagePreviewImg');
+  var imageName = document.getElementById('referenceImageName');
+
+  referenceImageFile = null;
+  referenceImageUploaded = false;
+  referenceImageRequestId = '';
+
+  if (!file) {
+    if (preview) preview.classList.remove('show');
+    return;
+  }
+
+  if (!/^image\//i.test(file.type)) {
+    input.value = '';
+    alert('Bitte lade eine Bilddatei hoch.');
+    if (preview) preview.classList.remove('show');
+    return;
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    input.value = '';
+    alert('Das Bild ist zu gross. Bitte lade ein Bild bis maximal 8 MB hoch.');
+    if (preview) preview.classList.remove('show');
+    return;
+  }
+
+  referenceImageFile = file;
+  getOrCreateReferenceImageRequestId();
+
+  if (imageName) imageName.textContent = file.name;
+  setReferenceImageStatus('Bild ausgewaehlt');
+
+  var reader = new FileReader();
+  reader.onload = function(event) {
+    if (previewImg) previewImg.src = event.target.result;
+    if (preview) preview.classList.add('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadReferenceImageToMake() {
+  if (referenceImageUploaded) return true;
+  if (!referenceImageFile) {
+    return true;
+  }
+
+  if (!referenceImageWebhookUrl || referenceImageWebhookUrl.indexOf('https://hook.') !== 0) {
+    alert('Der Make-Webhook fuer den Referenzbild-Upload ist noch nicht in der Website hinterlegt.');
+    return false;
+  }
+
+  var formData = new FormData();
+  var requestId = getOrCreateReferenceImageRequestId();
+  var name = (document.getElementById('fv-name') || {}).value || '';
+  var email = (document.getElementById('fv-email') || {}).value || '';
+  var tel = (document.getElementById('fv-tel') || {}).value || '';
+  var dog = (document.getElementById('fv-dogname') || {}).value || '';
+  var rasse = (document.getElementById('fv-rasse') || {}).value || '';
+  var leistung = (document.getElementById('fv-leistung') || {}).value || '';
+
+  formData.append('requestId', requestId);
+  formData.append('name', name);
+  formData.append('email', email);
+  formData.append('phone', tel);
+  formData.append('dogName', dog);
+  formData.append('breed', rasse);
+  formData.append('size', flowSize || '');
+  formData.append('service', leistung);
+  formData.append('customerType', flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde');
+  formData.append('referenceImage', referenceImageFile, referenceImageFile.name);
+
+  try {
+    setReferenceImageStatus('Bild wird hochgeladen...');
+    await fetch(referenceImageWebhookUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    });
+    referenceImageUploaded = true;
+    setReferenceImageStatus('Bild wurde fuer die Anfrage vorbereitet');
+    return true;
+  } catch (error) {
+    setReferenceImageStatus('Upload fehlgeschlagen');
+    alert('Das Referenzbild konnte nicht hochgeladen werden. Bitte versuche es erneut.');
+    return false;
+  }
+}
+
+async function flowGoStep(n) {
   // Validate before going forward
   if (n === 2) {
     if (!flowCustomerType) { alert('Bitte wähle ob du Bestands- oder Neukunde bist.'); return; }
@@ -1800,6 +1965,15 @@ function flowGoStep(n) {
     if (tel && !tel.value.trim()) { tel.style.borderColor='#c0392b'; alert('Bitte WhatsApp-Nummer eingeben.'); return; }
     if (service && !service.value) { service.style.borderColor='#c0392b'; alert('Bitte gewünschte Leistung wählen.'); return; }
     if (!flowSize) { alert('Bitte Größenklasse wählen.'); return; }
+    var breedInput = document.getElementById('fv-rasse');
+    var suggestedSize = breedInput ? detectSuggestedSizeForBreed(breedInput.value) : '';
+    if (suggestedSize && flowSize !== suggestedSize) {
+      updateBreedSizeWarning();
+      alert('Die Groessenklasse wurde automatisch passend zur Rasse gesetzt. Bitte nutze die hinterlegte Kategorie.');
+      return;
+    }
+    var referenceUploaded = await uploadReferenceImageToMake();
+    if (!referenceUploaded) return;
     buildSummary();
   }
   [1,2,3].forEach(function(i) {
@@ -1860,6 +2034,14 @@ function flowSkipKN() {
 }
 
 function flowSelectSize(size, btn) {
+  if (btn && btn.disabled) return;
+  var breedInput = document.getElementById('fv-rasse');
+  var suggestedSize = breedInput ? detectSuggestedSizeForBreed(breedInput.value) : '';
+  if (suggestedSize && size !== suggestedSize) {
+    updateBreedSizeWarning();
+    alert('Diese Groessenklasse passt nicht zur ausgewaehlten Rasse und ist deshalb gesperrt.');
+    return;
+  }
   flowSize = size;
   document.querySelectorAll('.size-btn-v2').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
@@ -1883,6 +2065,7 @@ function buildSummary() {
   if (dogname) html += '<div class="summary-row"><span>Hund</span><span>'+dogname+'</span></div>';
   if (rasse) html += '<div class="summary-row"><span>Rasse</span><span>'+rasse+'</span></div>';
   if (flowSize) html += '<div class="summary-row"><span>Größe</span><span>'+(sizeLabel[flowSize]||flowSize)+'</span></div>';
+  if (referenceImageRequestId) html += '<div class="summary-row"><span>Referenzbild</span><span>hochgeladen</span></div>';
   if (leistung) html += '<div class="summary-row"><span>Leistung</span><span>'+leistung+'</span></div>';
   var totalPrice = flowSize ? getFlowPrice(flowSize) : null;
   if (totalPrice != null) html += '<div class="summary-row"><span>Preis ab</span><span>'+formatPrice(totalPrice)+' €</span></div>';
@@ -1930,6 +2113,7 @@ function openZeegFinal() {
   if (leistung) allNotes.push('Leistung: ' + leistung);
   if (flowCustomerType === 'existing') allNotes.push('Bestandskunde');
   else allNotes.push('Neukunde');
+  if (referenceImageRequestId) allNotes.push('Referenzbild-ID: ' + referenceImageRequestId);
   if (notes)    allNotes.push(notes);
 
   // Website booking field order in Zeeg:
@@ -1941,6 +2125,7 @@ function openZeegFinal() {
   if (flowCustomerType === 'existing' && customerCode) {
     infoText += ' | Kundennummer: ' + customerCode;
   }
+  if (referenceImageRequestId) infoText += ' | Referenzbild-ID: ' + referenceImageRequestId;
   if (notes) infoText += ' | ' + notes;
 
   // Normalize the phone number to E.164 for Zeeg and WhatsApp.
