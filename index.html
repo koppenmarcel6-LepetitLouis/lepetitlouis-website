@@ -1721,6 +1721,10 @@ var referenceImageFile = null;
 var referenceImageRequestId = '';
 var referenceImageUploaded = false;
 var referenceImageWebhookUrl = 'https://hook.eu1.make.com/rywitst0islpu9qa0rq3z4ygi8h2phus';
+var customerLookupWebhookUrl = 'https://hook.eu1.make.com/9fapeyv3p3sege5bgg4ainbshn7fpdmq';
+var flowKnownCustomerData = null;
+var flowKnLookupTimer = null;
+var flowKnLookupToken = 0;
 
 var breedSizeHints = {
   s: ['shih tzu','shitzu','shih-tzu','yorkshire terrier','yorkie','malteser','zwergpudel','pomeranian','zwergspitz','chihuahua','mops','havaneser','bolonka','rauhaardackel','dackel','jack russell','parson terrier'],
@@ -2001,7 +2005,97 @@ function flowSelectType(type) {
   } else {
     kn.classList.remove('show');
     flowKnValid = false;
+    flowKnownCustomerData = null;
   }
+}
+
+function setFlowInputValue(id, value) {
+  var field = document.getElementById(id);
+  if (field && value) {
+    field.value = value;
+    field.dispatchEvent(new Event('input', { bubbles: true }));
+    field.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
+function normalizeCustomerSize(value) {
+  var raw = String(value || '').toLowerCase();
+  if (raw.indexOf('xl') !== -1 || raw.indexOf('80') !== -1) return 'xl';
+  if (raw.indexOf('l') !== -1 || raw.indexOf('60') !== -1) return 'l';
+  if (raw.indexOf('m') !== -1 || raw.indexOf('50') !== -1) return 'm';
+  if (raw.indexOf('s') !== -1 || raw.indexOf('40') !== -1) return 's';
+  return '';
+}
+
+function applyKnownCustomerData(data) {
+  if (!data || data.gefunden !== true) return;
+
+  setFlowInputValue('fv-name', data.name || '');
+  setFlowInputValue('fv-email', data.email || '');
+  setFlowInputValue('fv-tel', data.telefon || data.phone || '');
+  setFlowInputValue('fv-dogname', data.hundename || data.dogName || '');
+  setFlowInputValue('fv-rasse', data.rasse || data.breed || '');
+
+  var knownSize = normalizeCustomerSize(data.groesse || data.size || '');
+  if (knownSize) {
+    var sizeButton = document.querySelector('.size-btn-v2[data-flow-size="' + knownSize + '"]');
+    if (sizeButton) flowSelectSize(knownSize, sizeButton);
+  }
+}
+
+function markCustomerLookupFailed(input, status, message) {
+  input.classList.add('invalid');
+  input.classList.remove('valid');
+  status.innerHTML = '<span class="kn-err">' + message + '</span>';
+  flowKnValid = false;
+  flowKnownCustomerData = null;
+}
+
+function requestCustomerLookup(code, input, status) {
+  flowKnLookupToken += 1;
+  var token = flowKnLookupToken;
+
+  status.innerHTML = '<span class="kn-ok">Kundennummer wird geprueft...</span>';
+  flowKnValid = false;
+  flowKnownCustomerData = null;
+
+  var controller = new AbortController();
+  var timeout = setTimeout(function() { controller.abort(); }, 8000);
+  var url = customerLookupWebhookUrl + '?kundencode=' + encodeURIComponent(code);
+
+  fetch(url, {
+    method: 'GET',
+    cache: 'no-store',
+    signal: controller.signal
+  })
+    .then(function(response) { return response.text(); })
+    .then(function(text) {
+      clearTimeout(timeout);
+      if (token !== flowKnLookupToken) return;
+
+      var data = {};
+      try {
+        data = JSON.parse(text || '{}');
+      } catch (error) {
+        throw new Error('ungueltige Antwort');
+      }
+
+      if (data.gefunden === true) {
+        input.classList.add('valid');
+        input.classList.remove('invalid');
+        flowKnValid = true;
+        flowKnownCustomerData = data;
+        applyKnownCustomerData(data);
+        status.innerHTML = '<span class="kn-ok">Kundennummer erkannt - willkommen zurueck' + (data.name ? ', ' + data.name : '') + '!</span>';
+      } else {
+        markCustomerLookupFailed(input, status, 'Nummer nicht gefunden. Bitte pruefen.');
+      }
+    })
+    .catch(function() {
+      clearTimeout(timeout);
+      if (token !== flowKnLookupToken) return;
+      markCustomerLookupFailed(input, status, 'Nummer konnte nicht geprueft werden. Bitte kurz erneut versuchen.');
+    });
 }
 
 function flowValidateKN(input) {
@@ -2012,17 +2106,22 @@ function flowValidateKN(input) {
     input.classList.remove('valid','invalid');
     status.className='kn-status';
     flowKnValid = false;
+    flowKnownCustomerData = null;
+    if (flowKnLookupTimer) clearTimeout(flowKnLookupTimer);
     return;
   }
   status.className = 'kn-status show';
   if (customerCodePattern.test(val)) {
-    input.classList.add('valid'); input.classList.remove('invalid');
-    status.innerHTML = '<span class="kn-ok">✓ Kundennummer erkannt – willkommen zurück!</span>';
-    flowKnValid = true;
+    input.classList.remove('valid','invalid');
+    if (flowKnLookupTimer) clearTimeout(flowKnLookupTimer);
+    flowKnLookupTimer = setTimeout(function() {
+      requestCustomerLookup(val, input, status);
+    }, 350);
   } else {
     input.classList.add('invalid'); input.classList.remove('valid');
     status.innerHTML = '<span class="kn-err">✗ Nummer nicht gefunden.</span>';
     flowKnValid = false;
+    flowKnownCustomerData = null;
   }
 }
 
@@ -2031,6 +2130,8 @@ function flowSkipKN() {
   document.getElementById('cardExisting').classList.remove('selected');
   document.getElementById('cardNew').classList.add('selected');
   document.getElementById('knInline').classList.remove('show');
+  flowKnValid = false;
+  flowKnownCustomerData = null;
 }
 
 function flowSelectSize(size, btn) {
