@@ -1172,8 +1172,8 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             <span class="kn-label">🔑 Deine Kundennummer</span>
             <div class="kn-wrap">
               <span class="kn-prefix">LPL –</span>
-              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. XX00X" maxlength="5"
-                pattern="[A-Za-zÄÖÜäöü]{2}[0-9]{2}[A-Za-zÄÖÜäöü]"
+              <input type="text" class="kn-input" id="knInputFlow" placeholder="z.B. XX00X oder XX000X" maxlength="6"
+                pattern="[A-Za-zÄÖÜäöü]{2}[0-9]{2,3}[A-Za-zÄÖÜäöü]"
                 oninput="flowValidateKN(this)" autocomplete="off" autocapitalize="characters" spellcheck="false">
             </div>
             <div class="kn-status" id="knStatusFlow"></div>
@@ -1646,10 +1646,10 @@ function toggleFaq(btn) {
   if (!isOpen) item.classList.add('open');
 }
 
-var customerCodePattern = /^[A-ZÄÖÜ]{2}[0-9]{2}[A-ZÄÖÜ]$/;
+var customerCodePattern = /^[A-ZÄÖÜ]{2}[0-9]{2,3}[A-ZÄÖÜ]$/;
 
 function validateKundennummer(input) {
-  var val = input.value.toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,5);
+  var val = input.value.toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,6);
   input.value = val;
   var status = document.getElementById('knStatus');
   if (!status) return;
@@ -2054,6 +2054,7 @@ function markCustomerLookupFailed(input, status, message) {
 function requestCustomerLookup(code, input, status) {
   flowKnLookupToken += 1;
   var token = flowKnLookupToken;
+  var lookupCode = code.indexOf('LPL-') === 0 ? code : 'LPL-' + code;
 
   status.innerHTML = '<span class="kn-ok">Kundennummer wird geprueft...</span>';
   flowKnValid = false;
@@ -2061,7 +2062,7 @@ function requestCustomerLookup(code, input, status) {
 
   var controller = new AbortController();
   var timeout = setTimeout(function() { controller.abort(); }, 8000);
-  var url = customerLookupWebhookUrl + '?kundencode=' + encodeURIComponent(code);
+  var url = customerLookupWebhookUrl + '?kundencode=' + encodeURIComponent(lookupCode);
 
   fetch(url, {
     method: 'GET',
@@ -2099,7 +2100,7 @@ function requestCustomerLookup(code, input, status) {
 }
 
 function flowValidateKN(input) {
-  var val = input.value.toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,5);
+  var val = input.value.toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,6);
   input.value = val;
   var status = document.getElementById('knStatusFlow');
   if (val.length < 5) {
@@ -2205,7 +2206,8 @@ function openZeegFinal() {
   var rasse   = (document.getElementById('fv-rasse')   || {}).value || '';
   var leistung= (document.getElementById('fv-leistung')|| {}).value || '';
   var notes   = (document.getElementById('fv-notes')   || {}).value || '';
-  var customerCode = (document.getElementById('knInputFlow') || {}).value || '';
+  var customerCode = ((document.getElementById('knInputFlow') || {}).value || '').toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,6);
+  var fullCustomerCode = customerCode ? 'LPL-' + customerCode : '';
 
   // Build the customer note shown in Zeeg's first custom field.
   var allNotes = [];
@@ -2223,8 +2225,8 @@ function openZeegFinal() {
   var sizeOptions = {'s':'S (bis40cm)','m':'M (bis 50cm)','l':'L (bis 60cm)','xl':'XL (bis 80cm)'};
   var statusNote = flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde';
   var infoText = statusNote;
-  if (flowCustomerType === 'existing' && customerCode) {
-    infoText += ' | Kundennummer: ' + customerCode;
+  if (flowCustomerType === 'existing' && fullCustomerCode) {
+    infoText += ' | Kundennummer: ' + fullCustomerCode;
   }
   if (referenceImageRequestId) infoText += ' | Referenzbild-ID: ' + referenceImageRequestId;
   if (notes) infoText += ' | ' + notes;
