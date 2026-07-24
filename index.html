@@ -2357,20 +2357,30 @@ function openZeegFinal() {
     telFormatted = '+49' + telFormatted.substring(4);
   }
 
+  var zeegAnswers = flowAnimalType === 'cat'
+    ? {
+        a1: infoText,
+        a2: 'Einwilligung erteilen',
+        a3: dog,
+        a4: rasse,
+        a5: telFormatted
+      }
+    : {
+        a1: infoText,
+        a2: 'Einwilligung erteilen',
+        a3: dog,
+        a4: rasse,
+        a5: sizeOptions[flowSize] || '',
+        a6: leistung,
+        a7: telFormatted
+      };
+
   showZeegModal(link, {
     name: name,
     email: email,
     phone: telFormatted,
     phoneNumber: telFormatted,
-    answers: {
-      a1: infoText,
-      a2: 'Einwilligung erteilen',
-      a3: dog,
-      a4: rasse,
-      a5: flowAnimalType === 'cat' ? '' : (sizeOptions[flowSize] || ''),
-      a6: leistung,
-      a7: telFormatted
-    }
+    answers: zeegAnswers
   });
 }
 
