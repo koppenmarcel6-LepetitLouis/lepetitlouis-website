@@ -1003,7 +1003,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
       <div class="svc-extra-cards">
         <div class="svc-extra"><h3>🌊 Thalasso-Pflegebad</h3><p>20-minütige Massage mit mineralstoffreichem Thalasso-Schlamm. Beruhigt Haut & Fell, unterstützt Unterwollentfernung.</p><div class="price-tag">ab 25 € <small>Aufschlag zur Behandlung</small></div></div>
         <div class="svc-extra"><h3>🦷 Ultraschall-Zahnpflege</h3><p>Mit emmi®-pet — geräusch- und vibrationslos. Reduziert Zahnbelag & beugt Mundgeruch vor.</p><div class="price-tag">25 € <small>/ Behandlung (~20 Min.)</small></div><div style="font-size:12px;color:var(--mocha);margin-top:6px">20% Rabatt bei Kombination</div></div>
-        <div class="svc-extra"><h3>🐶 Welpeneingewöhnung</h3><p>30-minütige stressfreie Eingewöhnung + ausführliche Beratung. Für einen entspannten ersten Salonbesuch.</p><div class="price-tag">ab 25 € <small>/ Eingewöhnung</small></div></div>
+        <div class="svc-extra"><h3>🐶 Welpeneingewöhnung</h3><p>60-minütige stressfreie Eingewöhnung + ausführliche Beratung. Für einen entspannten ersten Salonbesuch.</p><div class="price-tag">ab 25 € <small>/ Eingewöhnung</small></div></div>
         <div class="svc-extra" style="background:var(--beige-light);border-color:var(--beige)"><h3>📏 Größenklassen</h3><p><strong>S</strong> bis 40 cm · Shih Tzu, Yorkie, Malteser…<br><strong>M</strong> bis 50 cm · Cocker, Doodle (klein)…<br><strong>L</strong> bis 60 cm · Golden, Collie, Pudel (groß)…<br><strong>XL</strong> bis 80 cm · Berner, Leonberger…</p></div>
       </div>
     </div>
@@ -1817,7 +1817,8 @@ var zeegLinks = {
   'm':  'https://zeeg.me/annemausolf/Termin-copy-1',
   'l':  'https://zeeg.me/annemausolf/Termin-copy-1-copy-1',
   'xl': 'https://zeeg.me/annemausolf/Termin-copy-1-copy-1-copy-1',
-  'cat': 'https://zeeg.me/annemausolf/katzentermin'
+  'cat': 'https://zeeg.me/annemausolf/katzentermin',
+  'puppy': 'https://zeeg.me/annemausolf/welpeneingewohnung'
 };
 
 var servicePrices = {
@@ -2308,9 +2309,6 @@ function openZeegFinal() {
   }
   if (flowCustomerType === 'new' && !flowPayMethod) { alert('Bitte Zahlungsmethode wählen.'); return; }
 
-  var link = flowAnimalType === 'cat' ? zeegLinks.cat : zeegLinks[flowSize];
-  if (!link) return;
-
   // Collect all customer data
   var name    = (document.getElementById('fv-name')    || {}).value || '';
   var email   = (document.getElementById('fv-email')   || {}).value || '';
@@ -2320,6 +2318,12 @@ function openZeegFinal() {
   var leistung= flowAnimalType === 'cat'
     ? 'Katzenpflege'
     : ((document.getElementById('fv-leistung')|| {}).value || '');
+  var link = flowAnimalType === 'cat'
+    ? zeegLinks.cat
+    : leistung === 'Welpeneingewöhnung'
+      ? zeegLinks.puppy
+      : zeegLinks[flowSize];
+  if (!link) return;
   var notes   = (document.getElementById('fv-notes')   || {}).value || '';
   var customerCode = ((document.getElementById('knInputFlow') || {}).value || '').toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,6);
   var fullCustomerCode = customerCode ? 'LPL-' + customerCode : '';
@@ -2365,6 +2369,16 @@ function openZeegFinal() {
         a4: rasse,
         a5: tel.trim()
       }
+    : leistung === 'Welpeneingewöhnung'
+      ? {
+          a1: infoText,
+          a2: 'Einwilligung erteilen',
+          a3: dog,
+          a4: rasse,
+          a5: telFormatted,
+          a6: sizeOptions[flowSize] || '',
+          a7: leistung
+        }
     : {
         a1: infoText,
         a2: 'Einwilligung erteilen',
