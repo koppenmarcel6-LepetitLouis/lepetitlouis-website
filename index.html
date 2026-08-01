@@ -1957,6 +1957,15 @@ function getFlowPrice(size) {
   if (flowAnimalType === 'cat') return 45;
   var service = document.getElementById('fv-leistung');
   var serviceName = service ? service.value : '';
+  var breedInput = document.getElementById('fv-rasse');
+  var normalizedBreed = normalizeBreedText(breedInput ? breedInput.value : '');
+  if (
+    normalizedBreed === 'pomeranian' &&
+    size === 's' &&
+    serviceName === 'Baden, Pflege, Carding & Formschnitt'
+  ) {
+    return 85;
+  }
   return servicePrices[serviceName] ? servicePrices[serviceName][size] : null;
 }
 
@@ -2289,8 +2298,14 @@ function flowSelectSize(size, btn) {
 
 var flowBreedInput = document.getElementById('fv-rasse');
 if (flowBreedInput) {
-  flowBreedInput.addEventListener('input', updateBreedSizeWarning);
-  flowBreedInput.addEventListener('change', updateBreedSizeWarning);
+  flowBreedInput.addEventListener('input', function() {
+    updateBreedSizeWarning();
+    flowSelectService();
+  });
+  flowBreedInput.addEventListener('change', function() {
+    updateBreedSizeWarning();
+    flowSelectService();
+  });
 }
 
 function buildSummary() {
@@ -2373,6 +2388,13 @@ function openZeegFinal() {
   // a1 = info, a2 = dog name, a3 = breed,
   // a4 = size, a5 = service, a6 = phone
   var sizeOptions = {'s':'S (bis40cm)','m':'M (bis 50cm)','l':'L (bis 60cm)','xl':'XL (bis 80cm)'};
+  var zeegServiceOptions = {
+    'Baden & Pflege': 'Baden & Pflegen',
+    'Baden & Schnitt': 'Baden & Schnitt',
+    'Baden, Pflege, Carding & Formschnitt': 'Formschnitt',
+    'Welpeneingewöhnung': 'Welpeneingewöhnung'
+  };
+  var zeegService = zeegServiceOptions[leistung] || leistung;
   var statusNote = (flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde') +
     ' | Tierart: ' + (flowAnimalType === 'cat' ? 'Katze' : 'Hund');
   var infoText = statusNote;
@@ -2407,7 +2429,7 @@ function openZeegFinal() {
           a4: rasse,
           a5: telFormatted,
           a6: sizeOptions[flowSize] || '',
-          a7: leistung
+          a7: zeegService
         }
     : {
         a1: infoText,
@@ -2415,7 +2437,7 @@ function openZeegFinal() {
         a3: dog,
         a4: rasse,
         a5: sizeOptions[flowSize] || '',
-        a6: leistung,
+        a6: zeegService,
         a7: telFormatted
       };
 
