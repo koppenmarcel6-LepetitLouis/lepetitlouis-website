@@ -524,12 +524,23 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .summary-row:last-child{border-bottom:none}
 .summary-row span:first-child{color:var(--text-light)}
 .summary-row span:last-child{color:var(--text);font-weight:500}
-.prepay-card{background:linear-gradient(135deg,#FDF6EE,#F5E9D8);border:1px solid var(--beige);border-radius:8px;padding:18px;margin-bottom:16px;display:none}
+.prepay-card{background:linear-gradient(145deg,#FFFDFC 0%,#F8EDE7 100%);border:1px solid #DFC7B8;border-radius:12px;padding:18px;margin-bottom:16px;display:none;box-shadow:0 8px 24px rgba(107,63,42,.07)}
 .prepay-card.show{display:block}
-.prepay-amount-big{font-family:var(--serif);font-size:28px;color:var(--brown);margin:8px 0}
-.pay-methods-v2{display:flex;gap:10px;margin:12px 0}
-.pmv2{flex:1;padding:12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-mid);text-align:center;transition:all 0.2s}
-.pmv2:hover,.pmv2.selected{border-color:var(--brown);color:var(--brown)}
+.prepay-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.prepay-kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mocha);font-weight:600;margin-bottom:5px}
+.prepay-title{font-family:var(--serif);font-size:19px;color:var(--brown-dark);line-height:1.25}
+.stripe-badge{flex:0 0 auto;background:#635bff;color:#fff;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.prepay-amount-wrap{display:flex;align-items:baseline;gap:8px;padding:13px 0;border-top:1px solid rgba(164,123,93,.22);border-bottom:1px solid rgba(164,123,93,.22)}
+.prepay-amount-big{font-family:var(--serif);font-size:30px;color:var(--brown);margin:0}
+.prepay-amount-label{font-size:12px;color:var(--text-light)}
+.stripe-payment-box{background:#fff;border:1px solid var(--border);border-radius:9px;padding:14px;margin:14px 0 12px}
+.stripe-payment-label{font-size:11px;color:var(--text-light);margin-bottom:10px}
+.stripe-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stripe-method{min-height:42px;border:1px solid #E5D8CF;border-radius:7px;background:#FFFCFA;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 6px;color:var(--brown-dark);font-size:12px;font-weight:600;text-align:center}
+.stripe-card-icon{width:18px;height:13px;border:1.5px solid #7B513A;border-radius:2px;position:relative;display:inline-block}
+.stripe-card-icon:after{content:'';position:absolute;left:0;right:0;top:3px;border-top:2px solid #7B513A}
+.stripe-secure{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--text-light);line-height:1.5}
+.stripe-secure-icon{color:#1A7A4A;font-weight:700}
 .zeeg-open-btn{width:100%;background:var(--brown);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:15px;border-radius:8px;border:none;cursor:pointer;transition:background 0.2s;margin-top:4px}
 .zeeg-open-btn:hover{background:var(--brown-dark)}
 .zeeg-open-btn.green{background:#1a7a4a}
@@ -542,7 +553,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 @media(max-width:768px){
   .type-cards-v2{grid-template-columns:1fr 1fr}
   .size-grid-v2{grid-template-columns:repeat(2,1fr)}
-  .pay-methods-v2{flex-direction:column}
+  .stripe-methods{grid-template-columns:repeat(3,1fr)}
   .booking-flow{padding:20px 16px}
   .flow-step-label{display:none}
 }
@@ -584,15 +595,17 @@ footer{background:var(--brown-dark);padding:56px 0 0}
   .dog-form > div[style*="grid-template-columns:1fr 1fr"]{
     grid-template-columns:1fr !important;
   }
-  /* Pay methods stack */
-  .pay-methods-v2{flex-direction:column !important;gap:8px !important}
-  .pmv2{padding:14px !important;font-size:14px !important}
+  /* Zahlungsarten bleiben auf großen Smartphones kompakt nebeneinander */
+  .stripe-methods{grid-template-columns:repeat(3,1fr) !important;gap:6px !important}
   /* Zeeg button bigger on mobile */
   .zeeg-open-btn{padding:18px !important;font-size:14px !important}
   .flow-next-btn{padding:16px !important;font-size:14px !important}
   /* Summary readable */
   .step3-summary{font-size:13px !important}
   .summary-row{flex-direction:row !important}
+}
+@media(max-width:360px){
+  .stripe-methods{grid-template-columns:1fr !important;gap:8px !important}
 }
 </style>
 </head>
@@ -1318,14 +1331,31 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 
           <!-- Neukunde: Anzahlung NACH Terminfindung -->
           <div class="prepay-card" id="prepayCard">
-            <div style="font-size:13px;font-weight:500;color:var(--brown-dark);margin-bottom:4px">💳 Anzahlung nach Terminfindung</div>
-            <div style="font-size:12px;color:var(--text-light);margin-bottom:8px">Zuerst freien Termin wählen → dann sicher bezahlen</div>
-            <div class="prepay-amount-big" id="prepayAmountFlow">-- €</div>
-            <div class="pay-methods-v2">
-              <button class="pmv2" id="pmPaypal" onclick="selectPayV2('paypal')">🅿️ PayPal</button>
+            <div class="prepay-head">
+              <div>
+                <div class="prepay-kicker">Sichere Anzahlung</div>
+                <div class="prepay-title">Nach Terminbestätigung bezahlen</div>
+              </div>
+              <div class="stripe-badge" aria-label="Zahlung über Stripe">stripe</div>
             </div>
-            <div style="font-size:11px;color:var(--text-light);border-left:3px solid var(--beige);padding-left:10px">
-              Zahlung wird erst nach Annis Bestätigung ausgeführt.
+            <div style="font-size:12px;color:var(--text-light);line-height:1.5;margin-bottom:10px">
+              Zuerst freien Termin wählen. Sobald Anni den Termin bestätigt hat, erhältst du deinen persönlichen Zahlungslink per E-Mail.
+            </div>
+            <div class="prepay-amount-wrap">
+              <div class="prepay-amount-big" id="prepayAmountFlow">-- €</div>
+              <div class="prepay-amount-label">Anzahlung (50 %)</div>
+            </div>
+            <div class="stripe-payment-box">
+              <div class="stripe-payment-label">Bequem und sicher bezahlen mit</div>
+              <div class="stripe-methods" aria-label="Verfügbare Zahlungsarten">
+                <div class="stripe-method"><span class="stripe-card-icon" aria-hidden="true"></span><span>Kredit- &amp;<br>Debitkarte</span></div>
+                <div class="stripe-method"><span style="font-size:17px" aria-hidden="true">●</span><span>Apple Pay</span></div>
+                <div class="stripe-method"><span style="font-weight:800;color:#4285F4" aria-hidden="true">G</span><span>Google Pay</span></div>
+              </div>
+            </div>
+            <div class="stripe-secure">
+              <span class="stripe-secure-icon" aria-hidden="true">✓</span>
+              <span>Sicher verarbeitet durch Stripe. Bestandskunden benötigen keine Anzahlung. Der Restbetrag kann im Salon bar oder mit Karte bezahlt werden.</span>
             </div>
           </div>
 
@@ -1545,14 +1575,10 @@ function updateVPrepay() {
 }
 
 function selectPayment(m) {
-  selectedPayment = m;
-  document.getElementById('paypal-btn').classList.toggle('selected', m==='paypal');
-  document.getElementById('stripe-btn').classList.toggle('selected', m==='stripe');
+  selectedPayment = 'stripe';
 }
 function selectVPayment(m) {
-  vSelectedPayment = m;
-  document.getElementById('vpaypal-btn').classList.toggle('selected', m==='paypal');
-  document.getElementById('vstripe-btn').classList.toggle('selected', m==='stripe');
+  vSelectedPayment = 'stripe';
 }
 
 function submitForm() {
@@ -1568,8 +1594,8 @@ function submitForm() {
   if (customerType === 'new' && !selectedPayment) { alert('Bitte wähle eine Zahlungsmethode.'); return; }
   const btn = document.getElementById('formSubmit');
   if (customerType === 'new') {
-    btn.innerHTML = `<span>✓ Weiterleitung zur ${selectedPayment==='paypal'?'PayPal':'Stripe'}-Zahlung…</span>`;
-    btn.style.background='#0070ba';
+    btn.innerHTML = '<span>✓ Weiterleitung zur sicheren Stripe-Zahlung…</span>';
+    btn.style.background='#635bff';
     setTimeout(() => { btn.innerHTML='<span>✓ Anzahlung erhalten! Anni bestätigt demnächst.</span>'; btn.style.background='#1a7a4a'; btn.disabled=true; }, 2000);
   } else {
     btn.innerHTML='<span>✓ Gesendet! Anni meldet sich innerhalb von 24h.</span>';
@@ -1770,7 +1796,7 @@ function openZeeg() {
 var flowCustomerType = null;
 var flowAnimalType = 'dog';
 var flowSize = null;
-var flowPayMethod = null;
+var flowPayMethod = 'stripe';
 var flowKnValid = false;
 var referenceImageFile = null;
 var referenceImageRequestId = '';
@@ -2375,16 +2401,14 @@ function buildSummary() {
   if (flowCustomerType === 'new' && totalPrice != null) {
     pc.classList.add('show');
     var prepay = totalPrice * 0.5;
-    document.getElementById('prepayAmountFlow').innerHTML = formatPrice(prepay) + ' € <small style="font-size:13px;color:var(--text-light);font-family:var(--sans)">Anzahlung (50%)</small>';
+    document.getElementById('prepayAmountFlow').textContent = formatPrice(prepay) + ' €';
   } else {
     pc.classList.remove('show');
   }
 }
 
 function selectPayV2(method) {
-  flowPayMethod = method;
-  var paypalButton = document.getElementById('pmPaypal');
-  if (paypalButton) paypalButton.classList.toggle('selected', method === 'paypal');
+  flowPayMethod = 'stripe';
 }
 
 function openZeegFinal() {
