@@ -1962,9 +1962,9 @@ var zeegLinks = {
   'cat': 'https://zeeg.me/annemausolf/katzentermin',
   'puppy': 'https://zeeg.me/annemausolf/welpeneingewoehnung',
   'eyes': 'https://zeeg.me/annemausolf/augen-freischneiden',
-  'multiA': 'https://zeeg.me/annemausolf/mehrhunde-2-bis-4-5-stunden',
-  'multiB': 'https://zeeg.me/annemausolf/mehrhunde-5-bis-7-stunden',
-  'multiC': 'https://zeeg.me/annemausolf/mehrhunde-7-5-bis-9-stunden'
+  'multiA': 'https://zeeg.me/annemausolf/mehrhunde-2-bis-4-stunden',
+  'multiB': 'https://zeeg.me/annemausolf/mehrhunde-4-5-bis-6-5-stunden',
+  'multiC': 'https://zeeg.me/annemausolf/mehrhunde-7-bis-9-stunden'
 };
 
 var servicePrices = {
@@ -2698,11 +2698,10 @@ function openZeegFinal() {
   var link;
   if (flowAnimalType === 'cat') link = zeegLinks.cat;
   else if (pets.length === 1) link = leistung === 'Welpeneingewöhnung' ? zeegLinks.puppy : zeegLinks[firstPet.size];
-  else if (totals.durationMinutes <= 270) link = zeegLinks.multiA;
-  else if (totals.durationMinutes <= 420) link = zeegLinks.multiB;
+  else if (totals.durationMinutes <= 240) link = zeegLinks.multiA;
+  else if (totals.durationMinutes <= 390) link = zeegLinks.multiB;
   else link = zeegLinks.multiC;
   if (!link) return;
-  if (pets.length > 1) link += '?duration=' + encodeURIComponent(totals.durationMinutes);
   var customerCode = ((document.getElementById('knInputFlow') || {}).value || '').toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,6);
   var fullCustomerCode = customerCode ? 'LPL-' + customerCode : '';
   var sizeOptions = {'s':'S (bis40cm)','m':'M (bis 50cm)','l':'L (bis 60cm)','xl':'XL (bis 80cm)'};
@@ -2779,10 +2778,10 @@ function openZeegFinal() {
     phone: telFormatted,
     phoneNumber: telFormatted,
     answers: zeegAnswers
-  });
+  }, pets.length > 1 ? totals.durationMinutes : null);
 }
 
-function showZeegModal(url, prefill) {
+function showZeegModal(url, prefill, durationMinutes) {
   var existing = document.getElementById('zeegModal');
   if (existing) existing.remove();
 
@@ -2825,14 +2824,14 @@ function showZeegModal(url, prefill) {
     var script = document.createElement('script');
     script.id = 'zeeg-embed-script';
     script.src = 'https://assets.zeeg.me/embed.min.js';
-    script.onload = function() { initZeegEmbed(url, prefill); };
+    script.onload = function() { initZeegEmbed(url, prefill, durationMinutes); };
     document.head.appendChild(script);
   } else {
-    setTimeout(function() { initZeegEmbed(url, prefill); }, 100);
+    setTimeout(function() { initZeegEmbed(url, prefill, durationMinutes); }, 100);
   }
 }
 
-function initZeegEmbed(url, prefill) {
+function initZeegEmbed(url, prefill, durationMinutes) {
   try {
     if (window.Zeeg && window.Zeeg.initInlineWidget) {
       // Zeeg prefill: name, email come from prefill object
@@ -2849,6 +2848,22 @@ function initZeegEmbed(url, prefill) {
         prefill: zeegPrefill,
         utm: {}
       });
+      if (durationMinutes) {
+        var attempts = 0;
+        var durationTimer = window.setInterval(function() {
+          attempts += 1;
+          var iframe = document.querySelector('#zeeg-embed-container iframe');
+          if (iframe && iframe.src) {
+            try {
+              var iframeUrl = new URL(iframe.src);
+              iframeUrl.searchParams.set('duration', String(durationMinutes));
+              iframe.src = iframeUrl.toString();
+              window.clearInterval(durationTimer);
+            } catch (durationError) {}
+          }
+          if (attempts >= 40) window.clearInterval(durationTimer);
+        }, 50);
+      }
     } else {
       var p = new URLSearchParams();
       if (prefill.name)  p.set('name', prefill.name);
