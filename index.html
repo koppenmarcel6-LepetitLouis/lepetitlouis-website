@@ -3,6 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<!-- Google Ads conversion measurement with Consent Mode -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+(function() {
+  var savedConsent = null;
+  try {
+    if (new URLSearchParams(window.location.search).get('cookie-settings') === '1') {
+      localStorage.removeItem('lpl_google_ads_consent');
+    }
+    savedConsent = localStorage.getItem('lpl_google_ads_consent');
+  } catch (e) {}
+  var consentState = savedConsent === 'granted' ? 'granted' : 'denied';
+  gtag('consent', 'default', {
+    ad_storage: consentState,
+    analytics_storage: consentState,
+    ad_user_data: consentState,
+    ad_personalization: consentState,
+    wait_for_update: 500
+  });
+})();
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18211994987"></script>
+<script>
+gtag('js', new Date());
+gtag('config', 'AW-18211994987');
+
+var lplBookingStartTracked = false;
+function trackGoogleAdsBookingStart() {
+  if (lplBookingStartTracked || typeof gtag !== 'function') return;
+  lplBookingStartTracked = true;
+  gtag('event', 'page_view', {
+    page_title: 'Terminbuchung gestartet',
+    page_location: window.location.origin + window.location.pathname + '#booking-started'
+  });
+}
+
+function setGoogleAdsConsent(granted) {
+  var consentState = granted ? 'granted' : 'denied';
+  try { localStorage.setItem('lpl_google_ads_consent', consentState); } catch (e) {}
+  gtag('consent', 'update', {
+    ad_storage: consentState,
+    analytics_storage: consentState,
+    ad_user_data: consentState,
+    ad_personalization: consentState
+  });
+  var banner = document.getElementById('lpl-consent-banner');
+  if (banner) banner.hidden = true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var savedConsent = null;
+  try { savedConsent = localStorage.getItem('lpl_google_ads_consent'); } catch (e) {}
+  var banner = document.getElementById('lpl-consent-banner');
+  if (banner && savedConsent !== 'granted' && savedConsent !== 'denied') banner.hidden = false;
+});
+</script>
 <title>Le Petit Louis – Hundesalon Hamburg-Harburg</title>
 <meta name="description" content="Le petit Louis – Hundesalon in Hamburg-Heimfeld. Professionelle Fellpflege, sanft und individuell. Jetzt Termin online anfragen!">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -2772,6 +2829,7 @@ function openZeegFinal() {
         a7: telFormatted
       };
 
+  trackGoogleAdsBookingStart();
   showZeegModal(link, {
     name: name,
     email: email,
@@ -2877,5 +2935,13 @@ function initZeegEmbed(url, prefill, durationMinutes) {
 }
 
 </script>
+<div id="lpl-consent-banner" hidden role="dialog" aria-label="Datenschutzeinstellungen" style="position:fixed;left:16px;right:16px;bottom:16px;z-index:10050;max-width:760px;margin:0 auto;padding:18px 20px;border:1px solid rgba(107,63,42,.22);border-radius:14px;background:#fffaf5;box-shadow:0 12px 40px rgba(61,31,15,.2);font-family:Jost,Arial,sans-serif;color:#2c1a0e">
+  <div style="font-family:Georgia,serif;font-size:18px;margin-bottom:6px">Dürfen wir den Erfolg unserer Werbung messen?</div>
+  <p style="font-size:13px;line-height:1.55;margin:0 0 14px">Mit Ihrer Zustimmung verwenden wir das Google-Ads-Tag, um zu erkennen, ob aus einer Anzeige eine Terminanfrage entsteht. Ohne Zustimmung bleibt die Werbemessung eingeschränkt. Mehr dazu in unserer <a href="datenschutz.html" style="color:#6b3f2a;text-decoration:underline">Datenschutzerklärung</a>.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+    <button type="button" onclick="setGoogleAdsConsent(false)" style="border:1px solid #6b3f2a;border-radius:999px;background:transparent;color:#6b3f2a;padding:9px 16px;font:500 12px Jost,Arial,sans-serif;cursor:pointer">Nur notwendige</button>
+    <button type="button" onclick="setGoogleAdsConsent(true)" style="border:1px solid #3d1f0f;border-radius:999px;background:#3d1f0f;color:#fff;padding:9px 16px;font:500 12px Jost,Arial,sans-serif;cursor:pointer">Werbemessung erlauben</button>
+  </div>
+</div>
 </body>
 </html>
