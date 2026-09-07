@@ -36,7 +36,8 @@ function trackGoogleAdsBookingStart() {
   lplBookingStartTracked = true;
   gtag('event', 'page_view', {
     page_title: 'Terminbuchung gestartet',
-    page_location: window.location.origin + window.location.pathname + '#booking-started'
+    // Google Ads matches this exact virtual URL for the booking-start conversion.
+    page_location: 'https://www.lepetitlouis.com/#booking-started'
   });
 }
 
