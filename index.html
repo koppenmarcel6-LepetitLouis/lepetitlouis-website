@@ -2134,7 +2134,7 @@ function handleExtraDogImage(index, input) {
 function isPomeranianFixedPrice(breed, size, service) {
   return normalizeBreedText(breed) === 'pomeranian' &&
     size === 's' &&
-    ['Baden & Pflegen', 'Baden, Pflege & Schnitt', 'Baden, Pflege, Carding & Formschnitt'].indexOf(service) !== -1;
+    ['Baden & Pflege', 'Baden & Schnitt', 'Baden, Pflege, Carding & Formschnitt'].indexOf(service) !== -1;
 }
 
 function getPetPrice(pet) {
