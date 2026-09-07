@@ -900,6 +900,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <div class="breed-list">
                 <span class="breed-tag">Shih Tzu</span>
                 <span class="breed-tag">Malteser</span><span class="breed-tag">Zwergpudel</span>
+                <span class="breed-tag">Pomeranian</span>
                 <span class="breed-tag">Havaneser</span><span class="breed-tag">Bolonka</span>
                 <span class="breed-tag">Tollerdoodle</span>
                 <span class="breed-tag">Cavapoo</span><span class="breed-tag">Maltipoo</span>
@@ -2130,9 +2131,15 @@ function handleExtraDogImage(index, input) {
   if (label) label.textContent = file.name + ' – bereit zum Upload';
 }
 
+function isPomeranianFixedPrice(breed, size, service) {
+  return normalizeBreedText(breed) === 'pomeranian' &&
+    size === 's' &&
+    ['Baden & Pflegen', 'Baden, Pflege & Schnitt', 'Baden, Pflege, Carding & Formschnitt'].indexOf(service) !== -1;
+}
+
 function getPetPrice(pet) {
   if (!pet || !pet.size || !pet.service) return null;
-  if (normalizeBreedText(pet.breed) === 'pomeranian' && pet.size === 's' && pet.service === 'Baden, Pflege, Carding & Formschnitt') return 85;
+  if (isPomeranianFixedPrice(pet.breed, pet.size, pet.service)) return 85;
   return servicePrices[pet.service] ? servicePrices[pet.service][pet.size] : null;
 }
 
@@ -2287,22 +2294,21 @@ function getFlowPrice(size) {
   var service = document.getElementById('fv-leistung');
   var serviceName = service ? service.value : '';
   var breedInput = document.getElementById('fv-rasse');
-  var normalizedBreed = normalizeBreedText(breedInput ? breedInput.value : '');
-  if (
-    normalizedBreed === 'pomeranian' &&
-    size === 's' &&
-    serviceName === 'Baden, Pflege, Carding & Formschnitt'
-  ) {
-    return 85;
-  }
+  if (isPomeranianFixedPrice(breedInput ? breedInput.value : '', size, serviceName)) return 85;
   return servicePrices[serviceName] ? servicePrices[serviceName][size] : null;
 }
 
 function flowSelectService() {
   updateFormschnittAvailability(true);
+  var service = document.getElementById('fv-leistung');
+  var breedInput = document.getElementById('fv-rasse');
+  var serviceName = service ? service.value : '';
+  var breed = breedInput ? breedInput.value : '';
   document.querySelectorAll('.sbv2-price[data-size]').forEach(function(label) {
-    var price = getFlowPrice(label.getAttribute('data-size'));
-    label.textContent = price == null ? 'Preis nach Auswahl' : 'ab ' + formatPrice(price) + ' €';
+    var size = label.getAttribute('data-size');
+    var price = getFlowPrice(size);
+    var fixedPrice = isPomeranianFixedPrice(breed, size, serviceName);
+    label.textContent = price == null ? 'Preis nach Auswahl' : (fixedPrice ? formatPrice(price) + ' € Festpreis' : 'ab ' + formatPrice(price) + ' €');
   });
 }
 
