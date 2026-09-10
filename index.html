@@ -1100,7 +1100,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <div class="svc-panel" id="panel-katzen">
       <div class="svc-card-big">
         <h3>Katzenpflege</h3>
-        <p class="svc-desc">Sanfte Fellpflege für Katzen, abgestimmt auf Fellzustand und Verhalten. Die Katzenpflege kostet 45 € und kann jetzt direkt online angefragt werden.</p>
+        <p class="svc-desc">Sanfte Fellpflege für Katzen, abgestimmt auf Fellzustand und Verhalten. Die Katzenpflege kostet 50 € und kann jetzt direkt online angefragt werden.</p>
         <ul class="svc-features">
           <li>Entfilzen</li>
           <li>Fellpflege</li>
@@ -1332,18 +1332,18 @@ footer{background:var(--brown-dark);padding:56px 0 0}
                  </div>
                </div>
                <div class="ff dog-count-wrap show" id="dogCountWrap">
-                 <label>Wie viele Hunde möchtest du gemeinsam buchen?</label>
+                 <label id="petCountLabel">Wie viele Hunde möchtest du gemeinsam buchen?</label>
                  <div class="dog-count-options">
                    <button type="button" class="dog-count-btn selected" data-dog-count="1" onclick="flowSelectDogCount(1)">1 Hund</button>
                    <button type="button" class="dog-count-btn" data-dog-count="2" onclick="flowSelectDogCount(2)">2 Hunde</button>
                    <button type="button" class="dog-count-btn" data-dog-count="3" onclick="flowSelectDogCount(3)">3 Hunde</button>
                  </div>
-                 <div class="extra-dog-size-note">Bei mehreren Hunden werden Preis, Anzahlung und benötigte Zeit automatisch zusammengerechnet.</div>
+                 <div class="extra-dog-size-note" id="petCountHint">Bei mehreren Hunden werden Preis, Anzahlung und benötigte Zeit automatisch zusammengerechnet.</div>
                </div>
                <div class="ff"><label id="petNameLabel">Hundename</label><input type="text" id="fv-dogname" placeholder="z.B. Luna, Max…"></div>
               <div class="ff"><label id="breedLabel">Rasse</label><input type="text" id="fv-rasse" placeholder="z.B. Shih Tzu, Pudel…"></div>
               <div class="cat-booking-info" id="catBookingInfo">
-                <strong>Katzenpflege – 45 €</strong>
+                <strong>Katzenpflege – 50 €</strong>
                 <div>Eine feste Pflegeleistung ohne weitere Auswahl:</div>
                 <div class="cat-booking-list">
                   <span>Entfilzen</span><span>Fellpflege</span>
@@ -2065,6 +2065,20 @@ function renderExtraDogs() {
   var html = '';
   for (var index = 2; index <= flowDogCount; index++) {
     var saved = previous[index] || {};
+    if (flowAnimalType === 'cat') {
+      html += '<div class="extra-dog-card" data-dog-index="' + index + '">' +
+        '<div class="extra-dog-title"><span>Katze ' + index + '</span><small>Gemeinsamer Termin</small></div>' +
+        '<div class="extra-dog-grid">' +
+          '<div class="ff"><label>Katzenname</label><input type="text" id="fv-dogname-' + index + '" value="' + escapeFlowHtml(saved.name) + '" placeholder="z.B. Nala"></div>' +
+          '<div class="ff"><label>Rasse (optional)</label><input type="text" id="fv-rasse-' + index + '" value="' + escapeFlowHtml(saved.breed) + '" placeholder="z.B. Britisch Kurzhaar"></div>' +
+        '</div>' +
+        '<input type="hidden" id="fv-leistung-' + index + '" value="Katzenpflege">' +
+        '<input type="hidden" id="fv-size-' + index + '" value="">' +
+        '<div class="ff"><label>Referenzbild <span class="required-badge">Pflichtfeld</span></label><input type="file" id="fv-reference-image-' + index + '" accept="image/*" onchange="handleExtraDogImage(' + index + ',this)"><div class="extra-dog-image-name" id="fv-image-name-' + index + '"></div></div>' +
+        '<div class="ff"><label>Anmerkungen zu Katze ' + index + ' (optional)</label><textarea id="fv-notes-' + index + '" style="min-height:54px;resize:vertical" placeholder="Besonderheiten, Allergien …">' + escapeFlowHtml(saved.notes) + '</textarea></div>' +
+      '</div>';
+      continue;
+    }
     html += '<div class="extra-dog-card" data-dog-index="' + index + '">' +
       '<div class="extra-dog-title"><span>Hund ' + index + '</span><small>Gemeinsamer Termin</small></div>' +
       '<div class="extra-dog-grid">' +
@@ -2088,7 +2102,7 @@ function renderExtraDogs() {
     '</div>';
   }
   container.innerHTML = html;
-  for (var restoreIndex = 2; restoreIndex <= flowDogCount; restoreIndex++) {
+  for (var restoreIndex = 2; flowAnimalType === 'dog' && restoreIndex <= flowDogCount; restoreIndex++) {
     if (previous[restoreIndex] && previous[restoreIndex].service) document.getElementById('fv-leistung-' + restoreIndex).value = previous[restoreIndex].service;
     if (previous[restoreIndex] && previous[restoreIndex].size) document.getElementById('fv-size-' + restoreIndex).value = previous[restoreIndex].size;
     updateExtraDogSize(restoreIndex);
@@ -2138,6 +2152,7 @@ function isPomeranianFixedPrice(breed, size, service) {
 }
 
 function getPetPrice(pet) {
+  if (pet && pet.service === 'Katzenpflege') return 50;
   if (!pet || !pet.size || !pet.service) return null;
   if (isPomeranianFixedPrice(pet.breed, pet.size, pet.service)) return 85;
   return servicePrices[pet.service] ? servicePrices[pet.service][pet.size] : null;
@@ -2145,14 +2160,12 @@ function getPetPrice(pet) {
 
 function getPetDuration(pet) {
   if (!pet) return 0;
+  if (pet.service === 'Katzenpflege') return 60;
   if (pet.service === 'Welpeneingewöhnung') return 60;
   return dogDurations[pet.size] || 0;
 }
 
 function collectFlowPets() {
-  if (flowAnimalType === 'cat') {
-    return [{index:1,name:((document.getElementById('fv-dogname')||{}).value||'').trim(),breed:((document.getElementById('fv-rasse')||{}).value||'').trim(),size:'',service:'Katzenpflege',notes:((document.getElementById('fv-notes')||{}).value||'').trim(),imageRequestId:referenceImageRequestId,price:45,durationMinutes:60}];
-  }
   var pets = [];
   for (var index = 1; index <= flowDogCount; index++) {
     var suffix = index === 1 ? '' : '-' + index;
@@ -2160,8 +2173,8 @@ function collectFlowPets() {
       index:index,
       name:((document.getElementById('fv-dogname' + suffix)||{}).value||'').trim(),
       breed:((document.getElementById('fv-rasse' + suffix)||{}).value||'').trim(),
-      size:index === 1 ? flowSize : ((document.getElementById('fv-size-' + index)||{}).value||''),
-      service:((document.getElementById('fv-leistung' + suffix)||{}).value||''),
+      size:flowAnimalType === 'cat' ? '' : (index === 1 ? flowSize : ((document.getElementById('fv-size-' + index)||{}).value||'')),
+      service:flowAnimalType === 'cat' ? 'Katzenpflege' : ((document.getElementById('fv-leistung' + suffix)||{}).value||''),
       notes:((document.getElementById('fv-notes' + suffix)||{}).value||'').trim(),
       imageRequestId:index === 1 ? referenceImageRequestId : (extraDogImageRequestIds[index]||'')
     };
@@ -2246,6 +2259,8 @@ function flowSelectAnimal(type) {
   var serviceSection = document.getElementById('dogServiceSection');
   var sizeSection = document.getElementById('dogSizeSection');
   var dogCountWrap = document.getElementById('dogCountWrap');
+  var petCountLabel = document.getElementById('petCountLabel');
+  var petCountHint = document.getElementById('petCountHint');
   var sizeWarning = document.getElementById('breedSizeWarning');
   var service = document.getElementById('fv-leistung');
 
@@ -2268,10 +2283,15 @@ function flowSelectAnimal(type) {
   if (catInfo) catInfo.classList.toggle('show', isCat);
   if (serviceSection) serviceSection.style.display = isCat ? 'none' : '';
   if (sizeSection) sizeSection.style.display = isCat ? 'none' : '';
-  if (dogCountWrap) dogCountWrap.classList.toggle('show', !isCat);
+  if (dogCountWrap) dogCountWrap.classList.add('show');
+  if (petCountLabel) petCountLabel.textContent = isCat ? 'Wie viele Katzen möchtest du gemeinsam buchen?' : 'Wie viele Hunde möchtest du gemeinsam buchen?';
+  if (petCountHint) petCountHint.textContent = 'Bei mehreren ' + (isCat ? 'Katzen' : 'Hunden') + ' werden Preis, Anzahlung und benötigte Zeit automatisch zusammengerechnet.';
+  document.querySelectorAll('.dog-count-btn').forEach(function(button) {
+    var count = Number(button.getAttribute('data-dog-count')) || 1;
+    button.textContent = count + ' ' + (isCat ? (count === 1 ? 'Katze' : 'Katzen') : (count === 1 ? 'Hund' : 'Hunde'));
+  });
 
   if (isCat) {
-    flowSelectDogCount(1);
     flowSize = null;
     document.querySelectorAll('.size-btn-v2').forEach(function(button) {
       button.classList.remove('selected', 'locked');
@@ -2286,11 +2306,12 @@ function flowSelectAnimal(type) {
     service.value = '';
     flowSelectService('');
   }
+  renderExtraDogs();
   updateFormschnittAvailability(false);
 }
 
 function getFlowPrice(size) {
-  if (flowAnimalType === 'cat') return 45;
+  if (flowAnimalType === 'cat') return 50;
   var service = document.getElementById('fv-leistung');
   var serviceName = service ? service.value : '';
   var breedInput = document.getElementById('fv-rasse');
@@ -2399,7 +2420,7 @@ async function uploadReferenceImageToMake() {
   formData.append('animalType', flowAnimalType === 'cat' ? 'Katze' : 'Hund');
   formData.append('customerType', flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde');
   formData.append('petIndex', '1');
-  formData.append('petCount', String(flowAnimalType === 'cat' ? 1 : flowDogCount));
+  formData.append('petCount', String(flowDogCount));
   formData.append('petsJson', JSON.stringify(collectFlowPets()));
   formData.append('referenceImage', referenceImageFile, referenceImageFile.name);
 
@@ -2421,7 +2442,7 @@ async function uploadReferenceImageToMake() {
 }
 
 async function uploadExtraDogImagesToMake() {
-  if (flowAnimalType !== 'dog' || flowDogCount < 2) return true;
+  if (flowDogCount < 2) return true;
   var pets = collectFlowPets();
   var customerName = ((document.getElementById('fv-name') || {}).value || '').trim();
   var email = ((document.getElementById('fv-email') || {}).value || '').trim();
@@ -2439,7 +2460,7 @@ async function uploadExtraDogImagesToMake() {
     formData.append('breed', pet.breed);
     formData.append('size', pet.size);
     formData.append('service', pet.service);
-    formData.append('animalType', 'Hund');
+    formData.append('animalType', flowAnimalType === 'cat' ? 'Katze' : 'Hund');
     formData.append('customerType', flowCustomerType === 'existing' ? 'Bestandskunde' : 'Neukunde');
     formData.append('petIndex', String(index));
     formData.append('petCount', String(flowDogCount));
@@ -2453,7 +2474,7 @@ async function uploadExtraDogImagesToMake() {
       if (label) label.textContent = file.name + ' – hochgeladen';
     } catch (error) {
       if (label) label.textContent = file.name + ' – Upload fehlgeschlagen';
-      alert('Das Referenzbild für Hund ' + index + ' konnte nicht hochgeladen werden. Bitte versuche es erneut.');
+      alert('Das Referenzbild für ' + (flowAnimalType === 'cat' ? 'Katze ' : 'Hund ') + index + ' konnte nicht hochgeladen werden. Bitte versuche es erneut.');
       return false;
     }
   }
@@ -2464,7 +2485,7 @@ function validateFlowPets() {
   var pets = collectFlowPets();
   for (var index = 0; index < pets.length; index++) {
     var pet = pets[index];
-    var label = flowAnimalType === 'cat' ? 'die Katze' : 'Hund ' + (index + 1);
+    var label = flowAnimalType === 'cat' ? 'Katze ' + (index + 1) : 'Hund ' + (index + 1);
     if (!pet.name) { alert('Bitte den Namen für ' + label + ' eingeben.'); return false; }
     if (flowAnimalType === 'dog' && !pet.breed) { alert('Bitte die Rasse für ' + label + ' eingeben.'); return false; }
     if (flowAnimalType === 'dog' && !pet.size) { alert('Bitte die Größenklasse für ' + label + ' auswählen.'); return false; }
@@ -2493,8 +2514,8 @@ async function flowGoStep(n) {
     if (name && !name.value.trim()) { name.style.borderColor='#c0392b'; alert('Bitte Vorname eingeben.'); return; }
     if (tel && !tel.value.trim()) { tel.style.borderColor='#c0392b'; alert('Bitte WhatsApp-Nummer eingeben.'); return; }
     if (!validateFlowPets()) return;
-    if (flowAnimalType === 'cat' && !referenceImageFile) {
-      alert('Für eine Katzenbuchung ist ein aktuelles Referenzbild erforderlich.');
+    if (flowAnimalType === 'cat' && (!referenceImageFile || collectFlowPets().slice(1).some(function(pet) { return !extraDogImageFiles[pet.index]; }))) {
+      alert('Für jede Katze ist ein aktuelles Referenzbild erforderlich.');
       var referenceInput = document.getElementById('fv-reference-image');
       if (referenceInput) referenceInput.focus();
       return;
@@ -2719,9 +2740,9 @@ function buildSummary() {
     if (pet.imageRequestId) html += '<div class="summary-row"><span>Referenzbild '+(index+1)+'</span><span>hochgeladen</span></div>';
   });
   html += '<div class="summary-row"><span>Gesamtpreis</span><span>'+formatPrice(totals.price)+' €</span></div>';
-  if (flowAnimalType === 'dog') html += '<div class="summary-row"><span>Benötigte Zeit</span><span>'+formatDurationMinutes(totals.durationMinutes)+'</span></div>';
+  html += '<div class="summary-row"><span>Benötigte Zeit</span><span>'+formatDurationMinutes(totals.durationMinutes)+'</span></div>';
   html += '<div class="summary-row"><span>Kundenstatus</span><span>'+(flowCustomerType==='existing' ? 'Bestandskunde' : 'Neukunde')+'</span></div>';
-  if (flowAnimalType === 'dog' && pets.length > 1) html += '<div class="multi-dog-duration-note">Für alle Hunde wird ein gemeinsamer, entsprechend langer Termin gesucht. Ab mehr als 9 Stunden teilen wir die Pflege persönlich auf zwei Termine auf.</div>';
+  if (pets.length > 1) html += '<div class="multi-dog-duration-note">Für alle '+(flowAnimalType === 'cat' ? 'Katzen' : 'Hunde')+' wird ein gemeinsamer, entsprechend langer Termin gesucht. Ab mehr als 9 Stunden teilen wir die Pflege persönlich auf zwei Termine auf.</div>';
   document.getElementById('step3Summary').innerHTML = html;
 
   var pc = document.getElementById('prepayCard');
@@ -2740,8 +2761,8 @@ function selectPayV2(method) {
 
 function openZeegFinal() {
   if (!validateFlowPets()) return;
-  if (flowAnimalType === 'cat' && !referenceImageUploaded) {
-    alert('Das Referenzbild muss vor der Katzenbuchung vollständig hochgeladen sein.');
+  if (flowAnimalType === 'cat' && (!referenceImageUploaded || petsHavePendingCatImages())) {
+    alert('Die Referenzbilder aller Katzen müssen vor der Buchung vollständig hochgeladen sein.');
     return;
   }
   if (flowCustomerType === 'new' && !flowPayMethod) { alert('Bitte Zahlungsmethode wählen.'); return; }
@@ -2755,16 +2776,16 @@ function openZeegFinal() {
   var rasse = firstPet.breed;
   var leistung = firstPet.service;
   var totals = getMultiDogTotals(pets);
-  if (flowAnimalType === 'dog' && pets.length > 1 && totals.durationMinutes > 540) {
+  if (pets.length > 1 && totals.durationMinutes > 540) {
     alert('Die gemeinsame Pflege würde länger als 9 Stunden dauern. Bitte sende die Anfrage per WhatsApp, damit Anni zwei passende Termine einplant.');
     return;
   }
   var link;
-  if (flowAnimalType === 'cat') link = zeegLinks.cat;
-  else if (pets.length === 1) link = leistung === 'Welpeneingewöhnung' ? zeegLinks.puppy : zeegLinks[firstPet.size];
-  else if (totals.durationMinutes <= 240) link = zeegLinks.multiA;
-  else if (totals.durationMinutes <= 390) link = zeegLinks.multiB;
-  else link = zeegLinks.multiC;
+  if (pets.length > 1 && totals.durationMinutes <= 240) link = zeegLinks.multiA;
+  else if (pets.length > 1 && totals.durationMinutes <= 390) link = zeegLinks.multiB;
+  else if (pets.length > 1) link = zeegLinks.multiC;
+  else if (flowAnimalType === 'cat') link = zeegLinks.cat;
+  else link = leistung === 'Welpeneingewöhnung' ? zeegLinks.puppy : zeegLinks[firstPet.size];
   if (!link) return;
   var customerCode = ((document.getElementById('knInputFlow') || {}).value || '').toUpperCase().replace(/[^A-ZÄÖÜ0-9]/g,'').slice(0,6);
   var fullCustomerCode = customerCode ? 'LPL-' + customerCode : '';
@@ -2787,9 +2808,9 @@ function openZeegFinal() {
       return (index + 1) + ': ' + pet.name + ', ' + pet.breed + ', ' + (sizeOptions[pet.size] || pet.size) + ', ' + pet.service + (pet.notes ? ', Hinweis: ' + pet.notes : '');
     }).join(' / ');
     var imageIds = pets.map(function(pet) { return pet.imageRequestId; }).filter(Boolean).join(', ');
-    infoText += ' | Mehrhund-Buchung | Tieranzahl: ' + pets.length;
-    infoText += ' | Hunde: ' + petsOverview;
-    infoText += ' | MehrhundJSON: ' + encodeURIComponent(JSON.stringify(pets));
+    infoText += ' | ' + (flowAnimalType === 'cat' ? 'Mehrkatzen-Buchung' : 'Mehrhund-Buchung') + ' | Tieranzahl: ' + pets.length;
+    infoText += ' | Tiere: ' + petsOverview;
+    infoText += ' | MehrtiereJSON: ' + encodeURIComponent(JSON.stringify(pets));
     infoText += ' | Gesamtpreis: ' + totals.price.toFixed(2);
     infoText += ' | Anzahlung: ' + (flowCustomerType === 'new' ? (totals.price * 0.5).toFixed(2) : '0.00');
     infoText += ' | GesamtdauerMinuten: ' + totals.durationMinutes;
@@ -2808,12 +2829,12 @@ function openZeegFinal() {
     telFormatted = '+49' + telFormatted.substring(4);
   }
 
-  var zeegAnswers = flowAnimalType === 'cat'
+  var zeegAnswers = flowAnimalType === 'cat' && pets.length === 1
     ? {
         a1: infoText,
         a2: 'Einwilligung erteilen',
         a3: dog,
-        a4: rasse,
+        a4: rasse || 'Nicht angegeben',
         a5: tel.trim()
       }
     : pets.length === 1 && leistung === 'Welpeneingewöhnung'
@@ -2830,8 +2851,8 @@ function openZeegFinal() {
         a1: infoText,
         a2: 'Einwilligung erteilen',
         a3: dog,
-        a4: rasse,
-        a5: sizeOptions[firstPet.size] || '',
+        a4: flowAnimalType === 'cat' ? (rasse || 'Nicht angegeben') : rasse,
+        a5: flowAnimalType === 'cat' ? 'Nicht zutreffend (Katze)' : (sizeOptions[firstPet.size] || ''),
         a6: zeegService,
         a7: telFormatted
       };
@@ -2844,6 +2865,14 @@ function openZeegFinal() {
     phoneNumber: telFormatted,
     answers: zeegAnswers
   }, pets.length > 1 ? totals.durationMinutes : null);
+}
+
+function petsHavePendingCatImages() {
+  if (flowAnimalType !== 'cat' || flowDogCount < 2) return false;
+  for (var index = 2; index <= flowDogCount; index++) {
+    if (!extraDogImageUploaded[index]) return true;
+  }
+  return false;
 }
 
 function showZeegModal(url, prefill, durationMinutes) {
