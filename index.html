@@ -205,6 +205,8 @@ nav.scrolled .nav-logo img{height:42px}
 .svc-extra p{font-size:13px;color:var(--text-mid);line-height:1.6;font-weight:300;margin-bottom:16px}
 .svc-extra .price-tag{font-family:var(--serif);font-size:16px;color:var(--brown)}
 .svc-extra .price-tag small{font-size:12px;color:var(--text-light);font-family:var(--sans);font-weight:300}
+.svc-extra-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:13px}
+.svc-extra-actions a{color:var(--brown);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .ref-wrap{background:var(--brown-dark);padding:80px 0;overflow:hidden}
 .ref-inner{max-width:1200px;margin:0 auto;padding:0 40px}
 .ref-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px}
@@ -1093,7 +1095,8 @@ footer{background:var(--brown-dark);padding:56px 0 0}
       <div class="svc-extra-cards">
         <div class="svc-extra"><h3>🌊 Thalasso-Pflegebad</h3><p>20-minütige Massage mit mineralstoffreichem Thalasso-Schlamm. Beruhigt Haut & Fell, unterstützt Unterwollentfernung.</p><div class="price-tag">ab 25 € <small>Aufschlag zur Behandlung</small></div></div>
         <div class="svc-extra"><h3>🦷 Ultraschall-Zahnpflege</h3><p>Mit emmi®-pet — geräusch- und vibrationslos. Reduziert Zahnbelag & beugt Mundgeruch vor.</p><div class="price-tag">25 € <small>/ Behandlung (~20 Min.)</small></div><div style="font-size:12px;color:var(--mocha);margin-top:6px">20% Rabatt bei Kombination</div></div>
-        <div class="svc-extra"><h3>🐶 Welpeneingewöhnung</h3><p>60-minütige stressfreie Eingewöhnung + ausführliche Beratung. Für einen entspannten ersten Salonbesuch.</p><div class="price-tag">ab 25 € <small>/ Eingewöhnung</small></div></div>
+        <div class="svc-extra"><h3>🐶 Welpeneingewöhnung</h3><p>60-minütige stressfreie Eingewöhnung + ausführliche Beratung. Für einen entspannten ersten Salonbesuch.</p><div class="price-tag">35 € <small>/ Eingewöhnung</small></div></div>
+        <div class="svc-extra"><h3>Pfotenpflege</h3><p>Krallenschneiden und Pfotenbalsam. Als einzelne Leistung auf Anfrage erhältlich.</p><div class="price-tag">15 € <small>/ Behandlung</small></div><div class="svc-extra-actions"><a href="https://wa.me/4917673672723?text=Hallo%2C%20ich%20moechte%20eine%20Pfotenpflege%20anfragen." target="_blank" rel="noopener">Per WhatsApp anfragen</a><a href="tel:+4917673672723">Anrufen</a></div></div>
         <div class="svc-extra" style="background:var(--beige-light);border-color:var(--beige)"><h3>📏 Größenklassen</h3><p><strong>S</strong> bis 40 cm · Shih Tzu, Yorkie, Malteser…<br><strong>M</strong> bis 50 cm · Cocker, Doodle (klein), Golden Doodle…<br><strong>L</strong> bis 60 cm · Golden Retriever, Collie, Pudel (groß)…<br><strong>XL</strong> bis 80 cm · Berner, Leonberger…</p></div>
       </div>
     </div>
@@ -2030,7 +2033,7 @@ var servicePrices = {
   'Baden & Pflege': {'s':45,'m':90,'l':120,'xl':150},
   'Baden & Schnitt': {'s':85,'m':120,'l':150,'xl':180},
   'Baden, Pflege, Carding & Formschnitt': {'s':45,'m':85,'l':120,'xl':150},
-  'Welpeneingewöhnung': {'s':25,'m':25,'l':25,'xl':25}
+  'Welpeneingewöhnung': {'s':35,'m':35,'l':35,'xl':35}
 };
 
 var dogDurations = {'s':120,'m':150,'l':180,'xl':210};
