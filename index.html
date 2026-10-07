@@ -815,6 +815,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
             <div class="breed-body">
               <div class="breed-list">
+                <span class="breed-tag">Cocker Spaniel</span>
                 <span class="breed-tag">Shih Tzu</span><span class="breed-tag">Yorkshire Terrier</span>
                 <span class="breed-tag">Malteser</span><span class="breed-tag">Zwergpudel</span>
                 <span class="breed-tag">Pomeranian</span><span class="breed-tag">Chihuahua</span>
@@ -840,7 +841,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
             <div class="breed-body">
               <div class="breed-list">
-                <span class="breed-tag">Cocker Spaniel</span><span class="breed-tag">Doodle (klein)</span><span class="breed-tag">Goldendoodle</span>
+                <span class="breed-tag">Doodle (klein)</span><span class="breed-tag">Goldendoodle</span>
                 <span class="breed-tag">Aussiedoodle</span><span class="breed-tag">Bernedoodle</span>
                 <span class="breed-tag">Aussie-Bernedoodle</span><span class="breed-tag">Labradoodle</span>
                 <span class="breed-tag">Cockapoo</span><span class="breed-tag">Schnoodle</span>
@@ -1533,9 +1534,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         </div>
         <div class="info-card">
           <div class="info-card-label">Öffnungszeiten</div>
-          <div class="ot-row"><span>Montag – Freitag</span><span>9:00 – 18:00 Uhr</span></div>
-          <div class="ot-row"><span>Samstag</span><span>nach Vereinbarung</span></div>
-          <div class="ot-row"><span>Sonntag</span><span style="color:var(--text-light)">geschlossen</span></div>
+          <div class="ot-row"><span>Montag & Dienstag</span><span>12:00 – 18:00 Uhr</span></div>
+          <div class="ot-row"><span>Mittwoch & Donnerstag</span><span>9:00 – 16:00 Uhr</span></div>
+          <div class="ot-row"><span>Freitag – Sonntag</span><span style="color:var(--text-light)">geschlossen</span></div>
         </div>
         <div class="info-card">
           <div class="info-card-label">Anreise & Parken</div>
@@ -1991,7 +1992,7 @@ function detectSuggestedSizeForBreed(value, service) {
   if (!breed) return '';
 
   if (
-    service === 'Baden & Schnitt' &&
+    (service === 'Baden & Schnitt' || service === 'Baden & Pflege') &&
     (breed.indexOf('cocker spaniel') !== -1 || breed.indexOf('cockerspaniel') !== -1)
   ) {
     return 's';
