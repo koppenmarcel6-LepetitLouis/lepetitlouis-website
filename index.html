@@ -635,6 +635,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .flow-next-btn{width:100%;background:var(--brown);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:14px;border-radius:8px;border:none;cursor:pointer;transition:background 0.2s;margin-top:8px}
 .flow-next-btn:hover{background:var(--brown-dark)}
 .no-show-hint{font-size:11px;color:var(--text-light);line-height:1.6;padding:10px 12px;background:var(--cream);border-radius:6px;border-left:3px solid var(--beige);margin-bottom:16px}
+.online-booking-hours{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--text-mid);line-height:1.6}
+.online-booking-hours strong{display:block;color:var(--brown-dark);margin-bottom:6px}
+.online-booking-hours span{display:block}
 @media(max-width:768px){
   .type-cards-v2{grid-template-columns:1fr 1fr}
   .size-grid-v2{grid-template-columns:repeat(2,1fr)}
@@ -928,6 +931,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
                 <span class="breed-tag">Malteser</span><span class="breed-tag">Zwergpudel</span>
                 <span class="breed-tag">Pomeranian</span>
                 <span class="breed-tag">Havaneser</span><span class="breed-tag">Bolonka</span>
+                <span class="breed-tag">Cocker Spaniel</span>
                 <span class="breed-tag">Tollerdoodle</span>
                 <span class="breed-tag">Cavapoo</span><span class="breed-tag">Maltipoo</span>
                 <span class="breed-tag">Yorkipoo</span><span class="breed-tag">Shih-Poo</span>
@@ -947,7 +951,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
             <div class="breed-body">
               <div class="breed-list">
-                <span class="breed-tag">Cocker Spaniel</span><span class="breed-tag">Doodle (klein)</span><span class="breed-tag">Goldendoodle</span>
+                <span class="breed-tag">Doodle (klein)</span><span class="breed-tag">Goldendoodle</span>
                 <span class="breed-tag">Aussiedoodle</span><span class="breed-tag">Bernedoodle</span>
                 <span class="breed-tag">Aussie-Bernedoodle</span><span class="breed-tag">Labradoodle</span>
                 <span class="breed-tag">Cockapoo</span><span class="breed-tag">Schnoodle</span>
@@ -1270,7 +1274,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
         <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px">
           <div style="display:flex;align-items:flex-start;gap:14px">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Bestandskunde oder Neukunde?</strong><br>Bestandskunden buchen sofort. Neukunden zahlen 50% Anzahlung nach der Terminfindung.</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Kundenstatus & Haustier angeben</strong><br>Bestandskunden nutzen ihren Kundencode. Neukunden ergänzen die Angaben für ihren ersten Termin.</div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:14px">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
@@ -1278,8 +1282,15 @@ footer{background:var(--brown-dark);padding:56px 0 0}
           </div>
           <div style="display:flex;align-items:flex-start;gap:14px">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--brown);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
-            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Freien Termin wählen</strong><br>Der Kalender zeigt nur wirklich freie Slots. Neukunden zahlen danach sicher online.</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.5;padding-top:4px"><strong style="color:var(--text)">Anfrage prüfen & bestätigen</strong><br>Du wählst einen freien Termin. Anni prüft die Anfrage persönlich und bestätigt sie per E-Mail. Neukunden erhalten danach den Link für die 50% Anzahlung.</div>
           </div>
+        </div>
+        <div class="online-booking-hours">
+          <strong>Online buchbare Termine</strong>
+          <span>Montag & Dienstag: 12:00–18:00 Uhr</span>
+          <span>Mittwoch & Donnerstag: 09:00–16:00 Uhr</span>
+          <span>Freitag: keine Online-Buchung</span>
+          Weitere Termine vereinbaren wir gerne telefonisch oder per WhatsApp.
         </div>
         <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:13px;color:var(--text-mid);line-height:1.6">
           <strong style="color:var(--brown-dark);display:block;margin-bottom:6px">🛡️ No-Show Schutz</strong>
@@ -1485,7 +1496,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             📅 Freien Termin wählen – Kalender öffnet sich hier →
           </button>
           <div style="font-size:11px;color:var(--text-light);text-align:center;margin-top:8px;line-height:1.5">
-            Du wirst zum Buchungskalender weitergeleitet.<br>Anni bestätigt persönlich via WhatsApp.
+            Du wirst zum Buchungskalender weitergeleitet.<br>Deine Auswahl ist zunächst eine Anfrage. Die Bestätigung erhältst du per E-Mail.
           </div>
           <button class="flow-back" onclick="flowGoStep(2)">← Zurück</button>
         </div>
@@ -1500,8 +1511,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
     <p class="sec-label">Häufige Fragen</p>
     <h2 class="sec-title">Schnelle <em>Antworten</em></h2>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Leider kommt es gelegentlich vor, dass Termine nicht wahrgenommen werden. Um Anni fair zu behandeln, bitten wir Neukunden um <strong>50% Anzahlung</strong>. Bei Absage bis 48 Stunden vorher vollständige Rückerstattung. Bestandskunden sind ausgenommen.</div></div>
-        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Formular ausfüllen und absenden. Anni bestätigt <strong>persönlich innerhalb von 24h via WhatsApp</strong>. Erst nach Bestätigung ist der Termin verbindlich.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Warum zahlen Neukunden eine Anzahlung?</span><span class="faq-icon">+</span></button><div class="faq-a">Nach der persönlichen Freigabe erhalten Neukunden per E-Mail einen sicheren Zahlungslink für die <strong>50% Anzahlung</strong>. Erst nach der Zahlung ist der Termin verbindlich reserviert. Bei Absage bis 48 Stunden vorher wird die Anzahlung vollständig zurückerstattet. Bestandskunden sind ausgenommen.</div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wie funktioniert die Online-Terminbuchung?</span><span class="faq-icon">+</span></button><div class="faq-a">Du gibst deine Daten und die Angaben zu deinem Haustier ein und wählst einen freien Termin. Die Auswahl ist zunächst eine Anfrage. Anni prüft sie persönlich und bestätigt sie per E-Mail oder schlägt einen passenden Alternativtermin vor. Bestandskunden sind danach direkt bestätigt; Neukunden reservieren den Termin verbindlich mit der 50% Anzahlung.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Wann kann ich online einen Termin buchen?</span><span class="faq-icon">+</span></button><div class="faq-a"><strong>Montag und Dienstag von 12:00 bis 18:00 Uhr</strong> sowie <strong>Mittwoch und Donnerstag von 09:00 bis 16:00 Uhr</strong>. Freitags bieten wir keine Online-Termine an. Weitere Zeiten kannst du telefonisch oder per WhatsApp anfragen.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span>Kann ich einen Termin absagen?</span><span class="faq-icon">+</span></button><div class="faq-a">Ja — bitte <strong>mindestens 48 Stunden vorher per WhatsApp</strong>. Neukunden erhalten die Anzahlung vollständig zurück. Bei kurzfristigeren Absagen behält Anni die 50% als Aufwandsentschädigung.</div></div>
     </div>
     <div class="faq-all-link"><a href="fragen-und-antworten.html">Alle Fragen & Antworten lesen →</a></div>
@@ -1974,9 +1986,16 @@ function normalizeBreedText(value) {
     .trim();
 }
 
-function detectSuggestedSizeForBreed(value) {
+function detectSuggestedSizeForBreed(value, service) {
   var breed = normalizeBreedText(value);
   if (!breed) return '';
+
+  if (
+    service === 'Baden & Schnitt' &&
+    (breed.indexOf('cocker spaniel') !== -1 || breed.indexOf('cockerspaniel') !== -1)
+  ) {
+    return 's';
+  }
 
   var order = ['s', 'm', 'l', 'xl'];
   for (var i = 0; i < order.length; i++) {
@@ -2025,9 +2044,10 @@ function updateFormschnittAvailability(showMessage) {
 function updateBreedSizeWarning() {
   var warning = document.getElementById('breedSizeWarning');
   var breedInput = document.getElementById('fv-rasse');
+  var serviceInput = document.getElementById('fv-leistung');
   if (!warning || !breedInput) return;
 
-  var suggestedSize = detectSuggestedSizeForBreed(breedInput.value);
+  var suggestedSize = detectSuggestedSizeForBreed(breedInput.value, serviceInput ? serviceInput.value : '');
   if (!flowSize || !suggestedSize || suggestedSize === flowSize) {
     warning.classList.remove('show');
     warning.innerHTML = '';
@@ -2114,7 +2134,7 @@ function renderExtraDogs() {
         '<div class="ff"><label>Rasse</label><input type="text" id="fv-rasse-' + index + '" value="' + escapeFlowHtml(saved.breed) + '" placeholder="z.B. Pudel" oninput="updateExtraDogSize(' + index + ')"></div>' +
       '</div>' +
       '<div class="extra-dog-grid">' +
-        '<div class="ff"><label>Gewünschte Leistung</label><select id="fv-leistung-' + index + '" onchange="updateMultiDogSummaryPreview()">' +
+        '<div class="ff"><label>Gewünschte Leistung</label><select id="fv-leistung-' + index + '" onchange="updateExtraDogSize(' + index + ');updateMultiDogSummaryPreview()">' +
           '<option value="">Bitte wählen</option>' +
           '<option value="Baden & Pflege">Baden & Pflegen</option>' +
           '<option value="Baden & Schnitt">Baden & Schnitt</option>' +
@@ -2140,9 +2160,10 @@ function renderExtraDogs() {
 function updateExtraDogSize(index) {
   var breedField = document.getElementById('fv-rasse-' + index);
   var sizeField = document.getElementById('fv-size-' + index);
+  var serviceField = document.getElementById('fv-leistung-' + index);
   var note = document.getElementById('fv-size-note-' + index);
   if (!breedField || !sizeField) return;
-  var detected = detectSuggestedSizeForBreed(breedField.value);
+  var detected = detectSuggestedSizeForBreed(breedField.value, serviceField ? serviceField.value : '');
   if (detected) {
     sizeField.value = detected;
     sizeField.disabled = true;
@@ -2234,9 +2255,10 @@ function updateMultiDogSummaryPreview() {
 function updateBreedSizeWarning() {
   var warning = document.getElementById('breedSizeWarning');
   var breedInput = document.getElementById('fv-rasse');
+  var serviceInput = document.getElementById('fv-leistung');
   if (!warning || !breedInput) return;
 
-  var suggestedSize = detectSuggestedSizeForBreed(breedInput.value);
+  var suggestedSize = detectSuggestedSizeForBreed(breedInput.value, serviceInput ? serviceInput.value : '');
   var buttons = document.querySelectorAll('.size-btn-v2[data-flow-size]');
 
   if (!suggestedSize) {
@@ -2349,6 +2371,7 @@ function getFlowPrice(size) {
 
 function flowSelectService() {
   updateFormschnittAvailability(true);
+  updateBreedSizeWarning();
   var service = document.getElementById('fv-leistung');
   var breedInput = document.getElementById('fv-rasse');
   var serviceName = service ? service.value : '';
@@ -2518,7 +2541,7 @@ function validateFlowPets() {
     if (flowAnimalType === 'dog' && !pet.breed) { alert('Bitte die Rasse für ' + label + ' eingeben.'); return false; }
     if (flowAnimalType === 'dog' && !pet.size) { alert('Bitte die Größenklasse für ' + label + ' auswählen.'); return false; }
     if (flowAnimalType === 'dog' && !pet.service) { alert('Bitte die gewünschte Leistung für ' + label + ' auswählen.'); return false; }
-    var suggestedSize = flowAnimalType === 'dog' ? detectSuggestedSizeForBreed(pet.breed) : '';
+    var suggestedSize = flowAnimalType === 'dog' ? detectSuggestedSizeForBreed(pet.breed, pet.service) : '';
     if (suggestedSize && pet.size !== suggestedSize) { alert('Die Größenklasse für ' + label + ' passt nicht zur hinterlegten Rasse.'); return false; }
     if (pet.service === 'Baden, Pflege, Carding & Formschnitt' && !isFormschnittBreedAllowed(pet.breed, pet.size)) {
       alert('Der Formschnitt ist für die Rasse von ' + label + ' nicht als Online-Leistung hinterlegt. Bitte wähle eine andere Leistung.');
@@ -2549,7 +2572,7 @@ async function flowGoStep(n) {
       return;
     }
     var breedInput = document.getElementById('fv-rasse');
-    var suggestedSize = flowAnimalType === 'dog' && breedInput ? detectSuggestedSizeForBreed(breedInput.value) : '';
+    var suggestedSize = flowAnimalType === 'dog' && breedInput ? detectSuggestedSizeForBreed(breedInput.value, service ? service.value : '') : '';
     if (suggestedSize && flowSize !== suggestedSize) {
       updateBreedSizeWarning();
       alert('Die Groessenklasse wurde automatisch passend zur Rasse gesetzt. Bitte nutze die hinterlegte Kategorie.');
@@ -2727,7 +2750,8 @@ function flowSelectSize(size, btn) {
   if (flowAnimalType === 'cat') return;
   if (btn && btn.disabled) return;
   var breedInput = document.getElementById('fv-rasse');
-  var suggestedSize = breedInput ? detectSuggestedSizeForBreed(breedInput.value) : '';
+  var serviceInput = document.getElementById('fv-leistung');
+  var suggestedSize = breedInput ? detectSuggestedSizeForBreed(breedInput.value, serviceInput ? serviceInput.value : '') : '';
   if (suggestedSize && size !== suggestedSize) {
     updateBreedSizeWarning();
     alert('Diese Groessenklasse passt nicht zur ausgewaehlten Rasse und ist deshalb gesperrt.');
