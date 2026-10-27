@@ -508,6 +508,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .kn-err{color:#c0392b}
 .kn-hint{font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.5}
 .kn-skip{color:var(--mocha);cursor:pointer;text-decoration:underline}
+.kn-closed{color:var(--text-light)}
 
 .zeeg-wrap{background:#fff;border-radius:12px;padding:28px;box-shadow:0 4px 40px rgba(107,63,42,0.10);margin-top:32px}
 .zeeg-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--brown-dark);margin-bottom:6px}
@@ -548,6 +549,9 @@ footer{background:var(--brown-dark);padding:56px 0 0}
 .type-card-v2{border:2px solid var(--border);border-radius:10px;padding:18px 14px;cursor:pointer;transition:all 0.2s;text-align:center}
 .type-card-v2:hover{border-color:var(--brown-light);background:var(--beige-light)}
 .type-card-v2.selected{border-color:var(--brown);background:var(--beige-light)}
+.type-card-v2.disabled{border-color:#ddd4cb;background:#f3eee8;cursor:not-allowed;opacity:.58;filter:grayscale(.35)}
+.type-card-v2.disabled:hover{border-color:#ddd4cb;background:#f3eee8}
+.type-card-v2.disabled .tcv2-label,.type-card-v2.disabled .tcv2-desc{color:var(--text-light)}
 .tcv2-icon{font-size:30px;display:block;margin-bottom:8px}
 .tcv2-label{font-size:14px;font-weight:500;color:var(--text);display:block;margin-bottom:3px}
 .tcv2-desc{font-size:11px;color:var(--text-light);line-height:1.4}
@@ -1329,10 +1333,10 @@ footer{background:var(--brown-dark);padding:56px 0 0}
               <span class="tcv2-label">Ja, ich war schon da</span>
               <span class="tcv2-desc">Bestandskunde — keine Anzahlung</span>
             </div>
-            <div class="type-card-v2" id="cardNew" onclick="flowSelectType('new')">
+            <div class="type-card-v2 disabled" id="cardNew" aria-disabled="true">
               <span class="tcv2-icon">👋</span>
               <span class="tcv2-label">Ich bin Neukunde</span>
-              <span class="tcv2-desc">50% Anzahlung nach Terminfindung</span>
+              <span class="tcv2-desc">Aktuell keine Neukundenaufnahme</span>
             </div>
           </div>
           <!-- Kundennummer -->
@@ -1346,7 +1350,7 @@ footer{background:var(--brown-dark);padding:56px 0 0}
             </div>
             <div class="kn-status" id="knStatusFlow"></div>
             <div class="kn-hint">Nummer nach erstem Besuch per WhatsApp erhalten.<br>
-              <span class="kn-skip" onclick="flowSkipKN()">Keine Nummer? → als Neukunde buchen</span>
+              <span class="kn-closed">Ohne Kundennummer ist derzeit keine Online-Buchung möglich.</span>
             </div>
           </div>
           <button class="flow-next-btn" id="step1Next" onclick="flowGoStep(2)" style="margin-top:16px">
@@ -1940,6 +1944,7 @@ function openZeeg() {
 
 // ── 3-STEP FLOW ─────────────────────────────────────────────────
 var flowCustomerType = null;
+var newCustomerBookingEnabled = false;
 var flowAnimalType = 'dog';
 var flowSize = null;
 var flowPayMethod = 'stripe';
@@ -2557,6 +2562,7 @@ async function flowGoStep(n) {
   // Validate before going forward
   if (n === 2) {
     if (!flowCustomerType) { alert('Bitte wähle ob du Bestands- oder Neukunde bist.'); return; }
+    if (flowCustomerType === 'new' && !newCustomerBookingEnabled) { alert('Aktuell können wir leider keine Neukunden aufnehmen.'); return; }
     if (flowCustomerType === 'existing' && !flowKnValid) { alert('Bitte gib deine Kundennummer ein.'); return; }
   }
   if (n === 3) {
@@ -2601,6 +2607,7 @@ async function flowGoStep(n) {
 }
 
 function flowSelectType(type) {
+  if (type === 'new' && !newCustomerBookingEnabled) return;
   flowCustomerType = type;
   document.getElementById('cardExisting').classList.toggle('selected', type==='existing');
   document.getElementById('cardNew').classList.toggle('selected', type==='new');
@@ -2739,6 +2746,10 @@ function flowValidateKN(input) {
 }
 
 function flowSkipKN() {
+  if (!newCustomerBookingEnabled) {
+    alert('Aktuell können wir leider keine Neukunden aufnehmen.');
+    return;
+  }
   flowCustomerType = 'new';
   document.getElementById('cardExisting').classList.remove('selected');
   document.getElementById('cardNew').classList.add('selected');
